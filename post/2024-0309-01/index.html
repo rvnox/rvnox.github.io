@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width" />
+  <script
+    type="application/javascript"
+    src='https://rvnox.github.io/js/theme-mode.js'
+  ></script>
+  <link rel="stylesheet" href='https://rvnox.github.io/css/frameworks.min.css' />
+  <link rel="stylesheet" href='https://rvnox.github.io/css/github.min.css' />
+  <link rel="stylesheet" href='https://rvnox.github.io/css/github-style.css' />
+  <link rel="stylesheet" href='https://rvnox.github.io/css/light.css' />
+  <link rel="stylesheet" href='https://rvnox.github.io/css/dark.css' />
+  <link rel="stylesheet" href='https://rvnox.github.io/css/syntax.css' />
+  
+  <link rel="stylesheet" href="/custom.css" />
+  
+  <title>
+    Rayder 代码重构 | rvnox&#39;s Blog
+  </title>
+  
+  <link rel="icon" type="image/x-icon" href="/images/github-mark.png" />
+  
+  <meta name="theme-color" content="#1e2327" />
+
+  
+  <meta
+  name="description"
+  content="Rayder 是一款命令行工具，旨在简化工作流程的编排和执行。它允许您在 YAML 文件中定义一系列模块，每个模块包含要执行的命令。Rayder 可帮助您自动化复杂的流程，轻松简化重复的模块，并在命令彼此不依赖的情况下并行执行它们。"
+/>
+<meta name="robots" content="noodp" />
+<link rel="canonical" href="https://rvnox.github.io/post/2024-0309-01/" />
+
+
+<meta name="twitter:card" content="summary" />
+<meta
+  name="twitter:title"
+  content="Rayder 代码重构 - rvnox&#39;s Blog"
+/>
+<meta
+  name="twitter:description"
+  content="Rayder 是一款命令行工具，旨在简化工作流程的编排和执行。它允许您在 YAML 文件中定义一系列模块，每个模块包含要执行的命令。Rayder 可帮助您自动化复杂的流程，轻松简化重复的模块，并在命令彼此不依赖的情况下并行执行它们。"
+/>
+<meta name="twitter:site" content="https://rvnox.github.io/" />
+<meta name="twitter:creator" content="" />
+<meta
+  name="twitter:image"
+  content="https://rvnox.github.io/"
+/>
+
+
+<meta
+  property="og:type"
+  content="article"
+/>
+<meta
+  property="og:title"
+  content="Rayder 代码重构 - rvnox&#39;s Blog"
+/>
+<meta
+  property="og:description"
+  content="Rayder 是一款命令行工具，旨在简化工作流程的编排和执行。它允许您在 YAML 文件中定义一系列模块，每个模块包含要执行的命令。Rayder 可帮助您自动化复杂的流程，轻松简化重复的模块，并在命令彼此不依赖的情况下并行执行它们。"
+/>
+<meta property="og:url" content="https://rvnox.github.io/post/2024-0309-01/" />
+<meta property="og:site_name" content="Rayder 代码重构" />
+<meta
+  property="og:image"
+  content="https://rvnox.github.io/"
+/>
+<meta property="og:image:width" content="2048" />
+<meta property="og:image:height" content="1024" />
+
+<meta property="article:published_time" content="2024-03-09 18:18:22 &#43;0800 &#43;0800" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+
+<script src="/js/pangu.js"></script>
+
+<script>
+	document.addEventListener('DOMContentLoaded', () => {
+			pangu.autoSpacingPage();
+	});
+</script>
+
+<body>
+  
+
+<style>
+  .height-limitation {
+    max-height: 300px;
+    overflow-y: scroll;
+  }
+
+  .loader {
+    border: 4px solid #f3f3f3;
+    border-bottom: 4px solid var(--color-fg-muted);
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    animation: spin 1s linear infinite;
+    margin: 0 auto;
+  }
+
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+</style>
+
+<div style="position: relative">
+  <header
+    class="Header js-details-container Details px-3 px-md-4 px-lg-5 flex-wrap flex-md-nowrap open Details--on"
+  >
+    <div
+      class="Header-item mobile-none"
+      style="margin-top: -4px; margin-bottom: -4px"
+    >
+      <a class="Header-link" href="https://rvnox.github.io/" aria-label="Home">
+        <svg
+          class="octicon"
+          height="32"
+          viewBox="0 0 16 16"
+          version="1.1"
+          width="32"
+        >
+          <path
+            fill-rule="evenodd"
+            d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"
+          ></path>
+        </svg>
+      </a>
+    </div>
+    <div class="Header-item d-md-none">
+      <button
+        class="Header-link btn-link js-details-target"
+        type="button"
+        onclick="document.querySelector('#header-search').style.display = document.querySelector('#header-search').style.display == 'none'? 'block': 'none'"
+        aria-label="Search"
+      >
+        <svg
+          height="24"
+          class="octicon octicon-three-bars"
+          viewBox="0 0 16 16"
+          version="1.1"
+          width="24"
+        >
+          <path
+            fill-rule="evenodd"
+            d="M1 2.75A.75.75 0 011.75 2h12.5a.75.75 0 110 1.5H1.75A.75.75 0 011 2.75zm0 5A.75.75 0 011.75 7h12.5a.75.75 0 110 1.5H1.75A.75.75 0 011 7.75zM1.75 12a.75.75 0 100 1.5h12.5a.75.75 0 100-1.5H1.75z"
+          ></path>
+        </svg>
+      </button>
+    </div>
+    <div
+      style="display: none"
+      id="header-search"
+      class="Header-item Header-item--full flex-column flex-md-row width-full flex-order-2 flex-md-order-none mr-0 mr-md-3 mt-3 mt-md-0 Details-content--hidden-not-important d-md-flex"
+    >
+      <div
+        class="Header-search header-search flex-auto js-site-search position-relative flex-self-stretch flex-md-self-auto mb-3 mb-md-0 mr-0 mr-md-3 scoped-search site-scoped-search js-jump-to"
+      >
+        <div class="position-relative">
+          <form
+            target="_blank"
+            action="https://www.google.com/search"
+            accept-charset="UTF-8"
+            method="get"
+            autocomplete="off"
+          >
+            <label
+              class="Header-search-label form-control input-sm header-search-wrapper p-0 js-chromeless-input-container header-search-wrapper-jump-to position-relative d-flex flex-justify-between flex-items-center"
+            >
+              <input
+                type="text"
+                class="Header-search-input form-control input-sm header-search-input jump-to-field js-jump-to-field js-site-search-focus js-site-search-field is-clearable"
+                name="q"
+                value=""
+                placeholder="Search"
+                autocomplete="off"
+              />
+              <input type="hidden" name="q" value="site:https://rvnox.github.io/" />
+              <div
+                class="js-jump-to-suggestions-container jump-to-suggestions overflow-hidden position-absolute"
+              >
+                <div
+                  id="search-progress"
+                  class="d-none color-bg-primary no-underline p-2"
+                  role="progress"
+                  aria-selected="false"
+                >
+                  <div class="loader"></div>
+                </div>
+
+                <ul
+                  id="jump-to-results"
+                  role="listbox"
+                  class="Box border-0 p-0 m-0 js-navigation-container jump-to-suggestions-results-container js-jump-to-suggestions-results-container js-active-navigation-container height-limitation"
+                ></ul>
+              </div>
+            </label>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="Header-item Header-item--full flex-justify-center d-md-none position-relative"
+    >
+      <a class="Header-link" href="https://rvnox.github.io/" aria-label="Home">
+        <svg
+          class="octicon octicon-mark-github v-align-middle"
+          height="32"
+          viewBox="0 0 16 16"
+          version="1.1"
+          width="32"
+        >
+          <path
+            fill-rule="evenodd"
+            d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"
+          ></path>
+        </svg>
+      </a>
+    </div>
+    <div class="Theme-switcher Header-item" style="margin-right: 0">
+      <span
+        role="button"
+        class="Header-link no-select"
+        onclick="switchTheme()"
+        style="cursor: pointer"
+        aria-label="Switch theme"
+      >
+        <svg
+          style="fill: var(--color-profile-color-modes-toggle-moon)"
+          class="no-select"
+          viewBox="0 0 16 16"
+          version="1.1"
+          width="16"
+          height="16"
+        >
+          <path
+            fill-rule="evenodd"
+            clip-rule="evenodd"
+            d="M4.52208 7.71754C7.5782 7.71754 10.0557 5.24006 10.0557 2.18394C10.0557 1.93498 10.0392 1.68986 10.0074 1.44961C9.95801 1.07727 10.3495 0.771159 10.6474 0.99992C12.1153 2.12716 13.0615 3.89999 13.0615 5.89383C13.0615 9.29958 10.3006 12.0605 6.89485 12.0605C3.95334 12.0605 1.49286 10.001 0.876728 7.24527C0.794841 6.87902 1.23668 6.65289 1.55321 6.85451C2.41106 7.40095 3.4296 7.71754 4.52208 7.71754Z"
+          ></path>
+        </svg>
+      </span>
+    </div>
+  </header>
+</div>
+
+  
+<script type="text/javascript" src="/js/initimage.js"></script>
+
+
+
+<div>
+  <main>
+    <div class="gisthead pagehead bg-gray-light pb-0 pt-3 mb-4">
+      <div class="px-0">
+        <div class="mb-3 d-flex px-3 px-md-3 px-lg-5">
+          <div class="flex-auto min-width-0 width-fit mr-3">
+            <div class="d-flex">
+              <div class="d-none d-md-block">
+                <a class="avatar mr-2 flex-shrink-0" href="https://rvnox.github.io/">
+                  <img class=" avatar-user"
+                    src="/images/avatar.png"
+                    width="32" height="32" alt="κόραξ"></a>
+              </div>
+              <div class="d-flex flex-column">
+                <h1 class="break-word f3 text-normal mb-md-0 mb-1">
+                  <span class="author">
+                    <a href="https://rvnox.github.io/">κόραξ</a></span><span
+                    class="path-divider">/</span><strong class="css-truncate-target mr-1" style="max-width: 410px"><a
+                      href="https://rvnox.github.io/post/2024-0309-01/">Rayder 代码重构</a></strong>
+                </h1>
+                <div class="note m-0">
+                  Created <relative-time datetime="Sat, 09 Mar 2024 18:18:22 &#43;0800"
+                    class="no-wrap">
+                    Sat, 09 Mar 2024 18:18:22 &#43;0800</relative-time>
+
+                  
+                  <span class="file-info-divider"></span>
+                  Modified <relative-time datetime="Sun, 03 Aug 2025 14:13:51 &#43;0000"
+                    class="no-wrap">
+                    Sun, 03 Aug 2025 14:13:51 &#43;0000</relative-time>
+                  
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container-lg px-3 new-discussion-timeline">
+      <div class="repository-content gist-content">
+        <div>
+          <div class="js-gist-file-update-container js-task-list-container file-box">
+            <div id="file-pytest" class="file my-2">
+              <div id="post-header" class="file-header d-flex flex-md-items-center flex-items-start sticky-header" style="z-index: 2">
+                <div class="file-info d-flex flex-md-items-center flex-items-start flex-order-1 flex-auto">
+                  <div class="text-mono f6 flex-auto pr-3 flex-order-2 flex-md-order-1 mt-2 mt-md-0">
+                    
+                    <summary id="toc-toggle" onclick="clickToc()" class="btn btn-octicon m-0 mr-2 p-2">
+                      <svg aria-hidden="true" viewBox="0 0 16 16" height="16" width="16" class="octicon octicon-list-unordered">
+                        <path fill-rule="evenodd" d="M2 4a1 1 0 100-2 1 1 0 000 2zm3.75-1.5a.75.75 0 000 1.5h8.5a.75.75 0 000-1.5h-8.5zm0 5a.75.75 0 000 1.5h8.5a.75.75 0 000-1.5h-8.5zm0 5a.75.75 0 000 1.5h8.5a.75.75 0 000-1.5h-8.5zM3 8a1 1 0 11-2 0 1 1 0 012 0zm-1 6a1 1 0 100-2 1 1 0 000 2z"></path>
+                      </svg>
+                    </summary>
+                    <details-menu class="SelectMenu" id="toc-details" style="display: none;">
+                      <div class="SelectMenu-modal rounded-3 mt-1" style="max-height: 340px;">
+                        <div class="SelectMenu-list SelectMenu-list--borderless p-2" style="overscroll-behavior: contain;" id="toc-list">
+                        </div>
+                      </div>
+                    </details-menu>
+                      1258 Words
+                    <span class="file-info-divider"></span>
+                                        6 min
+
+                  </div>
+                  <div class="file-actions flex-order-2 pt-0">
+  
+    
+       
+       
+       
+       
+      
+      
+        
+        
+       
+      <a class="muted-link mr-3" href="/tags/nil">
+        <span class="repo-language-color" style="background-color: #649895"></span>
+        
+      </a>
+    
+  
+
+                  </div>
+                </div>
+              </div>
+
+
+              <div class="Box-body px-5 pb-5" style="z-index: 1">
+                <article class="markdown-body entry-content container-lg"><p><a href="/tools/rayder.go">重构 Rayder 项目</a>，用于编排简单的工作流（企业内的工作流编排建议直接用 n8n），原项目地址：https://github.com/devanshbatham/rayder</p>
+<h1 id="相关修改">相关修改：</h1>
+<ul> <input type="checkbox" checked onclick="this.checked=!this.checked"> 支持docker 的-it参数，在静默模式下-it参数会自动修改成-i参数</ul>
+<ul> <input type="checkbox" checked onclick="this.checked=!this.checked"> 修改并发执行的逻辑，允许某些任务可以并发执行，而并非所有任务都并发执行 </ul>
+<ul> <input type="checkbox" checked onclick="this.checked=!this.checked"> 添加 ctrlc 字段，按下 ctrl+c 的时候，执行 ctrlc 字段的内容 </ul>
+<ul> <input type="checkbox" checked onclick="this.checked=!this.checked"> 内置了 {{YamlName}} 变量，代表 -w 加载的yaml的模板名称 </ul>
+<ul> <input type="checkbox" onclick="this.checked=!this.checked"> 优化非静默模式和静默模式的显示结果，静默模式下扫描完成后，显示生成xxx文件 </ul>
+<h1 id="yaml模板下载">YAML模板下载</h1>
+<p>下面的 YAML 模板待完善，用于渗透测试中的信息收集，仅供参考，输入  <code>./rayder -w workflow.yaml file=input.txt</code> 即可使用</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">modules</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">过滤域名</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">parallel</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">cmds</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span>- <span class="l">docker run --rm --network host -v &#34;$(pwd)&#34;:/tools/  --name morefind1 ayuxy/tools-morefind -d -f {{file}}  | docker run --rm -i --network host -v &#34;$(pwd)&#34;:/tools/ -w /tools/ --name httpx1 ayuxy/tools-httpx -silent  -o Domain.txt</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">silent</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">ctrlc</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span>- <span class="l">docker kill morefind1 httpx1 &gt;/dev/null 2&gt;&amp;1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">挖掘子域名</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">parallel</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">cmds</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span>- <span class="l">docker run --rm --network host -v &#34;$(pwd)&#34;:/tools/ --name morefind2 ayuxy/tools-morefind -d --root -f {{file}}  | docker run --rm -i --network host -v &#34;$(pwd)&#34;:/tools/ -w /tools/ --name subfinder1 ayuxy/tools-subfinder -silent | docker run --rm -i --network host -v &#34;$(pwd)&#34;:/tools/ -w /tools/ --name httpx2 ayuxy/tools-httpx -silent -o SubDomain.txt</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span>- <span class="p">|</span><span class="sd">
+</span></span></span><span class="line"><span class="cl"><span class="sd">          line_count=$(wc -l &lt; &#34;SubDomain.txt&#34;)          
+</span></span></span><span class="line"><span class="cl"><span class="sd">          echo &#34;子域名扫描完成,收集到存活子域名共 $line_count 条,具体信息如下:&#34; | docker run --rm -i -v $(pwd):/tools --name notify1 ayuxy/tools-notify -pc {{YamlName}} -id slack  -bulk -silent          </span><span class="w">          
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span>- <span class="l">docker run --rm -v $(pwd):/tools --name notify2 ayuxy/tools-notify -pc {{YamlName}} -data SubDomain.txt -id slack  -bulk -silent</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">silent</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">ctrlc</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span>- <span class="l">docker kill morefind2 subfinder1 httpx2 notify1 notify2 &gt;/dev/null 2&gt;&amp;1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">端口扫描</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">parallel</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">cmds</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span>- <span class="l">docker run --rm --network host -v &#34;$(pwd)&#34;:/tools/ --name morefind3 ayuxy/tools-morefind -d -f SubDomain.txt | docker run --rm -i --network host -v &#34;$(pwd)&#34;:/tools/ --name naabu1 -w /tools/ ayuxy/tools-naabu -list SubDomain.txt -top-ports 1000 -o SubDomain_Port.txt -silent</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span>- <span class="p">|</span><span class="sd">
+</span></span></span><span class="line"><span class="cl"><span class="sd">          line_count=$(wc -l &lt; &#34;SubDomain_Port.txt&#34;)          
+</span></span></span><span class="line"><span class="cl"><span class="sd">          echo &#34;端口扫描完成，收集到信息共 $line_count 条,具体信息如下:&#34; | docker run --rm -i -v $(pwd):/tools --name notify3 ayuxy/tools-notify -pc {{YamlName}} -id slack  -bulk -silent          </span><span class="w">          
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span>- <span class="l">docker run --rm -v $(pwd):/tools --name notify4 ayuxy/tools-notify -pc {{YamlName}} -data SubDomain_Port.txt -id slack  -bulk -silent</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">silent</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">ctrlc</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span>- <span class="l">docker kill morefind3 naabu1 notify3 notify4 &gt;/dev/null 2&gt;&amp;1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">目录扫描</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">parallel</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">cmds</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span>- <span class="l">docker run --rm -it --network host -v &#34;$(pwd)&#34;:/tools/ -w /tools/ --name dirsearch1 ayuxy/tools-dirsearch -l SubDomain_Port.txt --exclude-status 405,404,402,401,400,500,501,502,503,504,505 --random-agent --format=html -o Dirsearch_Report.html</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">silent</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">ctrlc</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span>- <span class="l">docker kill dirsearch1 &gt;/dev/null 2&gt;&amp;1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">过滤无效URL</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">parallel</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">cmds</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span>- <span class="l">docker run --rm -v &#34;$(pwd)&#34;:/tools/ -w /tools/ --name dirsearch_url_filter1 ayuxy/tools-dirsearch_url_filter -f Dirsearch_Report.html -o Filter_url.txt</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span>- <span class="p">|</span><span class="sd">
+</span></span></span><span class="line"><span class="cl"><span class="sd">          line_count=$(wc -l &lt; &#34;Filter_url.txt&#34;)          
+</span></span></span><span class="line"><span class="cl"><span class="sd">          echo &#34;目录扫描完成,过滤掉疑似无效URL后,收集到URL共 $line_count 条,具体信息如下:&#34; | docker run --rm -i -v $(pwd):/tools --name notify5 ayuxy/tools-notify -pc {{YamlName}} -id slack  -bulk -silent          </span><span class="w">          
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span>- <span class="l">docker run --rm -v $(pwd):/tools --name notify6 ayuxy/tools-notify -pc {{YamlName}} -data Filter_url.txt -id slack  -bulk  -silent        </span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">silent</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">ctrlc</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span>- <span class="l">docker kill dirsearch_url_filter1 notify5 notify6 &gt;/dev/null 2&gt;&amp;1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">开启指纹识别消息推送</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">parallel</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">cmds</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span>- <span class="l">( docker run -d --rm --network host -v &#34;$(pwd)&#34;:/tools/ -w /tools/  --name observer_ward_notify1  ayuxy/tools-observer_ward_notify -f {{YamlName}} ) &gt;/dev/null 2&gt;&amp;1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">silent</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">ctrlc</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span>- <span class="l">docker kill observer_ward_notify1 &gt;/dev/null 2&gt;&amp;1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">指纹识别</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">parallel</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">cmds</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span>- <span class="l">docker run --rm -i --network host -v observer_ward_data-volume:/root/ -v &#34;$(pwd)&#34;:/tools/ -w /tools/ --name observer_ward1  ayuxy/tools-observer_ward -f Filter_url.txt  --path /plugins --nargs &#34;-etags mod-proxy&#34; -c Observer_ward_result.csv --webhook http://127.0.0.1:5000/slack </span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span>- <span class="l">sleep 2</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span>- <span class="l">docker kill observer_ward_notify1 &gt;/dev/null 2&gt;&amp;1                </span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">silent</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">ctrlc</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span>- <span class="l">docker kill observer_ward1 &gt;/dev/null 2&gt;&amp;1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        
+</span></span></span><span class="line"><span class="cl"><span class="w">                
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># notify设置</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">slack</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;slack&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">slack_channel</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;recon&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">slack_username</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;test&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">slack_format</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;{{data}}&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">slack_webhook_url</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;https://hooks.slack.com/services/xxxxxxxxxxxxxxxxxxxxxxxxxx&#34;</span><span class="w">
+</span></span></span></code></pre></div><p>上面的 YAML 模板中，需要填写 slack 的 <a href="https://github.com/projectdiscovery/notify#references">配置信息</a>，国内应用商店不支持下载，可以通过 Google Play Store下载，后续使用无需挂代理（只填写slack_webhook_url即可，observer_ward 的漏洞推送也是通过 slack 来实现的），在用 observer_ward 进行指纹识别的时候，匹配到指纹后，会做<a href="https://github.com/0x727/FingerprintHub/tree/main/plugins">相关的漏洞</a>验证，如果存在漏洞，则推送到 slack 中，测试 thinkphp 的 rce 如下：</p>
+<p><img 
+  src="./2024-0309-01/image-20250718225301850.png" 
+  alt="image-20250718225301850" 
+   
+  class="custom-image-class"
+  srcset="./2024-0309-01/image-20250718225301850.png 1.25x"
+ />
+
+
+<script>
+function improveImage() {
+    
+
+    
+    const images = document.querySelectorAll('img');
+
+    images.forEach((item) => {
+        
+        let srcset = item.getAttribute('srcset');
+        if (srcset) {
+            let imageName = srcset.match(/image-(\d+\.(png|jpg|jpeg|gif))\s(\d+(\.\d+)?x)/i); 
+            if (imageName) {
+                item.setAttribute('srcset', imageName[0]);
+            }
+        }
+    });
+}
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    improveImage();
+});
+</script></p>
+<ul>
+<li>首次执行的时候，会拉取 docker 镜像，速度会比较慢</li>
+<li>当任务的 parallel 为 false 的时候，必须等待该任务执行完后才能继续向下执行，如果是true，那么该任务无需执行完即可向下执行</li>
+<li>首次执行的时候，最好设置所有任务为非静默模式（silent: false），方便查看运行和报错情况等</li>
+<li>注意：当设置非静默输出的时候，若存在多个任务并发执行，显示可能会出现顺序上的错乱</li>
+<li>当按下ctrl+c的时候，会执行 ctrlc 字段的命令</li>
+</ul>
+<p>更简易您自己自定义 YAML 模板，可参考： <a href="https://github.com/devanshbatham/rayder">https://github.com/devanshbatham/rayder</a></p>
+</article>
+              </div>
+
+              
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="pagination-nav">
+        <div class="pagination-button next-post">
+          
+          <div>«&nbsp;</div><a class="pagination-link link-reverse" href="https://rvnox.github.io/post/2024-0726-01/"> github-style 主题优化</a>
+          
+        </div>
+        
+        <div class="pagination-button previous-post">
+          
+          <a class="pagination-link link-reverse" href="https://rvnox.github.io/post/2024-0825-01/">8086 汇编语言（二）&nbsp;</a><div> »</div>
+          
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+<script type="application/javascript" src='https://rvnox.github.io/js/toc.js'></script>
+<link rel="stylesheet" href='https://rvnox.github.io/css/toc.css' />
+
+
+  <div class="footer container-xl width-full p-responsive">
+  <div
+    class="position-relative d-flex flex-row-reverse flex-lg-row flex-wrap flex-lg-nowrap flex-justify-center flex-lg-justify-between flex-sm-items-center pt-6 pb-2 mt-6 f6 text-gray border-top border-gray-light ">
+    <a aria-label="Homepage" title="GitHub" class="footer-octicon d-none d-lg-block mr-lg-4" href="https://rvnox.github.io/">
+      <svg height="24" class="octicon octicon-mark-github" viewBox="0 0 16 16" version="1.1" width="24">
+        <path fill-rule="evenodd"
+          d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z">
+        </path>
+      </svg>
+    </a>
+    <ul class="list-style-none d-flex flex-wrap col-12 flex-justify-center flex-lg-justify-between mb-2 mb-lg-0">
+      
+      <li class="mr-3 mr-lg-0">Theme by <a href='https://github.com/MeiK2333/github-style'>github-style</a></li>
+      
+    </ul>
+  </div>
+  <div class="d-flex flex-justify-center pb-6">
+    <span class="f6 text-gray-light"></span>
+  </div>
+
+
+</div>
+</body>
+
+<script type="application/javascript" src="https://rvnox.github.io/js/github-style.js"></script>
+
+<script src="https://rvnox.github.io/js/mark.es6.min.js"></script>
+
+
+
+
+
+
+
+</html>

@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width" />
+  <script
+    type="application/javascript"
+    src='https://rvnox.github.io/js/theme-mode.js'
+  ></script>
+  <link rel="stylesheet" href='https://rvnox.github.io/css/frameworks.min.css' />
+  <link rel="stylesheet" href='https://rvnox.github.io/css/github.min.css' />
+  <link rel="stylesheet" href='https://rvnox.github.io/css/github-style.css' />
+  <link rel="stylesheet" href='https://rvnox.github.io/css/light.css' />
+  <link rel="stylesheet" href='https://rvnox.github.io/css/dark.css' />
+  <link rel="stylesheet" href='https://rvnox.github.io/css/syntax.css' />
+  
+  <link rel="stylesheet" href="/custom.css" />
+  
+  <title>
+    Go modules 剖析 | rvnox&#39;s Blog
+  </title>
+  
+  <link rel="icon" type="image/x-icon" href="/images/github-mark.png" />
+  
+  <meta name="theme-color" content="#1e2327" />
+
+  
+  <meta
+  name="description"
+  content="Go 的包依赖管理一直都被大家所诟病，从最初的 GOPATH 到最新的 GO Modules，虽然走了不少的弯路，但最终还是拿出了 Go Modules 这样像样的解决方案 &amp;hellip;"
+/>
+<meta name="robots" content="noodp" />
+<link rel="canonical" href="https://rvnox.github.io/post/2024-1225-01/" />
+
+
+<meta name="twitter:card" content="summary" />
+<meta
+  name="twitter:title"
+  content="Go modules 剖析 - rvnox&#39;s Blog"
+/>
+<meta
+  name="twitter:description"
+  content="Go 的包依赖管理一直都被大家所诟病，从最初的 GOPATH 到最新的 GO Modules，虽然走了不少的弯路，但最终还是拿出了 Go Modules 这样像样的解决方案 &amp;hellip;"
+/>
+<meta name="twitter:site" content="https://rvnox.github.io/" />
+<meta name="twitter:creator" content="" />
+<meta
+  name="twitter:image"
+  content="https://rvnox.github.io/"
+/>
+
+
+<meta
+  property="og:type"
+  content="article"
+/>
+<meta
+  property="og:title"
+  content="Go modules 剖析 - rvnox&#39;s Blog"
+/>
+<meta
+  property="og:description"
+  content="Go 的包依赖管理一直都被大家所诟病，从最初的 GOPATH 到最新的 GO Modules，虽然走了不少的弯路，但最终还是拿出了 Go Modules 这样像样的解决方案 &amp;hellip;"
+/>
+<meta property="og:url" content="https://rvnox.github.io/post/2024-1225-01/" />
+<meta property="og:site_name" content="Go modules 剖析" />
+<meta
+  property="og:image"
+  content="https://rvnox.github.io/"
+/>
+<meta property="og:image:width" content="2048" />
+<meta property="og:image:height" content="1024" />
+
+<meta property="article:published_time" content="2024-12-25 21:28:30 &#43;0800 &#43;0800" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+
+<script src="/js/pangu.js"></script>
+
+<script>
+	document.addEventListener('DOMContentLoaded', () => {
+			pangu.autoSpacingPage();
+	});
+</script>
+
+<body>
+  
+
+<style>
+  .height-limitation {
+    max-height: 300px;
+    overflow-y: scroll;
+  }
+
+  .loader {
+    border: 4px solid #f3f3f3;
+    border-bottom: 4px solid var(--color-fg-muted);
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    animation: spin 1s linear infinite;
+    margin: 0 auto;
+  }
+
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+</style>
+
+<div style="position: relative">
+  <header
+    class="Header js-details-container Details px-3 px-md-4 px-lg-5 flex-wrap flex-md-nowrap open Details--on"
+  >
+    <div
+      class="Header-item mobile-none"
+      style="margin-top: -4px; margin-bottom: -4px"
+    >
+      <a class="Header-link" href="https://rvnox.github.io/" aria-label="Home">
+        <svg
+          class="octicon"
+          height="32"
+          viewBox="0 0 16 16"
+          version="1.1"
+          width="32"
+        >
+          <path
+            fill-rule="evenodd"
+            d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"
+          ></path>
+        </svg>
+      </a>
+    </div>
+    <div class="Header-item d-md-none">
+      <button
+        class="Header-link btn-link js-details-target"
+        type="button"
+        onclick="document.querySelector('#header-search').style.display = document.querySelector('#header-search').style.display == 'none'? 'block': 'none'"
+        aria-label="Search"
+      >
+        <svg
+          height="24"
+          class="octicon octicon-three-bars"
+          viewBox="0 0 16 16"
+          version="1.1"
+          width="24"
+        >
+          <path
+            fill-rule="evenodd"
+            d="M1 2.75A.75.75 0 011.75 2h12.5a.75.75 0 110 1.5H1.75A.75.75 0 011 2.75zm0 5A.75.75 0 011.75 7h12.5a.75.75 0 110 1.5H1.75A.75.75 0 011 7.75zM1.75 12a.75.75 0 100 1.5h12.5a.75.75 0 100-1.5H1.75z"
+          ></path>
+        </svg>
+      </button>
+    </div>
+    <div
+      style="display: none"
+      id="header-search"
+      class="Header-item Header-item--full flex-column flex-md-row width-full flex-order-2 flex-md-order-none mr-0 mr-md-3 mt-3 mt-md-0 Details-content--hidden-not-important d-md-flex"
+    >
+      <div
+        class="Header-search header-search flex-auto js-site-search position-relative flex-self-stretch flex-md-self-auto mb-3 mb-md-0 mr-0 mr-md-3 scoped-search site-scoped-search js-jump-to"
+      >
+        <div class="position-relative">
+          <form
+            target="_blank"
+            action="https://www.google.com/search"
+            accept-charset="UTF-8"
+            method="get"
+            autocomplete="off"
+          >
+            <label
+              class="Header-search-label form-control input-sm header-search-wrapper p-0 js-chromeless-input-container header-search-wrapper-jump-to position-relative d-flex flex-justify-between flex-items-center"
+            >
+              <input
+                type="text"
+                class="Header-search-input form-control input-sm header-search-input jump-to-field js-jump-to-field js-site-search-focus js-site-search-field is-clearable"
+                name="q"
+                value=""
+                placeholder="Search"
+                autocomplete="off"
+              />
+              <input type="hidden" name="q" value="site:https://rvnox.github.io/" />
+              <div
+                class="js-jump-to-suggestions-container jump-to-suggestions overflow-hidden position-absolute"
+              >
+                <div
+                  id="search-progress"
+                  class="d-none color-bg-primary no-underline p-2"
+                  role="progress"
+                  aria-selected="false"
+                >
+                  <div class="loader"></div>
+                </div>
+
+                <ul
+                  id="jump-to-results"
+                  role="listbox"
+                  class="Box border-0 p-0 m-0 js-navigation-container jump-to-suggestions-results-container js-jump-to-suggestions-results-container js-active-navigation-container height-limitation"
+                ></ul>
+              </div>
+            </label>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="Header-item Header-item--full flex-justify-center d-md-none position-relative"
+    >
+      <a class="Header-link" href="https://rvnox.github.io/" aria-label="Home">
+        <svg
+          class="octicon octicon-mark-github v-align-middle"
+          height="32"
+          viewBox="0 0 16 16"
+          version="1.1"
+          width="32"
+        >
+          <path
+            fill-rule="evenodd"
+            d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"
+          ></path>
+        </svg>
+      </a>
+    </div>
+    <div class="Theme-switcher Header-item" style="margin-right: 0">
+      <span
+        role="button"
+        class="Header-link no-select"
+        onclick="switchTheme()"
+        style="cursor: pointer"
+        aria-label="Switch theme"
+      >
+        <svg
+          style="fill: var(--color-profile-color-modes-toggle-moon)"
+          class="no-select"
+          viewBox="0 0 16 16"
+          version="1.1"
+          width="16"
+          height="16"
+        >
+          <path
+            fill-rule="evenodd"
+            clip-rule="evenodd"
+            d="M4.52208 7.71754C7.5782 7.71754 10.0557 5.24006 10.0557 2.18394C10.0557 1.93498 10.0392 1.68986 10.0074 1.44961C9.95801 1.07727 10.3495 0.771159 10.6474 0.99992C12.1153 2.12716 13.0615 3.89999 13.0615 5.89383C13.0615 9.29958 10.3006 12.0605 6.89485 12.0605C3.95334 12.0605 1.49286 10.001 0.876728 7.24527C0.794841 6.87902 1.23668 6.65289 1.55321 6.85451C2.41106 7.40095 3.4296 7.71754 4.52208 7.71754Z"
+          ></path>
+        </svg>
+      </span>
+    </div>
+  </header>
+</div>
+
+  
+<script type="text/javascript" src="/js/initimage.js"></script>
+
+
+
+<div>
+  <main>
+    <div class="gisthead pagehead bg-gray-light pb-0 pt-3 mb-4">
+      <div class="px-0">
+        <div class="mb-3 d-flex px-3 px-md-3 px-lg-5">
+          <div class="flex-auto min-width-0 width-fit mr-3">
+            <div class="d-flex">
+              <div class="d-none d-md-block">
+                <a class="avatar mr-2 flex-shrink-0" href="https://rvnox.github.io/">
+                  <img class=" avatar-user"
+                    src="/images/avatar.png"
+                    width="32" height="32" alt="κόραξ"></a>
+              </div>
+              <div class="d-flex flex-column">
+                <h1 class="break-word f3 text-normal mb-md-0 mb-1">
+                  <span class="author">
+                    <a href="https://rvnox.github.io/">κόραξ</a></span><span
+                    class="path-divider">/</span><strong class="css-truncate-target mr-1" style="max-width: 410px"><a
+                      href="https://rvnox.github.io/post/2024-1225-01/">Go modules 剖析</a></strong>
+                </h1>
+                <div class="note m-0">
+                  Created <relative-time datetime="Wed, 25 Dec 2024 21:28:30 &#43;0800"
+                    class="no-wrap">
+                    Wed, 25 Dec 2024 21:28:30 &#43;0800</relative-time>
+
+                  
+                  <span class="file-info-divider"></span>
+                  Modified <relative-time datetime="Sun, 03 Aug 2025 14:13:51 &#43;0000"
+                    class="no-wrap">
+                    Sun, 03 Aug 2025 14:13:51 &#43;0000</relative-time>
+                  
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container-lg px-3 new-discussion-timeline">
+      <div class="repository-content gist-content">
+        <div>
+          <div class="js-gist-file-update-container js-task-list-container file-box">
+            <div id="file-pytest" class="file my-2">
+              <div id="post-header" class="file-header d-flex flex-md-items-center flex-items-start sticky-header" style="z-index: 2">
+                <div class="file-info d-flex flex-md-items-center flex-items-start flex-order-1 flex-auto">
+                  <div class="text-mono f6 flex-auto pr-3 flex-order-2 flex-md-order-1 mt-2 mt-md-0">
+                    
+                    <summary id="toc-toggle" onclick="clickToc()" class="btn btn-octicon m-0 mr-2 p-2">
+                      <svg aria-hidden="true" viewBox="0 0 16 16" height="16" width="16" class="octicon octicon-list-unordered">
+                        <path fill-rule="evenodd" d="M2 4a1 1 0 100-2 1 1 0 000 2zm3.75-1.5a.75.75 0 000 1.5h8.5a.75.75 0 000-1.5h-8.5zm0 5a.75.75 0 000 1.5h8.5a.75.75 0 000-1.5h-8.5zm0 5a.75.75 0 000 1.5h8.5a.75.75 0 000-1.5h-8.5zM3 8a1 1 0 11-2 0 1 1 0 012 0zm-1 6a1 1 0 100-2 1 1 0 000 2z"></path>
+                      </svg>
+                    </summary>
+                    <details-menu class="SelectMenu" id="toc-details" style="display: none;">
+                      <div class="SelectMenu-modal rounded-3 mt-1" style="max-height: 340px;">
+                        <div class="SelectMenu-list SelectMenu-list--borderless p-2" style="overscroll-behavior: contain;" id="toc-list">
+                        </div>
+                      </div>
+                    </details-menu>
+                      5091 Words
+                    <span class="file-info-divider"></span>
+                                        23 min
+
+                  </div>
+                  <div class="file-actions flex-order-2 pt-0">
+  
+    
+       
+       
+       
+       
+      
+      
+      
+        
+       
+      <a class="muted-link mr-3" href="/tags/golang">
+        <span class="repo-language-color" style="background-color: #6564c5"></span>
+        Golang
+      </a>
+    
+  
+
+                  </div>
+                </div>
+              </div>
+
+
+              <div class="Box-body px-5 pb-5" style="z-index: 1">
+                <article class="markdown-body entry-content container-lg"><p>Go modules 是 Go 语言中正式官宣的项目依赖管理工具，Go modules（前身为vgo）于 Go1.11 正式发布，在 Go1.14 已经准备好，并且可以用在生产上（ready for production）了，鼓励所有用户从其他依赖项管理工具迁移到 Go modules。</p>
+<h1 id="什么是go-modules">什么是Go Modules</h1>
+<p>Go modules 是 Go 语言的依赖解决方案，发布于 Go1.11，成长于 Go1.12，丰富于 Go1.13，正式于 Go1.14 推荐在生产上使用。</p>
+<p>Go moudles 目前集成在 Go 的工具链中，只要安装了 Go，自然而然也就可以使用 Go moudles 了，而 Go modules 的出现也解决了在 Go1.11 前的几个常见争议问题：</p>
+<ol>
+<li>Go 语言长久以来的依赖管理问题。</li>
+<li>“淘汰”现有的 GOPATH 的使用模式。</li>
+<li>统一社区中的其它的依赖管理工具（提供迁移功能）。</li>
+</ol>
+<h1 id="什么是-goroot">什么是 GOROOT</h1>
+<p>在了解 GOPATH 和 Go Modules 之前，肯定要知道 GOROOT 是啥把，GOROOT 是一个环境变量，这个环境变量的值就是 Golang 的安装包路径，GOROOT 就是 go 的安装目录。（类似 java 的 jdk）</p>
+<h1 id="gopath-的那些点点滴滴">GOPATH 的那些点点滴滴</h1>
+<p>我们有提到 Go Modules 的解决的问题之一就是“淘汰”掉 GOPATH，但是 GOPATH 又是什么呢，为什么在 Go1.11 前就使用 GOPATH，而 Go1.11 后就开始逐步建议使用 Go modules，不再推荐 GOPATH 的模式了呢？</p>
+<p>GOPATH 就是 go 语言的工作空间，是存放 Golang 项目代码的文件路径，执行 <code>go env</code> 就可以查看 GOPATH 路径</p>
+<pre tabindex="0"><code>$ go env
+GOPATH=&#34;/Users/eddycjy/go&#34;
+...
+</code></pre><img src="2024-1225-01\image-20250212194124577.png" alt="image-20250212194124577" style="zoom: 50%;" />
+<p>我们输入 <code>go env</code>命令行后可以查看到 GOPATH 变量的结果，我们进入到该目录下进行查看，如下：</p>
+<pre tabindex="0"><code>go
+├── bin
+├── pkg
+└── src
+    ├── github.com
+    ├── golang.org
+    ├── google.golang.org
+    ├── gopkg.in
+    ....
+</code></pre><p>GOPATH目录下一共包含了三个子目录，分别是：</p>
+<ul>
+<li>
+<p>bin：存储所编译生成的二进制文件。</p>
+</li>
+<li>
+<p>pkg：pkg 下面最多有三个文件夹</p>
+<p><img 
+  src="2024-1225-01%5cimage-20250212205833287.png" 
+  alt="image-20250212205833287" 
+   
+  class="custom-image-class"
+  srcset="2024-1225-01%5cimage-20250212205833287.png 1.25x"
+ />
+
+
+<script>
+function improveImage() {
+    
+
+    
+    const images = document.querySelectorAll('img');
+
+    images.forEach((item) => {
+        
+        let srcset = item.getAttribute('srcset');
+        if (srcset) {
+            let imageName = srcset.match(/image-(\d+\.(png|jpg|jpeg|gif))\s(\d+(\.\d+)?x)/i); 
+            if (imageName) {
+                item.setAttribute('srcset', imageName[0]);
+            }
+        }
+    });
+}
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    improveImage();
+});
+</script></p>
+<ul>
+<li>
+<p>xx_amd64：其中 xx 是目标操作系统，比如 mac 系统对应的是 darwin_amd64, linux 系统对应的是 linux_amd64，存放的是 .a结尾的文件。</p>
+<p><img 
+  src="2024-1225-01%5cimage-20250212205802949.png" 
+  alt="image-20250212205802949" 
+   
+  class="custom-image-class"
+  srcset="2024-1225-01%5cimage-20250212205802949.png 1.25x"
+ />
+
+
+<script>
+function improveImage() {
+    
+
+    
+    const images = document.querySelectorAll('img');
+
+    images.forEach((item) => {
+        
+        let srcset = item.getAttribute('srcset');
+        if (srcset) {
+            let imageName = srcset.match(/image-(\d+\.(png|jpg|jpeg|gif))\s(\d+(\.\d+)?x)/i); 
+            if (imageName) {
+                item.setAttribute('srcset', imageName[0]);
+            }
+        }
+    });
+}
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    improveImage();
+});
+</script></p>
+</li>
+<li>
+<p>mod：当开启 go Modules 模式下，go get 命令缓存下依赖包存放的位置。</p>
+<p><img 
+  src="2024-1225-01%5cimage-20250212205915925.png" 
+  alt="image-20250212205915925" 
+   
+  class="custom-image-class"
+  srcset="2024-1225-01%5cimage-20250212205915925.png 1.25x"
+ />
+
+
+<script>
+function improveImage() {
+    
+
+    
+    const images = document.querySelectorAll('img');
+
+    images.forEach((item) => {
+        
+        let srcset = item.getAttribute('srcset');
+        if (srcset) {
+            let imageName = srcset.match(/image-(\d+\.(png|jpg|jpeg|gif))\s(\d+(\.\d+)?x)/i); 
+            if (imageName) {
+                item.setAttribute('srcset', imageName[0]);
+            }
+        }
+    });
+}
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    improveImage();
+});
+</script></p>
+</li>
+<li>
+<p>sumdb：GOSUMDB 全称 Go CheckSum Database，用于在拉取模块版本时保证拉取到的模块版本数据未经过篡改，若发现不一致，也就是可能存在篡改，将会立即中止（无论是从源站拉取还是通过 Go module proxy 拉取）。GOSUMDB的默认值为 sum.golang.org，在国内也是无法访问的，但是 GOSUMDB 可以被 Go 模块代理所代理。所以这一个问题在设置 GOPROXY 后，你可以不需要过度关心。</p>
+<p><img 
+  src="E:%5cToolBox%5cLucy%5cData%5cNotes%5cBlog%5ccontent%5cpost%5c2024-1225-01%5cimage-20250212210020855.png" 
+  alt="image-20250212210020855" 
+   
+  class="custom-image-class"
+  srcset="E:%5cToolBox%5cLucy%5cData%5cNotes%5cBlog%5ccontent%5cpost%5c2024-1225-01%5cimage-20250212210020855.png 1.25x"
+ />
+
+
+<script>
+function improveImage() {
+    
+
+    
+    const images = document.querySelectorAll('img');
+
+    images.forEach((item) => {
+        
+        let srcset = item.getAttribute('srcset');
+        if (srcset) {
+            let imageName = srcset.match(/image-(\d+\.(png|jpg|jpeg|gif))\s(\d+(\.\d+)?x)/i); 
+            if (imageName) {
+                item.setAttribute('srcset', imageName[0]);
+            }
+        }
+    });
+}
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    improveImage();
+});
+</script></p>
+</li>
+</ul>
+</li>
+<li>
+<p>src：存放项目的源代码，可以是你自己写的 <code>.go</code> 代码，也可以是你 <code>go get</code> 下载的包。</p>
+</li>
+</ul>
+<p>因此在使用 GOPATH 模式下，我们需要将应用代码存放在固定的 <code>$GOPATH/src</code>目录下。在 GOPATH 模式下，假设程序中引入了如下的包：</p>
+<pre tabindex="0"><code>import &#34;Go-Player/src/chapter17/models&#34;
+</code></pre><p>第一步：Go 会先去 GOROOT 的 scr 目录中查找，很显然它不是标准库的包，没找到。</p>
+<p>第二步：继续在 GOPATH 的 src 目录去找，准确说是 GOPATH/src/Go-Player/src/chapter17/models 这个目录。如果该目录不存在，会报错找不到 package。在使用 GOPATH 管理项目时，需要按照 GO 寻找 package 的规范来合理地保存和组织 Go 代码。</p>
+<p>当然执行，go get 来拉取外部依赖的时候，会自动下载并安装到 <code>$GOPATH/src</code>目录下。GOPATH 可以设置多个，第一个将会是默认的包目录，使用 go get 下载的包都会在第一个 PATH 中的 src 目录下，使用 go install 时，在哪个 GOPATH 中找到了这个包，就会在哪个GOPATH 下的 bin 目录生成可执行文件。</p>
+<p>至此，你可能不会觉得上面的方案会产生什么样的问题，直到你开始真正使用 GOPATH 去开发程序，就不得不开始面临各种各样的问题，其中最严重的就是版本管理问题，因为 GOPATH 根本没有版本的概念。</p>
+<ul>
+<li>在执行 <code>go get</code>的时候，你无法传达任何的版本信息的期望，因为不同版本的包的导入方法也都一样，也就是说你也无法知道自己当前更新的是哪一个版本，也无法通过指定来拉取自己所期望的具体版本。</li>
+<li>其他人运行你的开发的程序时，无法保证他下载的包版本是你所期望的版本，当对方使用了其他版本，有可能导致程序无法正常运行。</li>
+<li>在本地，一个包只能保留一个版本，意味着你在本地开发的所有项目，都得用同一个版本的包，这几乎是不可能的。</li>
+</ul>
+<p>为了解决上面的问题，Go 语言官方从 Go1.11 起开始推进 Go modules（前身vgo），Go1.13 起不再推荐使用 GOPATH 的使用模式，Go modules 也渐趋稳定，因此新项目也没有必要继续使用 GOPATH 模式。</p>
+<h1 id="go-vendor-过渡">Go vendor 过渡</h1>
+<p>从 GOPATH 过渡到 Go Modules 的中间实际上还经历了 go vendor ，为了解决 GOPATH 方案下不同项目下无法使用多个版本库的问题，Go v1.5 开始支持 vendor 。</p>
+<p>以前使用 GOPATH 的时候，所有的项目都共享一个 GOPATH，需要导入依赖的时候，都来这里找，正所谓一山不容二虎，在 GOPATH 模式下只能有一个版本的第三方库。</p>
+<p>解决的思路就是，在每个项目下都创建一个 vendor 目录，每个项目所需的依赖都只会下载到自己vendor目录下，项目之间的依赖包互不影响。在编译时，v1.5 的 Go 在你设置了开启 <code>GO15VENDOREXPERIMENT=1</code> （注：这个变量在 v1.6 版本默认为1，但是在 v1.7 后，已去掉该环境变量，默认开启 <code>vendor</code> 特性，无需你手动设置）后，会提升 vendor 目录的依赖包搜索路径的优先级（相较于 GOPATH）。</p>
+<p>其搜索包的优先级顺序，由高到低是这样的：</p>
+<ul>
+<li>当前包下的 vendor 目录</li>
+<li>向上级目录查找，直到找到 src 下的 vendor 目录</li>
+<li>在 GOROOT 目录下查找</li>
+<li>在 GOPATH 下面查找依赖包</li>
+</ul>
+<p>虽然这个方案解决了一些问题，但是解决得并不完美。</p>
+<ul>
+<li>如果多个项目用到了同一个包的同一个版本，这个包会存在于该机器上的不同目录下，不仅对磁盘空间是一种浪费，而且没法对第三方包进行集中式的管理（分散在各个角落）。</li>
+<li>并且如果要分享开源你的项目，你需要将你的所有的依赖包悉数上传，别人使用的时候，除了你的项目源码外，还有所有的依赖包全部下载下来，才能保证别人使用的时候，不会因为版本问题导致项目不能如你预期那样正常运行。</li>
+</ul>
+<h1 id="go-mod-的横空出世">Go mod 的横空出世</h1>
+<p>Go modules 在 v1.11 版本正式推出，在 v1.14 版本中就可以应用于生产上。</p>
+<p>从 v1.11 开始，<code>go env</code> 多了个环境变量： <code>GO111MODULE</code> ，这里的 111，其实就是 v1.11 的象征标志， go 里好像很喜欢这样的命名方式，比如当初 vendor 出现的时候，也多了个 <code>GO15VENDOREXPERIMENT</code>环境变量，其中 15，表示的vendor 是在 v1.5 时才诞生的。</p>
+<p><code>GO111MODULE</code> 是一个开关，通过它可以开启或关闭 go mod 模式。</p>
+<p>它有三个可选值：<code>off</code>、<code>on</code>、<code>auto</code>，默认值是<code>auto</code></p>
+<ul>
+<li><code>GO111MODULE=off</code> 禁用模块支持，编译时会从 <code>GOPATH</code> 和 <code>vendor</code> 文件夹中查找包。</li>
+<li><code>GO111MODULE=on</code> 启用模块支持，编译时会忽略 <code>GOPATH</code> 和 <code>vendor</code> 文件夹，只根据  <code>go.mod</code> 下载依赖。</li>
+<li><code>GO111MODULE=auto</code>，当项目在 <code>$GOPATH/src</code> 外且项目根目录有 <code>go.mod</code> 文件时，自动开启模块支持。</li>
+</ul>
+<p>Go modules  出现后， GOPATH 和 GO VENDOR 将会且正在被逐步淘汰，具体怎么设置开启呢？可以使用 go env 的命令，要开启 go mod，就使用如下命令：</p>
+<pre tabindex="0"><code>$ go env -w GO111MODULE=&#34;on&#34;
+</code></pre><h1 id="gomod-的依赖管理">go.mod 的依赖管理</h1>
+<p>接下来，来演示一下 go modules 是如何来管理包依赖的。</p>
+<p>go mod 不再依靠 $GOPATH，使得它可以脱离 GOPATH 来创建项目，于是我们在家目录下创建一个 go_test 的目录，用来创建我的项目，详细操作如下：</p>
+<img src="E:\ToolBox\Lucy\Data\Notes\Blog\content\post\2024-1225-01\image-20250213205047627.png" alt="image-20250213205047627" style="zoom:80%;" />
+<p>接下来，进入项目目录，执行如下命令进行 go modules 的初始化</p>
+<img src="2024-1225-01\image-20250213205415435.png" alt="image-20250213205415435" style="zoom:80%;" />
+<p>接下来很重要的一点，我们要看看 go install 把下载的包安装到哪里了？</p>
+<img src="2024-1225-01\image-20250213210216127.png" alt="image-20250213210216127" style="zoom:80%;" />
+<p>上面我们观察到，在使用 go modules 模式后，项目目录下会多生成两个文件也就是 <code>go.mod</code> 和 <code>go.sum</code> 。</p>
+<p>这两个文件是 go modules 的核心所在，这里不得不好好介绍一下。</p>
+<img src="2024-1225-01\image-20250213210431664.png" alt="image-20250213210431664" style="zoom:80%;" />
+<h2 id="gomod-文件">go.mod 文件</h2>
+<p>go.mod 的内容比较容易理解：</p>
+<ul>
+<li>第一行：模块的引用路径</li>
+<li>第二行：项目使用的 go 版本</li>
+<li>第三行：项目所需的直接依赖包及其版本</li>
+</ul>
+<p>在实际应用上，你会看见更复杂的 go.mod 文件，比如下面这样</p>
+<pre tabindex="0"><code>module github.com/BingmingWong/module-test
+
+go 1.14
+
+require (
+    example.com/apple v0.1.2
+    example.com/banana v1.2.3
+    example.com/banana/v2 v2.3.4
+    example.com/pear // indirect
+    example.com/strawberry // incompatible
+)
+
+exclude example.com/banana v1.2.4
+replace（
+    golang.org/x/crypto v0.0.0-20180820150726-614d502a4dac =&gt; github.com/golang/crypto v0.0.0-20180820150726-614d502a4dac
+    golang.org/x/net v0.0.0-20180821023952-922f4815f713 =&gt; github.com/golang/net v0.0.0-20180826012351-8a410e7b638d
+    golang.org/x/text v0.3.0 =&gt; github.com/golang/text v0.3.0
+)
+</code></pre><p>主要是多出了两个 flag：</p>
+<ul>
+<li><code>exclude</code>： 忽略指定版本的依赖包</li>
+<li><code>replace</code>：由于在国内访问 golang.org/x 的各个包都需要翻墙，你可以在 go.mod 中使用 replace 替换成 github 上对应的库。</li>
+</ul>
+<h2 id="gosum-文件">go.sum 文件</h2>
+<p>反观 go.sum 文件，就比较复杂了，密密麻麻的。</p>
+<p>可以看到，内容虽然多，但是也不难理解</p>
+<p>每一行都是由 <code>模块路径</code>，<code>模块版本</code>，<code>哈希检验值</code> 组成，其中哈希检验值是用来保证当前缓存的模块不会被篡改。hash 是以 <code>h1:</code>开头的字符串，表示生成 checksum 的算法是第一版的 hash 算法（sha256）。</p>
+<p>值得注意的是，为什么有的包只有一行</p>
+<pre tabindex="0"><code>&lt;module&gt; &lt;version&gt;/go.mod &lt;hash&gt;
+</code></pre><p>而有的包却有两行呢</p>
+<pre tabindex="0"><code>&lt;module&gt; &lt;version&gt; &lt;hash&gt;
+&lt;module&gt; &lt;version&gt;/go.mod &lt;hash&gt;
+</code></pre><p>那些有两行的包，区别就在于 hash 值不一行，一个是 <code>h1:hash</code>，一个是 <code>go.mod h1:hash</code></p>
+<p>而  <code>h1:hash</code>  和 <code>go.mod h1:hash</code>两者，要不就是同时存在，要不就是只存在 <code>go.mod h1:hash</code>。那什么情况下会不存在 <code>h1:hash</code> 呢，就是当 Go 认为肯定用不到某个模块版本的时候就会省略它的 <code>h1 hash</code>，就会出现不存在 <code>h1 hash</code>，只存在 <code>go.mod h1:hash</code> 的情况。</p>
+<p>go.mod 和 go.sum 是 go modules 版本管理的指导性文件，因此 go.mod 和 go.sum 文件都应该提交到你的 Git 仓库中去，避免其他人使用你写项目时，重新生成的go.mod 和 go.sum 与你开发的基准版本的不一致。</p>
+<h1 id="go-mod-命令的使用">go mod 命令的使用</h1>
+<ul>
+<li><code>go mod init</code>：初始化 go mod， 生成 go.mod 文件，后可接参数指定模块路径，上面已经演示过。</li>
+<li><code>go mod download</code>：手动触发下载依赖包到本地 cache（默认为 <code>$GOPATH/pkg/mod</code> 目录）</li>
+<li><code>go mod graph</code>： 打印项目的模块依赖结构</li>
+</ul>
+<img src="2024-1225-01\image-20250213214023521.png" alt="image-20250213214023521" style="zoom:80%;" />
+<ul>
+<li><code>go mod tidy</code> ：添加缺少的包，且删除无用的包</li>
+<li><code>go mod verify</code> ：校验模块是否被篡改过</li>
+<li><code>go mod why</code>： 查看为什么需要依赖</li>
+<li><code>go mod vendor</code> ：导出项目所有依赖到vendor下</li>
+</ul>
+<img src="2024-1225-01\image-20250213214425835.png" alt="image-20250213214425835" style="zoom:80%;" />
+<ul>
+<li><code>go mod edit</code> ：编辑 go.mod 文件，接 -fmt 参数格式化 go.mod 文件，接 -require=golang.org/x/text 添加依赖，接 -droprequire=golang.org/x/text 删除依赖，详情可参考 <code>go help mod edit</code></li>
+</ul>
+<img src="2024-1225-01\image-20250213214539086.png" alt="image-20250213214539086" style="zoom:80%;" />
+<ul>
+<li><code>go list -m -json all</code>：以 json 的方式打印依赖详情</li>
+</ul>
+<img src="2024-1225-01\image-20250213214621242.png" alt="image-20250213214621242" style="zoom:80%;" />
+<p>如何给项目添加依赖（写进 go.mod）呢？</p>
+<p>有两种方法：</p>
+<ul>
+<li>你只要在项目中有 import，然后 go build 就会 go module 就会自动下载并添加。</li>
+<li>自己手工使用 go get 下载安装后，会自动写入 go.mod 。</li>
+</ul>
+<img src="2024-1225-01\image-20250213215018802.png" alt="image-20250213215018802" style="zoom:80%;" />
+<h1 id="goproxy-配置">GOPROXY 配置</h1>
+<p>网上大把教程，除此之外直接用 Clash 的 Tun 也行</p>
+<h1 id="go-module-path-的理解">Go Module Path 的理解</h1>
+<p>go 可以使用  <code>go mod init</code> 命令新建一个模块，该命令的参数就是模块名，又称模块路径，例如：<code>example.com/mymodule</code>，在上面已经有用到过了</p>
+<p>在 Go 语言中，module path（模块路径）是指在 Go 开发中用来标识和定位模块的唯一字符串，用于指定在远程仓库或本地文件系统中存储模块代码的位置。</p>
+<p>实际上 module path 在 go.mod文件中定义，比如下面这个示例：</p>
+<p>执行 <code>go mod init  github.com/user/module</code> 后，go.mod 文件内容如下：</p>
+<pre tabindex="0"><code>// go.mod
+module github.com/user/module
+
+go 1.21.1
+</code></pre><p>我们看到：一个典型的模块路径是一个 URL 格式字符串，可能是类似于 github.com/user/module的形式，其中 github.com/user/module 就是 module path。</p>
+<p>那么 module path 的选取和使用，对 Go 开发有何影响呢？继续向下看。</p>
+<h2 id="指示go-module网络位置">指示Go module网络位置</h2>
+<p>前面提到过，在 Go 语言中，我们通常使用模块的存储库地址作为模块路径的基础。这样做的好处是，Go 编译器可以直接通过模块路径确定模块在网络上的位置，并从指定的位置下载需要的代码。这使得在使用第三方模块时非常方便，开发者只需要指定模块的路径，Go 工具链就能够自动处理依赖关系，下载并编译所需的模块代码。</p>
+<p>例如，如果一个模块的路径是 github.com/user/module，那么 Go 工具链（尤其是 Go 编译器）就会认为该模块的代码存储在 GitHub 上的 user 用户下的 module 仓库中。当 Go 工具链需要引入该模块时，它会根据这个路径通过 goproxy 或直接去 GitHub 上下载相应的代码。</p>
+<p>这种基于存储库地址的模块路径设计简化了模块的管理和依赖关系的处理，使得在Go项目中使用第三方模块变得更加方便和可靠。</p>
+<h2 id="对go包路径的影响">对Go包路径的影响</h2>
+<p>Go module下的包的导入路径为 module path+ 到包所在目录的相对路径，以 module path 为 github.com/user/module 的 module 下的 pkg/foo 目录下的包为例，foo 包的导入路径为 github.com/user/module/pkg/foo。</p>
+<h2 id="对编译的影响">对编译的影响</h2>
+<p>Go 编译时通过 module path 来查找依赖的模块。如果 Go module path 不正确或不完整，那么编译可能会失败。非 idiomatic 的 Go module path 可能导致编译错误或难以诊断的问题。</p>
+<p>module path 会影响采用 go build 默认构建出的二进制文件的名字，比如如果一个 module path 为 github.com/user/mymodule，那么在该 module 下执行 go build（不使用 -o 命令行标志），默认得到的二进制文件名为 mymodule。</p>
+<h2 id="对开发协作者的影响">对开发协作者的影响</h2>
+<p>Go 模块路径的命名对开发者之间的协作也有着重要的影响，主要体现在两方面：</p>
+<ul>
+<li>唯一性和命名空间
+<ul>
+<li>模块路径应当保持唯一，以避免与其他模块产生冲突。通常情况下，使用域名作为模块路径的一部分可以确保全球唯一性。在团队内部，也可以基于公司或组织的名称来命名模块路径，以确保模块的唯一性。</li>
+</ul>
+</li>
+<li>依赖管理
+<ul>
+<li>使用清晰、有意义、可以指示位置和版本的模块路径可以帮助开发者更好地管理依赖关系。当其他开发者在引入你的模块时，他们可以通过模块路径来确定正确的依赖版本，以及如何与你的模块进行集成。</li>
+</ul>
+</li>
+</ul>
+<h2 id="如何选择一个好的-module-path">如何选择一个好的 Module Path</h2>
+<p>通常情况下，module path应该基于模块的存储库地址，并使用简短、易于理解的路径。</p>
+<p>就像前面提到的那样，如果你的 module 存储在 GitHub 上并可公开，那么 module path 一般是 github.com/user/module。</p>
+<p>如果你的 module 公司内部，不能公开的，那么可以使用一个私有的存储库地址，例如：company.com/dept/go/module。</p>
+<p>无论公开的，还是私有的，你都可以定制 module path。如果是仅在本地使用的日常练习项目，那么 go module path 的使用可以宽松一些，可以无需在乎其对 go module 网络位置、开发者协作的影响，可使用像 demo 这样的单个词的 module path，仅注意下其对包路径和编译结果的影响即可。</p>
+<h1 id="参考">参考</h1>
+<p><a href="https://segmentfault.com/a/1190000021854441">https://segmentfault.com/a/1190000021854441</a></p>
+<p><a href="https://blog.csdn.net/luosisan/article/details/124062564">https://blog.csdn.net/luosisan/article/details/124062564</a></p>
+<p><a href="https://www.cnblogs.com/wongbingming/p/12941021.html">https://www.cnblogs.com/wongbingming/p/12941021.html</a></p>
+<p><a href="https://tonybai.com/2024/04/09/choose-the-right-go-module-path/">https://tonybai.com/2024/04/09/choose-the-right-go-module-path/</a></p>
+</article>
+              </div>
+
+              
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="pagination-nav">
+        <div class="pagination-button next-post">
+          
+          <div>«&nbsp;</div><a class="pagination-link link-reverse" href="https://rvnox.github.io/post/2025-0224-01/"> 山石 SG-6000 防火墙日志与可视化</a>
+          
+        </div>
+        
+        <div class="pagination-button previous-post">
+          
+          <a class="pagination-link link-reverse" href="https://rvnox.github.io/post/2024-1220-01/">Windows共享盘权限审计&nbsp;</a><div> »</div>
+          
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+<script type="application/javascript" src='https://rvnox.github.io/js/toc.js'></script>
+<link rel="stylesheet" href='https://rvnox.github.io/css/toc.css' />
+
+
+  <div class="footer container-xl width-full p-responsive">
+  <div
+    class="position-relative d-flex flex-row-reverse flex-lg-row flex-wrap flex-lg-nowrap flex-justify-center flex-lg-justify-between flex-sm-items-center pt-6 pb-2 mt-6 f6 text-gray border-top border-gray-light ">
+    <a aria-label="Homepage" title="GitHub" class="footer-octicon d-none d-lg-block mr-lg-4" href="https://rvnox.github.io/">
+      <svg height="24" class="octicon octicon-mark-github" viewBox="0 0 16 16" version="1.1" width="24">
+        <path fill-rule="evenodd"
+          d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z">
+        </path>
+      </svg>
+    </a>
+    <ul class="list-style-none d-flex flex-wrap col-12 flex-justify-center flex-lg-justify-between mb-2 mb-lg-0">
+      
+      <li class="mr-3 mr-lg-0">Theme by <a href='https://github.com/MeiK2333/github-style'>github-style</a></li>
+      
+    </ul>
+  </div>
+  <div class="d-flex flex-justify-center pb-6">
+    <span class="f6 text-gray-light"></span>
+  </div>
+
+
+</div>
+</body>
+
+<script type="application/javascript" src="https://rvnox.github.io/js/github-style.js"></script>
+
+<script src="https://rvnox.github.io/js/mark.es6.min.js"></script>
+
+
+
+
+
+
+
+</html>

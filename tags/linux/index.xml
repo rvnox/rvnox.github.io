@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Linux on rvnox&#39;s Blog</title>
+    <link>https://rvnox.github.io/tags/linux/</link>
+    <description>Recent content in Linux on rvnox&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Wed, 04 Jun 2025 20:52:01 +0800</lastBuildDate><atom:link href="https://rvnox.github.io/tags/linux/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Linux分区详情</title>
+      <link>https://rvnox.github.io/post/2025-0604-01/</link>
+      <pubDate>Wed, 04 Jun 2025 20:52:01 +0800</pubDate>
+      
+      <guid>https://rvnox.github.io/post/2025-0604-01/</guid>
+      <description>详解 Linux 中的分区问题</description>
+    </item>
+    
+  </channel>
+</rss>

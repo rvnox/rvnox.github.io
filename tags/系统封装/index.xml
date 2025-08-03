@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>系统封装 on rvnox&#39;s Blog</title>
+    <link>https://rvnox.github.io/tags/%E7%B3%BB%E7%BB%9F%E5%B0%81%E8%A3%85/</link>
+    <description>Recent content in 系统封装 on rvnox&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Tue, 26 Nov 2024 18:51:59 +0800</lastBuildDate><atom:link href="https://rvnox.github.io/tags/%E7%B3%BB%E7%BB%9F%E5%B0%81%E8%A3%85/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>域环境下自动化装机</title>
+      <link>https://rvnox.github.io/post/2024-1126-01/</link>
+      <pubDate>Tue, 26 Nov 2024 18:51:59 +0800</pubDate>
+      
+      <guid>https://rvnox.github.io/post/2024-1126-01/</guid>
+      <description>本文为域环境下的自动化装机内容，包括自动加域、自动还原网络配置、关联应用默认方式等企业内的常见问题 &amp;hellip;</description>
+    </item>
+    
+  </channel>
+</rss>

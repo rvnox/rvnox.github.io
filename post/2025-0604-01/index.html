@@ -1,0 +1,1856 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width" />
+  <script
+    type="application/javascript"
+    src='https://rvnox.github.io/js/theme-mode.js'
+  ></script>
+  <link rel="stylesheet" href='https://rvnox.github.io/css/frameworks.min.css' />
+  <link rel="stylesheet" href='https://rvnox.github.io/css/github.min.css' />
+  <link rel="stylesheet" href='https://rvnox.github.io/css/github-style.css' />
+  <link rel="stylesheet" href='https://rvnox.github.io/css/light.css' />
+  <link rel="stylesheet" href='https://rvnox.github.io/css/dark.css' />
+  <link rel="stylesheet" href='https://rvnox.github.io/css/syntax.css' />
+  
+  <link rel="stylesheet" href="/custom.css" />
+  
+  <title>
+    Linux分区详情 | rvnox&#39;s Blog
+  </title>
+  
+  <link rel="icon" type="image/x-icon" href="/images/github-mark.png" />
+  
+  <meta name="theme-color" content="#1e2327" />
+
+  
+  <meta
+  name="description"
+  content="详解 Linux 中的分区问题"
+/>
+<meta name="robots" content="noodp" />
+<link rel="canonical" href="https://rvnox.github.io/post/2025-0604-01/" />
+
+
+<meta name="twitter:card" content="summary" />
+<meta
+  name="twitter:title"
+  content="Linux分区详情 - rvnox&#39;s Blog"
+/>
+<meta
+  name="twitter:description"
+  content="详解 Linux 中的分区问题"
+/>
+<meta name="twitter:site" content="https://rvnox.github.io/" />
+<meta name="twitter:creator" content="" />
+<meta
+  name="twitter:image"
+  content="https://rvnox.github.io/"
+/>
+
+
+<meta
+  property="og:type"
+  content="article"
+/>
+<meta
+  property="og:title"
+  content="Linux分区详情 - rvnox&#39;s Blog"
+/>
+<meta
+  property="og:description"
+  content="详解 Linux 中的分区问题"
+/>
+<meta property="og:url" content="https://rvnox.github.io/post/2025-0604-01/" />
+<meta property="og:site_name" content="Linux分区详情" />
+<meta
+  property="og:image"
+  content="https://rvnox.github.io/"
+/>
+<meta property="og:image:width" content="2048" />
+<meta property="og:image:height" content="1024" />
+
+<meta property="article:published_time" content="2025-06-04 20:52:01 &#43;0800 &#43;0800" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+
+<script src="/js/pangu.js"></script>
+
+<script>
+	document.addEventListener('DOMContentLoaded', () => {
+			pangu.autoSpacingPage();
+	});
+</script>
+
+<body>
+  
+
+<style>
+  .height-limitation {
+    max-height: 300px;
+    overflow-y: scroll;
+  }
+
+  .loader {
+    border: 4px solid #f3f3f3;
+    border-bottom: 4px solid var(--color-fg-muted);
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    animation: spin 1s linear infinite;
+    margin: 0 auto;
+  }
+
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+</style>
+
+<div style="position: relative">
+  <header
+    class="Header js-details-container Details px-3 px-md-4 px-lg-5 flex-wrap flex-md-nowrap open Details--on"
+  >
+    <div
+      class="Header-item mobile-none"
+      style="margin-top: -4px; margin-bottom: -4px"
+    >
+      <a class="Header-link" href="https://rvnox.github.io/" aria-label="Home">
+        <svg
+          class="octicon"
+          height="32"
+          viewBox="0 0 16 16"
+          version="1.1"
+          width="32"
+        >
+          <path
+            fill-rule="evenodd"
+            d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"
+          ></path>
+        </svg>
+      </a>
+    </div>
+    <div class="Header-item d-md-none">
+      <button
+        class="Header-link btn-link js-details-target"
+        type="button"
+        onclick="document.querySelector('#header-search').style.display = document.querySelector('#header-search').style.display == 'none'? 'block': 'none'"
+        aria-label="Search"
+      >
+        <svg
+          height="24"
+          class="octicon octicon-three-bars"
+          viewBox="0 0 16 16"
+          version="1.1"
+          width="24"
+        >
+          <path
+            fill-rule="evenodd"
+            d="M1 2.75A.75.75 0 011.75 2h12.5a.75.75 0 110 1.5H1.75A.75.75 0 011 2.75zm0 5A.75.75 0 011.75 7h12.5a.75.75 0 110 1.5H1.75A.75.75 0 011 7.75zM1.75 12a.75.75 0 100 1.5h12.5a.75.75 0 100-1.5H1.75z"
+          ></path>
+        </svg>
+      </button>
+    </div>
+    <div
+      style="display: none"
+      id="header-search"
+      class="Header-item Header-item--full flex-column flex-md-row width-full flex-order-2 flex-md-order-none mr-0 mr-md-3 mt-3 mt-md-0 Details-content--hidden-not-important d-md-flex"
+    >
+      <div
+        class="Header-search header-search flex-auto js-site-search position-relative flex-self-stretch flex-md-self-auto mb-3 mb-md-0 mr-0 mr-md-3 scoped-search site-scoped-search js-jump-to"
+      >
+        <div class="position-relative">
+          <form
+            target="_blank"
+            action="https://www.google.com/search"
+            accept-charset="UTF-8"
+            method="get"
+            autocomplete="off"
+          >
+            <label
+              class="Header-search-label form-control input-sm header-search-wrapper p-0 js-chromeless-input-container header-search-wrapper-jump-to position-relative d-flex flex-justify-between flex-items-center"
+            >
+              <input
+                type="text"
+                class="Header-search-input form-control input-sm header-search-input jump-to-field js-jump-to-field js-site-search-focus js-site-search-field is-clearable"
+                name="q"
+                value=""
+                placeholder="Search"
+                autocomplete="off"
+              />
+              <input type="hidden" name="q" value="site:https://rvnox.github.io/" />
+              <div
+                class="js-jump-to-suggestions-container jump-to-suggestions overflow-hidden position-absolute"
+              >
+                <div
+                  id="search-progress"
+                  class="d-none color-bg-primary no-underline p-2"
+                  role="progress"
+                  aria-selected="false"
+                >
+                  <div class="loader"></div>
+                </div>
+
+                <ul
+                  id="jump-to-results"
+                  role="listbox"
+                  class="Box border-0 p-0 m-0 js-navigation-container jump-to-suggestions-results-container js-jump-to-suggestions-results-container js-active-navigation-container height-limitation"
+                ></ul>
+              </div>
+            </label>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="Header-item Header-item--full flex-justify-center d-md-none position-relative"
+    >
+      <a class="Header-link" href="https://rvnox.github.io/" aria-label="Home">
+        <svg
+          class="octicon octicon-mark-github v-align-middle"
+          height="32"
+          viewBox="0 0 16 16"
+          version="1.1"
+          width="32"
+        >
+          <path
+            fill-rule="evenodd"
+            d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"
+          ></path>
+        </svg>
+      </a>
+    </div>
+    <div class="Theme-switcher Header-item" style="margin-right: 0">
+      <span
+        role="button"
+        class="Header-link no-select"
+        onclick="switchTheme()"
+        style="cursor: pointer"
+        aria-label="Switch theme"
+      >
+        <svg
+          style="fill: var(--color-profile-color-modes-toggle-moon)"
+          class="no-select"
+          viewBox="0 0 16 16"
+          version="1.1"
+          width="16"
+          height="16"
+        >
+          <path
+            fill-rule="evenodd"
+            clip-rule="evenodd"
+            d="M4.52208 7.71754C7.5782 7.71754 10.0557 5.24006 10.0557 2.18394C10.0557 1.93498 10.0392 1.68986 10.0074 1.44961C9.95801 1.07727 10.3495 0.771159 10.6474 0.99992C12.1153 2.12716 13.0615 3.89999 13.0615 5.89383C13.0615 9.29958 10.3006 12.0605 6.89485 12.0605C3.95334 12.0605 1.49286 10.001 0.876728 7.24527C0.794841 6.87902 1.23668 6.65289 1.55321 6.85451C2.41106 7.40095 3.4296 7.71754 4.52208 7.71754Z"
+          ></path>
+        </svg>
+      </span>
+    </div>
+  </header>
+</div>
+
+  
+<script type="text/javascript" src="/js/initimage.js"></script>
+
+
+
+<div>
+  <main>
+    <div class="gisthead pagehead bg-gray-light pb-0 pt-3 mb-4">
+      <div class="px-0">
+        <div class="mb-3 d-flex px-3 px-md-3 px-lg-5">
+          <div class="flex-auto min-width-0 width-fit mr-3">
+            <div class="d-flex">
+              <div class="d-none d-md-block">
+                <a class="avatar mr-2 flex-shrink-0" href="https://rvnox.github.io/">
+                  <img class=" avatar-user"
+                    src="/images/avatar.png"
+                    width="32" height="32" alt="κόραξ"></a>
+              </div>
+              <div class="d-flex flex-column">
+                <h1 class="break-word f3 text-normal mb-md-0 mb-1">
+                  <span class="author">
+                    <a href="https://rvnox.github.io/">κόραξ</a></span><span
+                    class="path-divider">/</span><strong class="css-truncate-target mr-1" style="max-width: 410px"><a
+                      href="https://rvnox.github.io/post/2025-0604-01/">Linux分区详情</a></strong>
+                </h1>
+                <div class="note m-0">
+                  Created <relative-time datetime="Wed, 04 Jun 2025 20:52:01 &#43;0800"
+                    class="no-wrap">
+                    Wed, 04 Jun 2025 20:52:01 &#43;0800</relative-time>
+
+                  
+                  <span class="file-info-divider"></span>
+                  Modified <relative-time datetime="Sun, 03 Aug 2025 14:13:51 &#43;0000"
+                    class="no-wrap">
+                    Sun, 03 Aug 2025 14:13:51 &#43;0000</relative-time>
+                  
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container-lg px-3 new-discussion-timeline">
+      <div class="repository-content gist-content">
+        <div>
+          <div class="js-gist-file-update-container js-task-list-container file-box">
+            <div id="file-pytest" class="file my-2">
+              <div id="post-header" class="file-header d-flex flex-md-items-center flex-items-start sticky-header" style="z-index: 2">
+                <div class="file-info d-flex flex-md-items-center flex-items-start flex-order-1 flex-auto">
+                  <div class="text-mono f6 flex-auto pr-3 flex-order-2 flex-md-order-1 mt-2 mt-md-0">
+                    
+                    <summary id="toc-toggle" onclick="clickToc()" class="btn btn-octicon m-0 mr-2 p-2">
+                      <svg aria-hidden="true" viewBox="0 0 16 16" height="16" width="16" class="octicon octicon-list-unordered">
+                        <path fill-rule="evenodd" d="M2 4a1 1 0 100-2 1 1 0 000 2zm3.75-1.5a.75.75 0 000 1.5h8.5a.75.75 0 000-1.5h-8.5zm0 5a.75.75 0 000 1.5h8.5a.75.75 0 000-1.5h-8.5zm0 5a.75.75 0 000 1.5h8.5a.75.75 0 000-1.5h-8.5zM3 8a1 1 0 11-2 0 1 1 0 012 0zm-1 6a1 1 0 100-2 1 1 0 000 2z"></path>
+                      </svg>
+                    </summary>
+                    <details-menu class="SelectMenu" id="toc-details" style="display: none;">
+                      <div class="SelectMenu-modal rounded-3 mt-1" style="max-height: 340px;">
+                        <div class="SelectMenu-list SelectMenu-list--borderless p-2" style="overscroll-behavior: contain;" id="toc-list">
+                        </div>
+                      </div>
+                    </details-menu>
+                      5757 Words
+                    <span class="file-info-divider"></span>
+                                        26 min
+
+                  </div>
+                  <div class="file-actions flex-order-2 pt-0">
+  
+    
+       
+       
+       
+       
+      
+      
+      
+        
+       
+      <a class="muted-link mr-3" href="/tags/linux">
+        <span class="repo-language-color" style="background-color: #6564c7"></span>
+        Linux
+      </a>
+    
+  
+
+                  </div>
+                </div>
+              </div>
+
+
+              <div class="Box-body px-5 pb-5" style="z-index: 1">
+                <article class="markdown-body entry-content container-lg"><p>转载：https://www.cnblogs.com/kuangdaoyizhimei/p/18311375</p>
+<h1 id="linux-中物理设备命名规则">Linux 中物理设备命名规则</h1>
+<p>在linux中一切都是文件，硬件设备也不例外，所有的硬件设备都在 /dev 文件夹中</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">硬件</th>
+<th style="text-align:left">在Linux内的文件名</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">SCSI/SATA/USB</td>
+<td style="text-align:left">/dev/sd[a-p]</td>
+</tr>
+<tr>
+<td style="text-align:left">VirtI/O界面</td>
+<td style="text-align:left">/dev/vd[a-p]</td>
+</tr>
+<tr>
+<td style="text-align:left">软盘</td>
+<td style="text-align:left">/dev/fd[0-1]</td>
+</tr>
+<tr>
+<td style="text-align:left">打印机</td>
+<td style="text-align:left">/dev/lp[0-2] (25針印表機) /dev/usb/lp[0-15] (USB 介面)</td>
+</tr>
+<tr>
+<td style="text-align:left">鼠标</td>
+<td style="text-align:left">/dev/input/mouse[0-15] (通用) /dev/psaux (PS/2界面) /dev/mouse (當前滑鼠)</td>
+</tr>
+<tr>
+<td style="text-align:left">CDROM/DVDROM</td>
+<td style="text-align:left">/dev/scd[0-1] (通用) /dev/sr[0-1] (通用，CentOS 較常見) /dev/cdrom (當前 CDROM)</td>
+</tr>
+<tr>
+<td style="text-align:left">磁带机</td>
+<td style="text-align:left">/dev/ht0 (IDE 界面) /dev/st0 (SATA/SCSI界面) /dev/tape (當前磁帶)</td>
+</tr>
+<tr>
+<td style="text-align:left">IDE设备</td>
+<td style="text-align:left">/dev/hd[a-d] (老系统才有)</td>
+</tr>
+</tbody>
+</table>
+<p>注意：由于现在的 IDE 设备已很少见了，所以一般的设备都是以 “/dev/sd” 开头。而一台主机上可以有多块硬盘，因此系统采用 a~z 来代表不同的硬盘，而且硬盘的分区编号也很有讲究：</p>
+<ul>
+<li>主分区或扩展分区的编号从1开始，到4结束。</li>
+<li>逻辑分区从编号5开始。</li>
+</ul>
+<p>注意事项：</p>
+<ul>
+<li>设备名称由内核识别顺序决定：/dev 目录中 sda 设备之所以是 a，并不是由插槽决定的，而是由系统内核的识别顺序决定的，而恰巧很多主板的插槽顺序就是系统内核的识别顺序，因此才会被命名为 /dev/sda</li>
+<li>分区名称中的数字不代表分区数量：比如sda3，它代表编号为3的分区，有可能不存在分区编号sda2，因为这个数字可以手动指定。</li>
+</ul>
+<p>下图讲解了一个 sata 硬盘名字所蕴含的信息：</p>
+<p><img 
+  src="./2025-0604-01/image-202507312108325607.png" 
+  alt="image-202507312108325607" 
+   
+  class="custom-image-class"
+  srcset="./2025-0604-01/image-202507312108325607.png 1.25x"
+ />
+
+
+<script>
+function improveImage() {
+    
+
+    
+    const images = document.querySelectorAll('img');
+
+    images.forEach((item) => {
+        
+        let srcset = item.getAttribute('srcset');
+        if (srcset) {
+            let imageName = srcset.match(/image-(\d+\.(png|jpg|jpeg|gif))\s(\d+(\.\d+)?x)/i); 
+            if (imageName) {
+                item.setAttribute('srcset', imageName[0]);
+            }
+        }
+    });
+}
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    improveImage();
+});
+</script></p>
+<h1 id="mbr-和-gpt-分区格式">MBR 和 GPT 分区格式</h1>
+<p>MBR和GPT是两种磁盘分区方式，当我们使用磁盘分区助手格式化硬盘的时候，它会提示你让你选择一种分区格式，在 windows 系统安装的时候我们并不陌生：</p>
+<p><img 
+  src="./2025-0604-01/image-202507312108326265.png" 
+  alt="image-202507312108326265" 
+   
+  class="custom-image-class"
+  srcset="./2025-0604-01/image-202507312108326265.png 1.25x"
+ />
+
+
+<script>
+function improveImage() {
+    
+
+    
+    const images = document.querySelectorAll('img');
+
+    images.forEach((item) => {
+        
+        let srcset = item.getAttribute('srcset');
+        if (srcset) {
+            let imageName = srcset.match(/image-(\d+\.(png|jpg|jpeg|gif))\s(\d+(\.\d+)?x)/i); 
+            if (imageName) {
+                item.setAttribute('srcset', imageName[0]);
+            }
+        }
+    });
+}
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    improveImage();
+});
+</script></p>
+<h2 id="mbr-分区">MBR 分区</h2>
+<p>MBR分区方式出现的比较早，在Win7及Win7以前的系统都使用MBR分区方式，所以在磁盘管理界面，就能看到有主分区、逻辑分区等字眼。</p>
+<p><img 
+  src="./2025-0604-01/image-202507312108326911.png" 
+  alt="image-202507312108326911" 
+   
+  class="custom-image-class"
+  srcset="./2025-0604-01/image-202507312108326911.png 1.25x"
+ />
+
+
+<script>
+function improveImage() {
+    
+
+    
+    const images = document.querySelectorAll('img');
+
+    images.forEach((item) => {
+        
+        let srcset = item.getAttribute('srcset');
+        if (srcset) {
+            let imageName = srcset.match(/image-(\d+\.(png|jpg|jpeg|gif))\s(\d+(\.\d+)?x)/i); 
+            if (imageName) {
+                item.setAttribute('srcset', imageName[0]);
+            }
+        }
+    });
+}
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    improveImage();
+});
+</script></p>
+<p>那么，MBR 是什么呢 ？</p>
+<p>MBR，全称Master Boot Record, 主引导记录的意思，开机之后读取的第一个硬盘内容，帮助系统找到开机程序并正常开机。</p>
+<p>硬盘由许多个扇区组成，MBR硬盘每个扇区的大小是512字节，最重要的第一个扇区格式如下所示：</p>
+<p><img 
+  src="./2025-0604-01/image-202507312108327619.png" 
+  alt="image-202507312108327619" 
+   
+  class="custom-image-class"
+  srcset="./2025-0604-01/image-202507312108327619.png 1.25x"
+ />
+
+
+<script>
+function improveImage() {
+    
+
+    
+    const images = document.querySelectorAll('img');
+
+    images.forEach((item) => {
+        
+        let srcset = item.getAttribute('srcset');
+        if (srcset) {
+            let imageName = srcset.match(/image-(\d+\.(png|jpg|jpeg|gif))\s(\d+(\.\d+)?x)/i); 
+            if (imageName) {
+                item.setAttribute('srcset', imageName[0]);
+            }
+        }
+    });
+}
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    improveImage();
+});
+</script></p>
+<p>可以看到在第一个扇区中，MBR占据446个字节，结束符占2个字节，剩余64个字节用于存放分区表，每个分区表条目占用16字节，分区表中一共四条记录，代表着四个主分区。这也说明了为什么早期Windows7系统为什么在分区的时候会提示“该磁盘已包含最大分区数”不允许添加，因为早期Windows使用的MBR硬盘，它的设计只允许有4个主分区。</p>
+<p>当然不可能只让创建四个分区，这不合理，所以可以让第四个分区变成扩展分区，在扩展分区内创建多个逻辑分区。</p>
+<p>总结：</p>
+<ul>
+<li>主分区最多只能有四个（硬盘的限制）</li>
+<li>扩展分区最多只能有一个（操作系统的限制）</li>
+<li>逻辑分区是扩展分区中持续切割出来的分割槽。</li>
+<li>只有主分区和逻辑分区能被格式化，扩展分区无法被格式化。</li>
+<li>逻辑分区的数量在不同的操作系统上上限不一样，Linux系统中SATA硬盘已经能够划分出63个以上的逻辑分区。</li>
+<li>逻辑分区的编号从5开始，就算只有一个主分区一个扩展分区，那逻辑分区的编号也从5开始。</li>
+</ul>
+<p>另外，磁盘分区表只有64字节大小，每条记录只有16字节大小，所以它能录的数据是很有限的，这导致它无法正确获取2.2TB以上硬盘的实际容量。</p>
+<p>早期的 Linux 系统为了兼容于Windows 的磁盘，因此使用的是支持 Windows 的 MBR的方式来处理开机引导程序和分区表。</p>
+<p>现在Linux系统安装的时候根据磁盘大小，如果安装磁盘小于2TB，则默认使用MBR初始化硬盘；大于2TB，则会使用GPT初始化硬盘。</p>
+<p>当然，也可以在安装系统的时候强制使用GPT进行磁盘分区。</p>
+<p>查看磁盘类型的命令：<code>fdisk -l</code></p>
+<p><img 
+  src="./2025-0604-01/image-202507312108328209.png" 
+  alt="image-202507312108328209" 
+   
+  class="custom-image-class"
+  srcset="./2025-0604-01/image-202507312108328209.png 1.25x"
+ />
+
+
+<script>
+function improveImage() {
+    
+
+    
+    const images = document.querySelectorAll('img');
+
+    images.forEach((item) => {
+        
+        let srcset = item.getAttribute('srcset');
+        if (srcset) {
+            let imageName = srcset.match(/image-(\d+\.(png|jpg|jpeg|gif))\s(\d+(\.\d+)?x)/i); 
+            if (imageName) {
+                item.setAttribute('srcset', imageName[0]);
+            }
+        }
+    });
+}
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    improveImage();
+});
+</script></p>
+<p>disk label type 如果是dos，就是mbr硬盘；如果是gpt，则为gpt硬盘。</p>
+<h2 id="gpt-分区">GPT 分区</h2>
+<p>GPT分区（<strong>GUID partition table</strong>）模式使用GUID分区表，是源自EFI标准的一种较新的磁盘分区表结构的标准。与普遍使用的主引导记录(MBR)分区方案相比，GPT提供了更加灵活的磁盘分区机制。</p>
+<p>GPT磁盘分区格式如下所示：</p>
+<p><img 
+  src="./2025-0604-01/image-202507312108328802.png" 
+  alt="image-202507312108328802" 
+   
+  class="custom-image-class"
+  srcset="./2025-0604-01/image-202507312108328802.png 1.25x"
+ />
+
+
+<script>
+function improveImage() {
+    
+
+    
+    const images = document.querySelectorAll('img');
+
+    images.forEach((item) => {
+        
+        let srcset = item.getAttribute('srcset');
+        if (srcset) {
+            let imageName = srcset.match(/image-(\d+\.(png|jpg|jpeg|gif))\s(\d+(\.\d+)?x)/i); 
+            if (imageName) {
+                item.setAttribute('srcset', imageName[0]);
+            }
+        }
+    });
+}
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    improveImage();
+});
+</script></p>
+<p>在MBR分区中，一个扇区是512字节，在GPT分区中，用LBA（Logical Block Address）来表示“一个扇区”，默认大小也是512字节。整个GPT硬盘就是由N多个LBA组成。</p>
+<p>关于 GPT 分区只需要知道：</p>
+<ul>
+<li>分区表有32条记录，每条记录可以记录四个分区，所以它最多能有4*32=128个分区，所以它必要像MBR一样区分主分区、逻辑分区，在GPT中所有分区都是主分区。</li>
+<li>最高支持18EiB的单硬盘容量，1EiB = 1048576 TiB。</li>
+</ul>
+<p>GPT分区很明显比MBR分区要功能更强大，目前，GPT 分区和 MBR 分区均支持使用 fdisk 分区（fdisk对于GPT分区功能有限），也可采用 parted 分区。</p>
+<h1 id="普通分区挂载">普通分区挂载</h1>
+<p>当我们有了一块新硬盘，从插入电脑开始，一共需要做分区、格式化、挂载三个步骤，下面就依次详细说说这个流程中的细节。</p>
+<p>以下流程是基于 Vcenter 环境做的实验。</p>
+<h2 id="新增硬盘">新增硬盘</h2>
+<p>原来我已经有一块硬盘了，现在新增加一块100G的硬盘，进行如下设置：</p>
+<p><img 
+  src="./2025-0604-01/image-202507312108329437.png" 
+  alt="image-202507312108329437" 
+   
+  class="custom-image-class"
+  srcset="./2025-0604-01/image-202507312108329437.png 1.25x"
+ />
+
+
+<script>
+function improveImage() {
+    
+
+    
+    const images = document.querySelectorAll('img');
+
+    images.forEach((item) => {
+        
+        let srcset = item.getAttribute('srcset');
+        if (srcset) {
+            let imageName = srcset.match(/image-(\d+\.(png|jpg|jpeg|gif))\s(\d+(\.\d+)?x)/i); 
+            if (imageName) {
+                item.setAttribute('srcset', imageName[0]);
+            }
+        }
+    });
+}
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    improveImage();
+});
+</script></p>
+<p>然后开机启动，查看下dev文件夹，可以发现多出一个sdb文件，它就是第二块磁盘。</p>
+<p><img 
+  src="./2025-0604-01/image-202507312108330122.png" 
+  alt="image-202507312108330122" 
+   
+  class="custom-image-class"
+  srcset="./2025-0604-01/image-202507312108330122.png 1.25x"
+ />
+
+
+<script>
+function improveImage() {
+    
+
+    
+    const images = document.querySelectorAll('img');
+
+    images.forEach((item) => {
+        
+        let srcset = item.getAttribute('srcset');
+        if (srcset) {
+            let imageName = srcset.match(/image-(\d+\.(png|jpg|jpeg|gif))\s(\d+(\.\d+)?x)/i); 
+            if (imageName) {
+                item.setAttribute('srcset', imageName[0]);
+            }
+        }
+    });
+}
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    improveImage();
+});
+</script></p>
+<h2 id="分区命令-fdisk">分区命令 fdisk</h2>
+<p>fdisk命令（format disk）用于新建、修改及删除磁盘的分区表信息，语法格式为<code>fdsk 磁盘名称</code>，它和大多数普通linux命令不同的是，它是一个交互式的命令，键入命令<code>fdisk /dev/sdb</code>，进入交互界面</p>
+<p><img 
+  src="./2025-0604-01/image-202507312108331222.png" 
+  alt="image-202507312108331222" 
+   
+  class="custom-image-class"
+  srcset="./2025-0604-01/image-202507312108331222.png 1.25x"
+ />
+
+
+<script>
+function improveImage() {
+    
+
+    
+    const images = document.querySelectorAll('img');
+
+    images.forEach((item) => {
+        
+        let srcset = item.getAttribute('srcset');
+        if (srcset) {
+            let imageName = srcset.match(/image-(\d+\.(png|jpg|jpeg|gif))\s(\d+(\.\d+)?x)/i); 
+            if (imageName) {
+                item.setAttribute('srcset', imageName[0]);
+            }
+        }
+    });
+}
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    improveImage();
+});
+</script></p>
+<p>对于一个新添加的硬盘 /dev/sdb，提示信息如下：</p>
+<pre tabindex="0"><code>Changes will remain in memory only, until you decide to write them.
+Be careful before using the write command.
+
+Device does not contain a recognized partition table.
+Created a new DOS disklabel with disk identifier 0xe3919a0c.
+</code></pre><ul>
+<li>所有的改变都只是暂存在内存中，直到最后收到写入命令才依次执行内存中的操作。</li>
+<li>当前设备不包含任何可识别的分区表，这意味着这是一块新设备，还没有分区过。</li>
+<li>你要知道你正在做什么事情：进入此交互界面意味着你正在对当前磁盘进行分区操作，分区类型为dos，也就是MBR。</li>
+</ul>
+<p>但是如果是对于已分区过的硬盘 /dev/sda，提示信息如下：</p>
+<p><img 
+  src="./2025-0604-01/image-202507312108331829.png" 
+  alt="image-202507312108331829" 
+   
+  class="custom-image-class"
+  srcset="./2025-0604-01/image-202507312108331829.png 1.25x"
+ />
+
+
+<script>
+function improveImage() {
+    
+
+    
+    const images = document.querySelectorAll('img');
+
+    images.forEach((item) => {
+        
+        let srcset = item.getAttribute('srcset');
+        if (srcset) {
+            let imageName = srcset.match(/image-(\d+\.(png|jpg|jpeg|gif))\s(\d+(\.\d+)?x)/i); 
+            if (imageName) {
+                item.setAttribute('srcset', imageName[0]);
+            }
+        }
+    });
+}
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    improveImage();
+});
+</script></p>
+<p>我们可以看到，提示是有一定区别的。</p>
+<h2 id="fdisk-常见命令">fdisk 常见命令</h2>
+<p>m命令是首次提示的命令，它用于展示所有可用的命令以及每个命令的作用，键入m命令</p>
+<p><img 
+  src="./2025-0604-01/image-202507312108332424.png" 
+  alt="image-202507312108332424" 
+   
+  class="custom-image-class"
+  srcset="./2025-0604-01/image-202507312108332424.png 1.25x"
+ />
+
+
+<script>
+function improveImage() {
+    
+
+    
+    const images = document.querySelectorAll('img');
+
+    images.forEach((item) => {
+        
+        let srcset = item.getAttribute('srcset');
+        if (srcset) {
+            let imageName = srcset.match(/image-(\d+\.(png|jpg|jpeg|gif))\s(\d+(\.\d+)?x)/i); 
+            if (imageName) {
+                item.setAttribute('srcset', imageName[0]);
+            }
+        }
+    });
+}
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    improveImage();
+});
+</script></p>
+<p>我们先了解一些常用的：</p>
+<ul>
+<li>a：允许您在分区上切换引导标志，以指示该分区是否可引导。</li>
+<li>b：用于编辑BSD磁盘标签的命令。</li>
+<li>c：允许您在分区上切换DOS兼容性标志，以指示该分区是否与DOS兼容</li>
+<li>d：用于删除选择的分区。</li>
+<li>g：用于创建一个新的空GUID分区表（GPT）。</li>
+<li>G：用于创建一个IRIX（SGI）分区表。</li>
+<li>l：显示已知的分区类型列表。</li>
+<li>n：用于添加新的分区。</li>
+<li>o：用于创建一个新的空DOS分区表。</li>
+<li>p：显示磁盘上的分区表。</li>
+<li>q：退出fdisk命令，不保存对分区表的更改。</li>
+<li>s：用于创建一个新的空Sun磁盘标签。</li>
+<li>t：允许您更改选择的分区的系统ID。</li>
+<li>u：用于更改fdisk命令中显示和输入的单位。</li>
+<li>v：验证磁盘上的分区表以确保其有效性。</li>
+<li>w：将对分区表的更改写入磁盘并退出fdisk命令。</li>
+</ul>
+<p>我们先用 p 命令查看一下当前的分区情况，对于 /dev/sdb 空硬盘，显然是没有分区的，如下：</p>
+<p><img 
+  src="./2025-0604-01/image-202507312108333157.png" 
+  alt="image-202507312108333157" 
+   
+  class="custom-image-class"
+  srcset="./2025-0604-01/image-202507312108333157.png 1.25x"
+ />
+
+
+<script>
+function improveImage() {
+    
+
+    
+    const images = document.querySelectorAll('img');
+
+    images.forEach((item) => {
+        
+        let srcset = item.getAttribute('srcset');
+        if (srcset) {
+            let imageName = srcset.match(/image-(\d+\.(png|jpg|jpeg|gif))\s(\d+(\.\d+)?x)/i); 
+            if (imageName) {
+                item.setAttribute('srcset', imageName[0]);
+            }
+        }
+    });
+}
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    improveImage();
+});
+</script></p>
+<p>用n命令为空硬盘创建分区，如下：</p>
+<p><img 
+  src="./2025-0604-01/image-202507312108333656.png" 
+  alt="image-202507312108333656" 
+   
+  class="custom-image-class"
+  srcset="./2025-0604-01/image-202507312108333656.png 1.25x"
+ />
+
+
+<script>
+function improveImage() {
+    
+
+    
+    const images = document.querySelectorAll('img');
+
+    images.forEach((item) => {
+        
+        let srcset = item.getAttribute('srcset');
+        if (srcset) {
+            let imageName = srcset.match(/image-(\d+\.(png|jpg|jpeg|gif))\s(\d+(\.\d+)?x)/i); 
+            if (imageName) {
+                item.setAttribute('srcset', imageName[0]);
+            }
+        }
+    });
+}
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    improveImage();
+});
+</script></p>
+<p>它会提示创建的是主分区还是扩展分区（因为是MBR分区格式，所以才会有主分区或者扩展分区），默认是主分区，那就键入回车就行</p>
+<p><img 
+  src="./2025-0604-01/image-202507312108334369.png" 
+  alt="image-202507312108334369" 
+   
+  class="custom-image-class"
+  srcset="./2025-0604-01/image-202507312108334369.png 1.25x"
+ />
+
+
+<script>
+function improveImage() {
+    
+
+    
+    const images = document.querySelectorAll('img');
+
+    images.forEach((item) => {
+        
+        let srcset = item.getAttribute('srcset');
+        if (srcset) {
+            let imageName = srcset.match(/image-(\d+\.(png|jpg|jpeg|gif))\s(\d+(\.\d+)?x)/i); 
+            if (imageName) {
+                item.setAttribute('srcset', imageName[0]);
+            }
+        }
+    });
+}
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    improveImage();
+});
+</script></p>
+<p>接下来提示分区编号，还是默认就行</p>
+<p><img 
+  src="./2025-0604-01/image-202507312108335075.png" 
+  alt="image-202507312108335075" 
+   
+  class="custom-image-class"
+  srcset="./2025-0604-01/image-202507312108335075.png 1.25x"
+ />
+
+
+<script>
+function improveImage() {
+    
+
+    
+    const images = document.querySelectorAll('img');
+
+    images.forEach((item) => {
+        
+        let srcset = item.getAttribute('srcset');
+        if (srcset) {
+            let imageName = srcset.match(/image-(\d+\.(png|jpg|jpeg|gif))\s(\d+(\.\d+)?x)/i); 
+            if (imageName) {
+                item.setAttribute('srcset', imageName[0]);
+            }
+        }
+    });
+}
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    improveImage();
+});
+</script></p>
+<p>回车后提示输入开始的扇区位置，默认值2048，这个地方敲回车即可，因为系统会自动计算出最靠前的空闲扇区的位置。</p>
+<p><img 
+  src="./2025-0604-01/image-202507312108335850.png" 
+  alt="image-202507312108335850" 
+   
+  class="custom-image-class"
+  srcset="./2025-0604-01/image-202507312108335850.png 1.25x"
+ />
+
+
+<script>
+function improveImage() {
+    
+
+    
+    const images = document.querySelectorAll('img');
+
+    images.forEach((item) => {
+        
+        let srcset = item.getAttribute('srcset');
+        if (srcset) {
+            let imageName = srcset.match(/image-(\d+\.(png|jpg|jpeg|gif))\s(\d+(\.\d+)?x)/i); 
+            if (imageName) {
+                item.setAttribute('srcset', imageName[0]);
+            }
+        }
+    });
+}
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    improveImage();
+});
+</script></p>
+<p>系统提示输入结束的扇区位置，这里输入**+2G**，表示要2G的分区大小，系统会自动计算出结束的扇区位置。</p>
+<p><img 
+  src="./2025-0604-01/image-202507312108336674.png" 
+  alt="image-202507312108336674" 
+   
+  class="custom-image-class"
+  srcset="./2025-0604-01/image-202507312108336674.png 1.25x"
+ />
+
+
+<script>
+function improveImage() {
+    
+
+    
+    const images = document.querySelectorAll('img');
+
+    images.forEach((item) => {
+        
+        let srcset = item.getAttribute('srcset');
+        if (srcset) {
+            let imageName = srcset.match(/image-(\d+\.(png|jpg|jpeg|gif))\s(\d+(\.\d+)?x)/i); 
+            if (imageName) {
+                item.setAttribute('srcset', imageName[0]);
+            }
+        }
+    });
+}
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    improveImage();
+});
+</script></p>
+<p><img 
+  src="./2025-0604-01/image-202507312108337368.png" 
+  alt="image-202507312108337368" 
+   
+  class="custom-image-class"
+  srcset="./2025-0604-01/image-202507312108337368.png 1.25x"
+ />
+
+
+<script>
+function improveImage() {
+    
+
+    
+    const images = document.querySelectorAll('img');
+
+    images.forEach((item) => {
+        
+        let srcset = item.getAttribute('srcset');
+        if (srcset) {
+            let imageName = srcset.match(/image-(\d+\.(png|jpg|jpeg|gif))\s(\d+(\.\d+)?x)/i); 
+            if (imageName) {
+                item.setAttribute('srcset', imageName[0]);
+            }
+        }
+    });
+}
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    improveImage();
+});
+</script></p>
+<p>然后分区就创建成功了。输入p命令，可以看到多了一个2GB的分区，分区名为sdb1，如下：</p>
+<p><img 
+  src="./2025-0604-01/image-202507312108338017.png" 
+  alt="image-202507312108338017" 
+   
+  class="custom-image-class"
+  srcset="./2025-0604-01/image-202507312108338017.png 1.25x"
+ />
+
+
+<script>
+function improveImage() {
+    
+
+    
+    const images = document.querySelectorAll('img');
+
+    images.forEach((item) => {
+        
+        let srcset = item.getAttribute('srcset');
+        if (srcset) {
+            let imageName = srcset.match(/image-(\d+\.(png|jpg|jpeg|gif))\s(\d+(\.\d+)?x)/i); 
+            if (imageName) {
+                item.setAttribute('srcset', imageName[0]);
+            }
+        }
+    });
+}
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    improveImage();
+});
+</script></p>
+<p>w命令用于将分区表写入磁盘，这样就完成了对磁盘的分区。</p>
+<p><img 
+  src="./2025-0604-01/image-202507312108338725.png" 
+  alt="image-202507312108338725" 
+   
+  class="custom-image-class"
+  srcset="./2025-0604-01/image-202507312108338725.png 1.25x"
+ />
+
+
+<script>
+function improveImage() {
+    
+
+    
+    const images = document.querySelectorAll('img');
+
+    images.forEach((item) => {
+        
+        let srcset = item.getAttribute('srcset');
+        if (srcset) {
+            let imageName = srcset.match(/image-(\d+\.(png|jpg|jpeg|gif))\s(\d+(\.\d+)?x)/i); 
+            if (imageName) {
+                item.setAttribute('srcset', imageName[0]);
+            }
+        }
+    });
+}
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    improveImage();
+});
+</script></p>
+<p>有时候该命令执行完成之后，并不会将分区信息同步给内核，导致操作失败。可以使用<code>partprobe</code>命令手动同步分区信息到内核，多执行几次，如果还不行，就<strong>重启</strong>linux，重启之后肯定就好了。</p>
+<h2 id="格式化命令-mkfs">格式化命令 mkfs</h2>
+<p>分区完成后，我们需要对分区进行格式化</p>
+<p>mkfs是linux的格式化操作的命令，mkfs双按tab键，可以看到它有多个衍生命令</p>
+<p><img 
+  src="./2025-0604-01/image-202507312108339372.png" 
+  alt="image-202507312108339372" 
+   
+  class="custom-image-class"
+  srcset="./2025-0604-01/image-202507312108339372.png 1.25x"
+ />
+
+
+<script>
+function improveImage() {
+    
+
+    
+    const images = document.querySelectorAll('img');
+
+    images.forEach((item) => {
+        
+        let srcset = item.getAttribute('srcset');
+        if (srcset) {
+            let imageName = srcset.match(/image-(\d+\.(png|jpg|jpeg|gif))\s(\d+(\.\d+)?x)/i); 
+            if (imageName) {
+                item.setAttribute('srcset', imageName[0]);
+            }
+        }
+    });
+}
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    improveImage();
+});
+</script></p>
+<p>现在linux都是xfs文件系统格式了，所以这里按照<code>mkfs.xfs</code>命令执行格式化操作，执行格式为：<code>mkfs.xfs /dev/sdb1</code></p>
+<p><img 
+  src="./2025-0604-01/image-202507312108340888.png" 
+  alt="image-202507312108340888" 
+   
+  class="custom-image-class"
+  srcset="./2025-0604-01/image-202507312108340888.png 1.25x"
+ />
+
+
+<script>
+function improveImage() {
+    
+
+    
+    const images = document.querySelectorAll('img');
+
+    images.forEach((item) => {
+        
+        let srcset = item.getAttribute('srcset');
+        if (srcset) {
+            let imageName = srcset.match(/image-(\d+\.(png|jpg|jpeg|gif))\s(\d+(\.\d+)?x)/i); 
+            if (imageName) {
+                item.setAttribute('srcset', imageName[0]);
+            }
+        }
+    });
+}
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    improveImage();
+});
+</script></p>
+<p>这样就完成了格式化操作，接下来进行系统挂载。</p>
+<h2 id="挂载命令-mount">挂载命令 mount</h2>
+<p>mount命令是挂载命令，将分区挂载到某个目录，这样对目录中文件的 CRUD（增删改查） 操作就作用到了对应的分区上。</p>
+<p>mount命令的格式是：<code>mount 分区名 文件夹</code> 或者 <code>mount UUID=分区UUID 文件夹</code></p>
+<p>首先先建立个文件夹：<code>mkdir /dir3</code>，然后将<code>/dev/sdb1</code>挂载到<code>/dir3</code>，挂载命令为：<code>mount /dev/sdb1 /dir3</code></p>
+<p>这样就完成了挂载。</p>
+<p>UUID挂载方式需要知道分区的UUID，获取方式是使用<code>blkid</code>命令</p>
+<h2 id="获取-uuidblkid">获取 UUID：blkid</h2>
+<p>blkid的英文全称是：block id，该命令用于获取每个分区的UUID信息；有时候该命令会受到缓存的影响设设备列表可能不会更新，使用<code>blkid -g</code>命令可以清除缓存。</p>
+<p><img 
+  src="./2025-0604-01/image-202507312108341407.png" 
+  alt="image-202507312108341407" 
+   
+  class="custom-image-class"
+  srcset="./2025-0604-01/image-202507312108341407.png 1.25x"
+ />
+
+
+<script>
+function improveImage() {
+    
+
+    
+    const images = document.querySelectorAll('img');
+
+    images.forEach((item) => {
+        
+        let srcset = item.getAttribute('srcset');
+        if (srcset) {
+            let imageName = srcset.match(/image-(\d+\.(png|jpg|jpeg|gif))\s(\d+(\.\d+)?x)/i); 
+            if (imageName) {
+                item.setAttribute('srcset', imageName[0]);
+            }
+        }
+    });
+}
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    improveImage();
+});
+</script></p>
+<p>然后使用命令<code>mount UUID=&quot;f1ed2b29-8d7d-4d3e-a5b9-55ac3dce2cf7&quot; /dir3</code> 完成挂载。</p>
+<p>需要注意的是mount命令只能一次挂载，重启系统之后挂载就会失效，需要将挂载写入<code>/etc/fstab</code>文件，这样才能完成分区的永久性挂载。</p>
+<h2 id="永久挂载etcfstab文件">永久挂载：/etc/fstab文件</h2>
+<p>/etc/fstab文件存放着需要永久挂载的数据，系统启动之后会自动读取该文件，并完成文件中的所有挂载。</p>
+<pre tabindex="0"><code>vi /etc/fstab
+</code></pre><p><img 
+  src="./2025-0604-01/image-202507312108342402.png" 
+  alt="image-202507312108342402" 
+   
+  class="custom-image-class"
+  srcset="./2025-0604-01/image-202507312108342402.png 1.25x"
+ />
+
+
+<script>
+function improveImage() {
+    
+
+    
+    const images = document.querySelectorAll('img');
+
+    images.forEach((item) => {
+        
+        let srcset = item.getAttribute('srcset');
+        if (srcset) {
+            let imageName = srcset.match(/image-(\d+\.(png|jpg|jpeg|gif))\s(\d+(\.\d+)?x)/i); 
+            if (imageName) {
+                item.setAttribute('srcset', imageName[0]);
+            }
+        }
+    });
+}
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    improveImage();
+});
+</script></p>
+<p>为了将 /dev/sdb1 永远挂载到 /dir3 目录，需要将以下信息追加到 /etc/fstab 文件</p>
+<pre tabindex="0"><code>#  设备文件               挂载目录               格式类型    权限选项    是否备份 是否自检
+/dev/sdb1               /dir3                   xfs     defaults        0 0
+</code></pre><p>写入该文件并不会自动生效，需要使用命令<code>mount -a</code>或者重启系统生效。</p>
+<p>已经实现了/dev/sdb1挂载到/dir3目录，接下来使用<code>df</code>命令查看挂载状态和硬盘使用量信息。</p>
+<h2 id="磁盘使用情况统计df">磁盘使用情况统计：df</h2>
+<p>df命令（disk free）用于显示目前在Linux系统上的文件系统磁盘使用情况，其使用格式为<code> df [选项]... [FILE]...</code></p>
+<p>我们直接看最常用的 df -h，如下：</p>
+<p><img 
+  src="./2025-0604-01/image-202507312108343224.png" 
+  alt="image-202507312108343224" 
+   
+  class="custom-image-class"
+  srcset="./2025-0604-01/image-202507312108343224.png 1.25x"
+ />
+
+
+<script>
+function improveImage() {
+    
+
+    
+    const images = document.querySelectorAll('img');
+
+    images.forEach((item) => {
+        
+        let srcset = item.getAttribute('srcset');
+        if (srcset) {
+            let imageName = srcset.match(/image-(\d+\.(png|jpg|jpeg|gif))\s(\d+(\.\d+)?x)/i); 
+            if (imageName) {
+                item.setAttribute('srcset', imageName[0]);
+            }
+        }
+    });
+}
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    improveImage();
+});
+</script></p>
+<p>可以看到sdb1已经挂载到了/dir3目录还剩余2G存储可用。这样看起来似乎不是非常直观，总觉得有点乱，使用<code>lsblk</code>命令则能够更直观的看到每个磁盘以及它们的分区情况和分区大小。</p>
+<h2 id="树状展示硬盘分区lsblk">树状展示硬盘分区：lsblk</h2>
+<p>lsblk命令的英文全称是：list block，实际上它就是以树状结构展示磁盘分区情况，这样会更直观：</p>
+<p><img 
+  src="./2025-0604-01/image-202507312108344121.png" 
+  alt="image-202507312108344121" 
+   
+  class="custom-image-class"
+  srcset="./2025-0604-01/image-202507312108344121.png 1.25x"
+ />
+
+
+<script>
+function improveImage() {
+    
+
+    
+    const images = document.querySelectorAll('img');
+
+    images.forEach((item) => {
+        
+        let srcset = item.getAttribute('srcset');
+        if (srcset) {
+            let imageName = srcset.match(/image-(\d+\.(png|jpg|jpeg|gif))\s(\d+(\.\d+)?x)/i); 
+            if (imageName) {
+                item.setAttribute('srcset', imageName[0]);
+            }
+        }
+    });
+}
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    improveImage();
+});
+</script></p>
+<h2 id="查看文件占用大小du">查看文件占用大小：du</h2>
+<p>du（disk usage）命令用于查看分区或者目录所占用的磁盘大小，常用的命令：<code>du -sh 目录名</code>，比如 <code>du -sh /*</code>，这样就能查询到根目录的所有文件和文件夹占用磁盘的大小</p>
+<ul>
+<li>s： 仅显示指定目录或文件的总大小，而不显示其子目录的大小。</li>
+<li>h：&ndash;human-readable 以K，M，G为单位，提高信息的可读性。</li>
+</ul>
+<p>s参数比较重要，没有它的话，默认du命令会递归查询所有文件夹及子文件夹、子文件，疯狂打印到屏幕上，显得非常乱，所以如果没有特殊需要，一般是要加-s参数的。</p>
+<h1 id="交换分区挂载">交换分区挂载</h1>
+<h2 id="新建分区">新建分区</h2>
+<p>交换（SWAP）分区是一种通过在硬盘中预先划分一定的空间，然后把内存中暂时不常用的数据临时存放到硬盘中，以便腾出物理内存空间让更活跃的程序服务来使用的技术，其设计目的是为了解决真实物理内存不足的问题。通俗来讲就是让硬盘帮内存分担压力。但由于交换分区毕竟是通过硬盘设备读写数据的，速度肯定要比物理内存慢，所以只有当真实的物理内存耗尽后才会调用交换分区的资源。</p>
+<p>在生产环境中，交换分区的大小一般为真实物理内存的 1.5～2 倍。</p>
+<p>接下来切出一个大小为5G的分区用于扩容交换分区。</p>
+<p><img 
+  src="./2025-0604-01/image-202507312108345717.png" 
+  alt="image-202507312108345717" 
+   
+  class="custom-image-class"
+  srcset="./2025-0604-01/image-202507312108345717.png 1.25x"
+ />
+
+
+<script>
+function improveImage() {
+    
+
+    
+    const images = document.querySelectorAll('img');
+
+    images.forEach((item) => {
+        
+        let srcset = item.getAttribute('srcset');
+        if (srcset) {
+            let imageName = srcset.match(/image-(\d+\.(png|jpg|jpeg|gif))\s(\d+(\.\d+)?x)/i); 
+            if (imageName) {
+                item.setAttribute('srcset', imageName[0]);
+            }
+        }
+    });
+}
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    improveImage();
+});
+</script></p>
+<p>这样就得到了一个5G的新分区sdb2。接下来修改该分区类型，将其改为 <strong>swap</strong> 类型</p>
+<p><img 
+  src="./2025-0604-01/image-202507312108346514.png" 
+  alt="image-202507312108346514" 
+   
+  class="custom-image-class"
+  srcset="./2025-0604-01/image-202507312108346514.png 1.25x"
+ />
+
+
+<script>
+function improveImage() {
+    
+
+    
+    const images = document.querySelectorAll('img');
+
+    images.forEach((item) => {
+        
+        let srcset = item.getAttribute('srcset');
+        if (srcset) {
+            let imageName = srcset.match(/image-(\d+\.(png|jpg|jpeg|gif))\s(\d+(\.\d+)?x)/i); 
+            if (imageName) {
+                item.setAttribute('srcset', imageName[0]);
+            }
+        }
+    });
+}
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    improveImage();
+});
+</script></p>
+<p>最后，敲击w完成分区表编辑。</p>
+<p>接下来键入lsblk命令，可以看到sdb2分区已经存在了</p>
+<p><img 
+  src="./2025-0604-01/image-202507312108348849.png" 
+  alt="image-202507312108348849" 
+   
+  class="custom-image-class"
+  srcset="./2025-0604-01/image-202507312108348849.png 1.25x"
+ />
+
+
+<script>
+function improveImage() {
+    
+
+    
+    const images = document.querySelectorAll('img');
+
+    images.forEach((item) => {
+        
+        let srcset = item.getAttribute('srcset');
+        if (srcset) {
+            let imageName = srcset.match(/image-(\d+\.(png|jpg|jpeg|gif))\s(\d+(\.\d+)?x)/i); 
+            if (imageName) {
+                item.setAttribute('srcset', imageName[0]);
+            }
+        }
+    });
+}
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    improveImage();
+});
+</script></p>
+<p>##　格式化交换分区：mkswap</p>
+<p>交换分区使用前也要格式化，只是它的格式化命令不是mkfs，而是mkswap，英文全称是&quot;make swap&quot;，语法格式是&quot;mkswap 设备名称&quot;</p>
+<p><img 
+  src="./2025-0604-01/image-202507312108349613.png" 
+  alt="image-202507312108349613" 
+   
+  class="custom-image-class"
+  srcset="./2025-0604-01/image-202507312108349613.png 1.25x"
+ />
+
+
+<script>
+function improveImage() {
+    
+
+    
+    const images = document.querySelectorAll('img');
+
+    images.forEach((item) => {
+        
+        let srcset = item.getAttribute('srcset');
+        if (srcset) {
+            let imageName = srcset.match(/image-(\d+\.(png|jpg|jpeg|gif))\s(\d+(\.\d+)?x)/i); 
+            if (imageName) {
+                item.setAttribute('srcset', imageName[0]);
+            }
+        }
+    });
+}
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    improveImage();
+});
+</script></p>
+<p>这样就完成了交换分区格式化。</p>
+<h2 id="激活交换分区swapon">激活交换分区：swapon</h2>
+<p>要想让 swap 分区生效，需要激活，我们先看一下原来的 swap 分区大小</p>
+<p><img 
+  src="./2025-0604-01/image-202507312108350240.png" 
+  alt="image-202507312108350240" 
+   
+  class="custom-image-class"
+  srcset="./2025-0604-01/image-202507312108350240.png 1.25x"
+ />
+
+
+<script>
+function improveImage() {
+    
+
+    
+    const images = document.querySelectorAll('img');
+
+    images.forEach((item) => {
+        
+        let srcset = item.getAttribute('srcset');
+        if (srcset) {
+            let imageName = srcset.match(/image-(\d+\.(png|jpg|jpeg|gif))\s(\d+(\.\d+)?x)/i); 
+            if (imageName) {
+                item.setAttribute('srcset', imageName[0]);
+            }
+        }
+    });
+}
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    improveImage();
+});
+</script></p>
+<p>swapon命令用于激活新的交换分区设别，英文全称为“swap on”，语法格式为：<code>swapon 设备名称</code></p>
+<p>接下来执行命令：swapon /dev/sdb2</p>
+<p>验证是否扩容成功，再次查看我们发现 swap 分区额外扩容了 5G</p>
+<p><img 
+  src="./2025-0604-01/image-202507312108351086.png" 
+  alt="image-202507312108351086" 
+   
+  class="custom-image-class"
+  srcset="./2025-0604-01/image-202507312108351086.png 1.25x"
+ />
+
+
+<script>
+function improveImage() {
+    
+
+    
+    const images = document.querySelectorAll('img');
+
+    images.forEach((item) => {
+        
+        let srcset = item.getAttribute('srcset');
+        if (srcset) {
+            let imageName = srcset.match(/image-(\d+\.(png|jpg|jpeg|gif))\s(\d+(\.\d+)?x)/i); 
+            if (imageName) {
+                item.setAttribute('srcset', imageName[0]);
+            }
+        }
+    });
+}
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    improveImage();
+});
+</script></p>
+<p>##　查看内存和交换空间大小：free</p>
+<p>free 命令显示系统使用和空闲的内存情况，包括物理内存、交互区内存(swap)和内核缓冲区内存。共享内存将被忽略。</p>
+<p><strong>常见命令参数：</strong></p>
+<ul>
+<li>-b 以Byte为单位显示内存使用情况。</li>
+<li>-k 以KB为单位显示内存使用情况。</li>
+<li>-m 以MB为单位显示内存使用情况。</li>
+<li>-g 以GB为单位显示内存使用情况。</li>
+</ul>
+<h2 id="修改fstab永久挂载">修改fstab永久挂载</h2>
+<p>之前的一次分区普通挂载的配置是这样的</p>
+<pre tabindex="0"><code>/dev/sdb1               /dir3                   xfs     defaults        0 0
+</code></pre><p>swap分区的挂载则是这样的</p>
+<pre tabindex="0"><code>/dev/sdb2               swap                    swap    defaults        0 0
+</code></pre><p>也就是挂载目标变成了swap，而非一个目录；文件系统类型也是swap，而非普通分区的xfs格式。</p>
+<p>之后运行命令<code>mount -a</code>或者重启系统即可生效。</p>
+<h1 id="卸载分区">卸载分区</h1>
+<h2 id="卸载普通分区">卸载普通分区</h2>
+<p>其实就是逆向操作，首先，删除fstab中的记录</p>
+<p><img 
+  src="./2025-0604-01/image-202507312108351594.png" 
+  alt="image-202507312108351594" 
+   
+  class="custom-image-class"
+  srcset="./2025-0604-01/image-202507312108351594.png 1.25x"
+ />
+
+
+<script>
+function improveImage() {
+    
+
+    
+    const images = document.querySelectorAll('img');
+
+    images.forEach((item) => {
+        
+        let srcset = item.getAttribute('srcset');
+        if (srcset) {
+            let imageName = srcset.match(/image-(\d+\.(png|jpg|jpeg|gif))\s(\d+(\.\d+)?x)/i); 
+            if (imageName) {
+                item.setAttribute('srcset', imageName[0]);
+            }
+        }
+    });
+}
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    improveImage();
+});
+</script></p>
+<p>然后<code>umount</code> 命令卸除挂载</p>
+<pre tabindex="0"><code>umount /dev/sdb1
+</code></pre><p>然后删除分区</p>
+<p><img 
+  src="./2025-0604-01/image-202507312108352116.png" 
+  alt="image-202507312108352116" 
+   
+  class="custom-image-class"
+  srcset="./2025-0604-01/image-202507312108352116.png 1.25x"
+ />
+
+
+<script>
+function improveImage() {
+    
+
+    
+    const images = document.querySelectorAll('img');
+
+    images.forEach((item) => {
+        
+        let srcset = item.getAttribute('srcset');
+        if (srcset) {
+            let imageName = srcset.match(/image-(\d+\.(png|jpg|jpeg|gif))\s(\d+(\.\d+)?x)/i); 
+            if (imageName) {
+                item.setAttribute('srcset', imageName[0]);
+            }
+        }
+    });
+}
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    improveImage();
+});
+</script></p>
+<p>之后，再用<code>lsblk</code>命令查看下分区，发现sdb1已经没了，sdc硬盘下只剩下了sdb2分区。</p>
+<p><img 
+  src="./2025-0604-01/image-202507312108352825.png" 
+  alt="image-202507312108352825" 
+   
+  class="custom-image-class"
+  srcset="./2025-0604-01/image-202507312108352825.png 1.25x"
+ />
+
+
+<script>
+function improveImage() {
+    
+
+    
+    const images = document.querySelectorAll('img');
+
+    images.forEach((item) => {
+        
+        let srcset = item.getAttribute('srcset');
+        if (srcset) {
+            let imageName = srcset.match(/image-(\d+\.(png|jpg|jpeg|gif))\s(\d+(\.\d+)?x)/i); 
+            if (imageName) {
+                item.setAttribute('srcset', imageName[0]);
+            }
+        }
+    });
+}
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    improveImage();
+});
+</script></p>
+<h2 id="卸载交换分区">卸载交换分区</h2>
+<p>还是老规矩，先从fstab文件中删除交换分区的挂载信息</p>
+<p>然后运行命令<code>swapoff</code>关闭指定的交换分区</p>
+<pre tabindex="0"><code>swapoff /dev/sdb2
+</code></pre><p>最后，删除分区，删除分区的方法和卸载普通分区一样。</p>
+<p>删除完毕之后，再看sdb磁盘分区，就发现该磁盘已经没有分区了</p>
+<p><img 
+  src="./2025-0604-01/image-202507312108353780.png" 
+  alt="image-202507312108353780" 
+   
+  class="custom-image-class"
+  srcset="./2025-0604-01/image-202507312108353780.png 1.25x"
+ />
+
+
+<script>
+function improveImage() {
+    
+
+    
+    const images = document.querySelectorAll('img');
+
+    images.forEach((item) => {
+        
+        let srcset = item.getAttribute('srcset');
+        if (srcset) {
+            let imageName = srcset.match(/image-(\d+\.(png|jpg|jpeg|gif))\s(\d+(\.\d+)?x)/i); 
+            if (imageName) {
+                item.setAttribute('srcset', imageName[0]);
+            }
+        }
+    });
+}
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    improveImage();
+});
+</script></p>
+<p>这时候就可以安全移除磁盘了。</p>
+<p>如果没有正确的卸载磁盘，有可能会导致开机失败的情况，这点需要注意。</p>
+<h1 id="补充">补充</h1>
+<p>转载：https://www.cnblogs.com/yb38156/p/12201989.html</p>
+<h2 id="分区和目录">分区和目录</h2>
+<ul>
+<li>任何一个分区都必须挂载到某个目录上</li>
+<li>目录是逻辑上的区分，分区是物理上的区分</li>
+<li>磁盘Linux分区都必须挂载到目录树中的某个具体的目录上才能进行读写操作</li>
+<li>根目录是所有Linux的文件和目录所在的地方，需要挂载上一个磁盘分区</li>
+</ul>
+<p>1、为什么要分区 ？</p>
+<p>数据安全+磁盘访问速度（性能）</p>
+<p>2、为什么要格式化分区 ？</p>
+<p>磁盘分区上的数据要想识别，需要有文件系统支持，格式化分区时产生文件系统，进而可以识别上面的数据</p>
+<p>3、为什么要挂载 ？</p>
+<p>如果要进入访问和操作这些数据，需要有入口，入口就是挂载点-分区挂载的那个目录，进入这个目录，就可以通过文件系统管理里面的数据</p>
+<h2 id="分区的扩容">分区的扩容</h2>
+</article>
+              </div>
+
+              
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="pagination-nav">
+        <div class="pagination-button next-post">
+          
+          <div>«&nbsp;</div><a class="pagination-link link-reverse" href="https://rvnox.github.io/post/2025-0615-01/"> Goland 环境配置</a>
+          
+        </div>
+        
+        <div class="pagination-button previous-post">
+          
+          <a class="pagination-link link-reverse" href="https://rvnox.github.io/post/2025-0428-01/">Grafana TransForm Data&nbsp;</a><div> »</div>
+          
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+<script type="application/javascript" src='https://rvnox.github.io/js/toc.js'></script>
+<link rel="stylesheet" href='https://rvnox.github.io/css/toc.css' />
+
+
+  <div class="footer container-xl width-full p-responsive">
+  <div
+    class="position-relative d-flex flex-row-reverse flex-lg-row flex-wrap flex-lg-nowrap flex-justify-center flex-lg-justify-between flex-sm-items-center pt-6 pb-2 mt-6 f6 text-gray border-top border-gray-light ">
+    <a aria-label="Homepage" title="GitHub" class="footer-octicon d-none d-lg-block mr-lg-4" href="https://rvnox.github.io/">
+      <svg height="24" class="octicon octicon-mark-github" viewBox="0 0 16 16" version="1.1" width="24">
+        <path fill-rule="evenodd"
+          d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z">
+        </path>
+      </svg>
+    </a>
+    <ul class="list-style-none d-flex flex-wrap col-12 flex-justify-center flex-lg-justify-between mb-2 mb-lg-0">
+      
+      <li class="mr-3 mr-lg-0">Theme by <a href='https://github.com/MeiK2333/github-style'>github-style</a></li>
+      
+    </ul>
+  </div>
+  <div class="d-flex flex-justify-center pb-6">
+    <span class="f6 text-gray-light"></span>
+  </div>
+
+
+</div>
+</body>
+
+<script type="application/javascript" src="https://rvnox.github.io/js/github-style.js"></script>
+
+<script src="https://rvnox.github.io/js/mark.es6.min.js"></script>
+
+
+
+
+
+
+
+</html>

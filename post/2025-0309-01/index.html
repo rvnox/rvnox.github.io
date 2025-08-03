@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width" />
+  <script
+    type="application/javascript"
+    src='https://rvnox.github.io/js/theme-mode.js'
+  ></script>
+  <link rel="stylesheet" href='https://rvnox.github.io/css/frameworks.min.css' />
+  <link rel="stylesheet" href='https://rvnox.github.io/css/github.min.css' />
+  <link rel="stylesheet" href='https://rvnox.github.io/css/github-style.css' />
+  <link rel="stylesheet" href='https://rvnox.github.io/css/light.css' />
+  <link rel="stylesheet" href='https://rvnox.github.io/css/dark.css' />
+  <link rel="stylesheet" href='https://rvnox.github.io/css/syntax.css' />
+  
+  <link rel="stylesheet" href="/custom.css" />
+  
+  <title>
+    Grafana 变量 | rvnox&#39;s Blog
+  </title>
+  
+  <link rel="icon" type="image/x-icon" href="/images/github-mark.png" />
+  
+  <meta name="theme-color" content="#1e2327" />
+
+  
+  <meta
+  name="description"
+  content=""
+/>
+<meta name="robots" content="noodp" />
+<link rel="canonical" href="https://rvnox.github.io/post/2025-0309-01/" />
+
+
+<meta name="twitter:card" content="summary" />
+<meta
+  name="twitter:title"
+  content="Grafana 变量 - rvnox&#39;s Blog"
+/>
+<meta
+  name="twitter:description"
+  content=""
+/>
+<meta name="twitter:site" content="https://rvnox.github.io/" />
+<meta name="twitter:creator" content="" />
+<meta
+  name="twitter:image"
+  content="https://rvnox.github.io/"
+/>
+
+
+<meta
+  property="og:type"
+  content="article"
+/>
+<meta
+  property="og:title"
+  content="Grafana 变量 - rvnox&#39;s Blog"
+/>
+<meta
+  property="og:description"
+  content=""
+/>
+<meta property="og:url" content="https://rvnox.github.io/post/2025-0309-01/" />
+<meta property="og:site_name" content="Grafana 变量" />
+<meta
+  property="og:image"
+  content="https://rvnox.github.io/"
+/>
+<meta property="og:image:width" content="2048" />
+<meta property="og:image:height" content="1024" />
+
+<meta property="article:published_time" content="2025-03-09 11:26:45 &#43;0800 &#43;0800" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+
+<script src="/js/pangu.js"></script>
+
+<script>
+	document.addEventListener('DOMContentLoaded', () => {
+			pangu.autoSpacingPage();
+	});
+</script>
+
+<body>
+  
+
+<style>
+  .height-limitation {
+    max-height: 300px;
+    overflow-y: scroll;
+  }
+
+  .loader {
+    border: 4px solid #f3f3f3;
+    border-bottom: 4px solid var(--color-fg-muted);
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    animation: spin 1s linear infinite;
+    margin: 0 auto;
+  }
+
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+</style>
+
+<div style="position: relative">
+  <header
+    class="Header js-details-container Details px-3 px-md-4 px-lg-5 flex-wrap flex-md-nowrap open Details--on"
+  >
+    <div
+      class="Header-item mobile-none"
+      style="margin-top: -4px; margin-bottom: -4px"
+    >
+      <a class="Header-link" href="https://rvnox.github.io/" aria-label="Home">
+        <svg
+          class="octicon"
+          height="32"
+          viewBox="0 0 16 16"
+          version="1.1"
+          width="32"
+        >
+          <path
+            fill-rule="evenodd"
+            d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"
+          ></path>
+        </svg>
+      </a>
+    </div>
+    <div class="Header-item d-md-none">
+      <button
+        class="Header-link btn-link js-details-target"
+        type="button"
+        onclick="document.querySelector('#header-search').style.display = document.querySelector('#header-search').style.display == 'none'? 'block': 'none'"
+        aria-label="Search"
+      >
+        <svg
+          height="24"
+          class="octicon octicon-three-bars"
+          viewBox="0 0 16 16"
+          version="1.1"
+          width="24"
+        >
+          <path
+            fill-rule="evenodd"
+            d="M1 2.75A.75.75 0 011.75 2h12.5a.75.75 0 110 1.5H1.75A.75.75 0 011 2.75zm0 5A.75.75 0 011.75 7h12.5a.75.75 0 110 1.5H1.75A.75.75 0 011 7.75zM1.75 12a.75.75 0 100 1.5h12.5a.75.75 0 100-1.5H1.75z"
+          ></path>
+        </svg>
+      </button>
+    </div>
+    <div
+      style="display: none"
+      id="header-search"
+      class="Header-item Header-item--full flex-column flex-md-row width-full flex-order-2 flex-md-order-none mr-0 mr-md-3 mt-3 mt-md-0 Details-content--hidden-not-important d-md-flex"
+    >
+      <div
+        class="Header-search header-search flex-auto js-site-search position-relative flex-self-stretch flex-md-self-auto mb-3 mb-md-0 mr-0 mr-md-3 scoped-search site-scoped-search js-jump-to"
+      >
+        <div class="position-relative">
+          <form
+            target="_blank"
+            action="https://www.google.com/search"
+            accept-charset="UTF-8"
+            method="get"
+            autocomplete="off"
+          >
+            <label
+              class="Header-search-label form-control input-sm header-search-wrapper p-0 js-chromeless-input-container header-search-wrapper-jump-to position-relative d-flex flex-justify-between flex-items-center"
+            >
+              <input
+                type="text"
+                class="Header-search-input form-control input-sm header-search-input jump-to-field js-jump-to-field js-site-search-focus js-site-search-field is-clearable"
+                name="q"
+                value=""
+                placeholder="Search"
+                autocomplete="off"
+              />
+              <input type="hidden" name="q" value="site:https://rvnox.github.io/" />
+              <div
+                class="js-jump-to-suggestions-container jump-to-suggestions overflow-hidden position-absolute"
+              >
+                <div
+                  id="search-progress"
+                  class="d-none color-bg-primary no-underline p-2"
+                  role="progress"
+                  aria-selected="false"
+                >
+                  <div class="loader"></div>
+                </div>
+
+                <ul
+                  id="jump-to-results"
+                  role="listbox"
+                  class="Box border-0 p-0 m-0 js-navigation-container jump-to-suggestions-results-container js-jump-to-suggestions-results-container js-active-navigation-container height-limitation"
+                ></ul>
+              </div>
+            </label>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="Header-item Header-item--full flex-justify-center d-md-none position-relative"
+    >
+      <a class="Header-link" href="https://rvnox.github.io/" aria-label="Home">
+        <svg
+          class="octicon octicon-mark-github v-align-middle"
+          height="32"
+          viewBox="0 0 16 16"
+          version="1.1"
+          width="32"
+        >
+          <path
+            fill-rule="evenodd"
+            d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"
+          ></path>
+        </svg>
+      </a>
+    </div>
+    <div class="Theme-switcher Header-item" style="margin-right: 0">
+      <span
+        role="button"
+        class="Header-link no-select"
+        onclick="switchTheme()"
+        style="cursor: pointer"
+        aria-label="Switch theme"
+      >
+        <svg
+          style="fill: var(--color-profile-color-modes-toggle-moon)"
+          class="no-select"
+          viewBox="0 0 16 16"
+          version="1.1"
+          width="16"
+          height="16"
+        >
+          <path
+            fill-rule="evenodd"
+            clip-rule="evenodd"
+            d="M4.52208 7.71754C7.5782 7.71754 10.0557 5.24006 10.0557 2.18394C10.0557 1.93498 10.0392 1.68986 10.0074 1.44961C9.95801 1.07727 10.3495 0.771159 10.6474 0.99992C12.1153 2.12716 13.0615 3.89999 13.0615 5.89383C13.0615 9.29958 10.3006 12.0605 6.89485 12.0605C3.95334 12.0605 1.49286 10.001 0.876728 7.24527C0.794841 6.87902 1.23668 6.65289 1.55321 6.85451C2.41106 7.40095 3.4296 7.71754 4.52208 7.71754Z"
+          ></path>
+        </svg>
+      </span>
+    </div>
+  </header>
+</div>
+
+  
+<script type="text/javascript" src="/js/initimage.js"></script>
+
+
+
+<div>
+  <main>
+    <div class="gisthead pagehead bg-gray-light pb-0 pt-3 mb-4">
+      <div class="px-0">
+        <div class="mb-3 d-flex px-3 px-md-3 px-lg-5">
+          <div class="flex-auto min-width-0 width-fit mr-3">
+            <div class="d-flex">
+              <div class="d-none d-md-block">
+                <a class="avatar mr-2 flex-shrink-0" href="https://rvnox.github.io/">
+                  <img class=" avatar-user"
+                    src="/images/avatar.png"
+                    width="32" height="32" alt="κόραξ"></a>
+              </div>
+              <div class="d-flex flex-column">
+                <h1 class="break-word f3 text-normal mb-md-0 mb-1">
+                  <span class="author">
+                    <a href="https://rvnox.github.io/">κόραξ</a></span><span
+                    class="path-divider">/</span><strong class="css-truncate-target mr-1" style="max-width: 410px"><a
+                      href="https://rvnox.github.io/post/2025-0309-01/">Grafana 变量</a></strong>
+                </h1>
+                <div class="note m-0">
+                  Created <relative-time datetime="Sun, 09 Mar 2025 11:26:45 &#43;0800"
+                    class="no-wrap">
+                    Sun, 09 Mar 2025 11:26:45 &#43;0800</relative-time>
+
+                  
+                  <span class="file-info-divider"></span>
+                  Modified <relative-time datetime="Sun, 03 Aug 2025 14:13:51 &#43;0000"
+                    class="no-wrap">
+                    Sun, 03 Aug 2025 14:13:51 &#43;0000</relative-time>
+                  
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container-lg px-3 new-discussion-timeline">
+      <div class="repository-content gist-content">
+        <div>
+          <div class="js-gist-file-update-container js-task-list-container file-box">
+            <div id="file-pytest" class="file my-2">
+              <div id="post-header" class="file-header d-flex flex-md-items-center flex-items-start sticky-header" style="z-index: 2">
+                <div class="file-info d-flex flex-md-items-center flex-items-start flex-order-1 flex-auto">
+                  <div class="text-mono f6 flex-auto pr-3 flex-order-2 flex-md-order-1 mt-2 mt-md-0">
+                    
+                    <summary id="toc-toggle" onclick="clickToc()" class="btn btn-octicon m-0 mr-2 p-2">
+                      <svg aria-hidden="true" viewBox="0 0 16 16" height="16" width="16" class="octicon octicon-list-unordered">
+                        <path fill-rule="evenodd" d="M2 4a1 1 0 100-2 1 1 0 000 2zm3.75-1.5a.75.75 0 000 1.5h8.5a.75.75 0 000-1.5h-8.5zm0 5a.75.75 0 000 1.5h8.5a.75.75 0 000-1.5h-8.5zm0 5a.75.75 0 000 1.5h8.5a.75.75 0 000-1.5h-8.5zM3 8a1 1 0 11-2 0 1 1 0 012 0zm-1 6a1 1 0 100-2 1 1 0 000 2z"></path>
+                      </svg>
+                    </summary>
+                    <details-menu class="SelectMenu" id="toc-details" style="display: none;">
+                      <div class="SelectMenu-modal rounded-3 mt-1" style="max-height: 340px;">
+                        <div class="SelectMenu-list SelectMenu-list--borderless p-2" style="overscroll-behavior: contain;" id="toc-list">
+                        </div>
+                      </div>
+                    </details-menu>
+                      1524 Words
+                    <span class="file-info-divider"></span>
+                                        7 min
+
+                  </div>
+                  <div class="file-actions flex-order-2 pt-0">
+  
+    
+       
+       
+       
+       
+      
+        
+        
+      
+       
+      <a class="muted-link mr-3" href="/tags/grafana">
+        <span class="repo-language-color" style="background-color: #959764"></span>
+        Grafana
+      </a>
+    
+  
+
+                  </div>
+                </div>
+              </div>
+
+
+              <div class="Box-body px-5 pb-5" style="z-index: 1">
+                <article class="markdown-body entry-content container-lg"><h1 id="什么是变量-variables">什么是变量 (Variables)？</h1>
+<p>变量（Variables）一般包含一个或多个可选择的值。</p>
+<p>使用变量我们可以创建出交互式的动态仪表盘！原本查看某些主机时，需要每次手动修改Panel中的PromQL表达式，或者给这些主机创建单独的Panel。这样的硬编码方式会导致Dashboard配置频繁修改，使用变量后，同一个仪表盘可以显示不同变量值(主机和实例)的数据。有变量的仪表盘就是一个模板，变量给模板注入了灵魂。</p>
+<p>例如：当用户只想关注其中某些主机时，基于当前我们已经学习到的知识只有两种方式，要么每次手动修改 Panel 中的 PromQL 表达式，要么直接为这些主机创建单独的 Panel。主机有很多时，需要新建无数的仪表盘来展示不同的主机状态，好在 grafana 中有Variables，可以动态修改仪表盘中的参数，这样仪表盘的内容也会随参数的值改变而改变。</p>
+<h1 id="变量的类型">变量的类型</h1>
+<p>通过 Dashboard 页面的 Settings 选项，可以进入 Dashboard 的配置页面并且选择 Variables 子菜单，就可以自定义变量了：</p>
+<p><img 
+  src="E:%5cToolBox%5cLucy%5cData%5cNotes%5cBlog%5ccontent%5cpost%5c2025-0309-01%5cimage-20250309121552501.png" 
+  alt="image-20250309121552501" 
+   
+  class="custom-image-class"
+  srcset="E:%5cToolBox%5cLucy%5cData%5cNotes%5cBlog%5ccontent%5cpost%5c2025-0309-01%5cimage-20250309121552501.png 1.25x"
+ />
+
+
+<script>
+function improveImage() {
+    
+
+    
+    const images = document.querySelectorAll('img');
+
+    images.forEach((item) => {
+        
+        let srcset = item.getAttribute('srcset');
+        if (srcset) {
+            let imageName = srcset.match(/image-(\d+\.(png|jpg|jpeg|gif))\s(\d+(\.\d+)?x)/i); 
+            if (imageName) {
+                item.setAttribute('srcset', imageName[0]);
+            }
+        }
+    });
+}
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    improveImage();
+});
+</script></p>
+<p>grafana 中的变量有7种类型，具体如下：</p>
+<img src="E:\ToolBox\Lucy\Data\Notes\Blog\content\post\2025-0309-01\image-20250309121742771.png" alt="image-20250309121742771" style="zoom:67%;" />
+<ul>
+<li>Query（查询）：此变量用于编写数据源查询，与Query Options中的设置配合使用，通常返回度量名称，标签值等。例如，返回主机或主机组的名称。</li>
+<li>Custom（自定义）：用户自定义设置的变量</li>
+<li>Text box（文本框）：用于提供一个可以自由输入的文本框。</li>
+<li>Constant（常量）：定义可以隐藏的常量。对于要共享的仪表盘中包括路径或者前缀很有用。在仪表盘导入过程中。常量变量将成为导入时的选项。</li>
+<li>Data source（数据源）：用于指定数据源，例如有多个zabbix源时，就可以使用此类变量，方便在Dashboard中交互切换数据源，快速显示不同数据源中的数据。</li>
+<li>Interval（时间间隔）：此变量可以表示查询的时间跨度，这样在查询的 SQL 中不用硬件编码时间间隔，而是使用interval变量来定义时间间隔。</li>
+<li>Ad hoc filters（Ad hoc 过滤器）：这是一种非常特殊的变量、目前只适用于某些数据源、如InfluxDB、Prometheus、Elasticsearch。使用指定数据源时将自动添加所有度量查询出的键/值。</li>
+</ul>
+<h2 id="query">Query</h2>
+<p>为了更加直观的了解 Query 变量的用法，我们直接用实际例子来演示，比如：展示交换机的实时接口状态</p>
+<p><img 
+  src="E:%5cToolBox%5cLucy%5cData%5cNotes%5cBlog%5ccontent%5cpost%5c2025-0309-01%5cimage-20250309134143896.png" 
+  alt="image-20250309134143896" 
+   
+  class="custom-image-class"
+  srcset="E:%5cToolBox%5cLucy%5cData%5cNotes%5cBlog%5ccontent%5cpost%5c2025-0309-01%5cimage-20250309134143896.png 1.25x"
+ />
+
+
+<script>
+function improveImage() {
+    
+
+    
+    const images = document.querySelectorAll('img');
+
+    images.forEach((item) => {
+        
+        let srcset = item.getAttribute('srcset');
+        if (srcset) {
+            let imageName = srcset.match(/image-(\d+\.(png|jpg|jpeg|gif))\s(\d+(\.\d+)?x)/i); 
+            if (imageName) {
+                item.setAttribute('srcset', imageName[0]);
+            }
+        }
+    });
+}
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    improveImage();
+});
+</script></p>
+<p>实际上，要展示交换机某个接口的状态十分简单，可以直接展示，只要展示对应交换机接口的 <code>Operational status</code> 即可，<code>Operational status </code>为 1 即是 UP，2 就是 DOWN，如下：</p>
+<img src="E:\ToolBox\Lucy\Data\Notes\Blog\content\post\2025-0309-01\image-20250309141106597.png" alt="image-20250309141106597" style="zoom:80%;" />
+<p>但我们无法直接在一个可视化面板中 &ldquo;动态&rdquo; 展示所有的交换机接口状态，一个交换机是 48 个接口，那么 10 个交换机就是 480 个接口，这样就得手动创建 480 个表盘，这样非常麻烦。</p>
+<p>此时，我们就可以通过 Query 变量的方法来解决上面的问题，首先我们要让 host 支持动态选择，我们发现 <code>A-交换机</code>  Group 组里面有多个交换机。比如：8楼的、9楼的等。</p>
+<p><img 
+  src="E:%5cToolBox%5cLucy%5cData%5cNotes%5cBlog%5ccontent%5cpost%5c2025-0309-01%5cimage-20250309145248552.png" 
+  alt="image-20250309145248552" 
+   
+  class="custom-image-class"
+  srcset="E:%5cToolBox%5cLucy%5cData%5cNotes%5cBlog%5ccontent%5cpost%5c2025-0309-01%5cimage-20250309145248552.png 1.25x"
+ />
+
+
+<script>
+function improveImage() {
+    
+
+    
+    const images = document.querySelectorAll('img');
+
+    images.forEach((item) => {
+        
+        let srcset = item.getAttribute('srcset');
+        if (srcset) {
+            let imageName = srcset.match(/image-(\d+\.(png|jpg|jpeg|gif))\s(\d+(\.\d+)?x)/i); 
+            if (imageName) {
+                item.setAttribute('srcset', imageName[0]);
+            }
+        }
+    });
+}
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    improveImage();
+});
+</script></p>
+<h3 id="定义-host-变量-switch">定义 host 变量 switch</h3>
+<p>我们希望能够通过变量来选择，首先我们需要定义 host 变量，来选择交换机，那么可以定义一个名为 switch 变量，如下：</p>
+<p><img 
+  src="E:%5cToolBox%5cLucy%5cData%5cNotes%5cBlog%5ccontent%5cpost%5c2025-0309-01%5cimage-20250309150256203.png" 
+  alt="image-20250309150256203" 
+   
+  class="custom-image-class"
+  srcset="E:%5cToolBox%5cLucy%5cData%5cNotes%5cBlog%5ccontent%5cpost%5c2025-0309-01%5cimage-20250309150256203.png 1.25x"
+ />
+
+
+<script>
+function improveImage() {
+    
+
+    
+    const images = document.querySelectorAll('img');
+
+    images.forEach((item) => {
+        
+        let srcset = item.getAttribute('srcset');
+        if (srcset) {
+            let imageName = srcset.match(/image-(\d+\.(png|jpg|jpeg|gif))\s(\d+(\.\d+)?x)/i); 
+            if (imageName) {
+                item.setAttribute('srcset', imageName[0]);
+            }
+        }
+    });
+}
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    improveImage();
+});
+</script></p>
+<img src="E:\ToolBox\Lucy\Data\Notes\Blog\content\post\2025-0309-01\image-20250309151244935.png" alt="image-20250309151244935" style="zoom:80%;" />
+<p><img 
+  src="E:%5cToolBox%5cLucy%5cData%5cNotes%5cBlog%5ccontent%5cpost%5c2025-0309-01%5cimage-20250309153910309.png" 
+  alt="image-20250309153910309" 
+   
+  class="custom-image-class"
+  srcset="E:%5cToolBox%5cLucy%5cData%5cNotes%5cBlog%5ccontent%5cpost%5c2025-0309-01%5cimage-20250309153910309.png 1.25x"
+ />
+
+
+<script>
+function improveImage() {
+    
+
+    
+    const images = document.querySelectorAll('img');
+
+    images.forEach((item) => {
+        
+        let srcset = item.getAttribute('srcset');
+        if (srcset) {
+            let imageName = srcset.match(/image-(\d+\.(png|jpg|jpeg|gif))\s(\d+(\.\d+)?x)/i); 
+            if (imageName) {
+                item.setAttribute('srcset', imageName[0]);
+            }
+        }
+    });
+}
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    improveImage();
+});
+</script></p>
+<h3 id="定义-item-tag-变量-interface">定义 Item tag 变量 interface</h3>
+<p>然后我们来定义 Item tag，首先我们获取到某个交换机下的所有 item tag，如下：</p>
+<p><img 
+  src="E:%5cToolBox%5cLucy%5cData%5cNotes%5cBlog%5ccontent%5cpost%5c2025-0309-01%5cimage-20250309160046318.png" 
+  alt="image-20250309160046318" 
+   
+  class="custom-image-class"
+  srcset="E:%5cToolBox%5cLucy%5cData%5cNotes%5cBlog%5ccontent%5cpost%5c2025-0309-01%5cimage-20250309160046318.png 1.25x"
+ />
+
+
+<script>
+function improveImage() {
+    
+
+    
+    const images = document.querySelectorAll('img');
+
+    images.forEach((item) => {
+        
+        let srcset = item.getAttribute('srcset');
+        if (srcset) {
+            let imageName = srcset.match(/image-(\d+\.(png|jpg|jpeg|gif))\s(\d+(\.\d+)?x)/i); 
+            if (imageName) {
+                item.setAttribute('srcset', imageName[0]);
+            }
+        }
+    });
+}
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    improveImage();
+});
+</script></p>
+<p>最终要获取某个交换机接口的状态，那么首先要获取接口1，就是获取类似 <code>Interface Ten-GigabitEthernet1/0/1</code> 等，所以应该再进行正则过滤。实际应为如下：</p>
+<img src="E:\ToolBox\Lucy\Data\Notes\Blog\content\post\2025-0309-01\image-20250309160007061.png" alt="image-20250309160007061" style="zoom:80%;" />
+<h3 id="定义-item-变量-interface1_value">定义 Item 变量 interface1_value</h3>
+<p>获取到交换机接口1后，我们需要再获取对应的 Operational status 值，一般是1代表UP，2代表DOWN</p>
+<p>定义 interface1_value 变量，我们可以看到 interface1 接口下有很多值，如下：</p>
+<p><img 
+  src="E:%5cToolBox%5cLucy%5cData%5cNotes%5cBlog%5ccontent%5cpost%5c2025-0309-01%5cimage-20250309161406443.png" 
+  alt="image-20250309161406443" 
+   
+  class="custom-image-class"
+  srcset="E:%5cToolBox%5cLucy%5cData%5cNotes%5cBlog%5ccontent%5cpost%5c2025-0309-01%5cimage-20250309161406443.png 1.25x"
+ />
+
+
+<script>
+function improveImage() {
+    
+
+    
+    const images = document.querySelectorAll('img');
+
+    images.forEach((item) => {
+        
+        let srcset = item.getAttribute('srcset');
+        if (srcset) {
+            let imageName = srcset.match(/image-(\d+\.(png|jpg|jpeg|gif))\s(\d+(\.\d+)?x)/i); 
+            if (imageName) {
+                item.setAttribute('srcset', imageName[0]);
+            }
+        }
+    });
+}
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    improveImage();
+});
+</script></p>
+<p>但是，我们只需要 Operational status 的值，也就是还需要正则过滤，如下：</p>
+<img src="E:\ToolBox\Lucy\Data\Notes\Blog\content\post\2025-0309-01\image-20250309161507058.png" alt="image-20250309161507058" style="zoom:80%;" />
+<h3 id="配置变量">配置变量</h3>
+<p>最终我们只需要配置的时候，选择相关变量即可，如下：</p>
+<img src="E:\ToolBox\Lucy\Data\Notes\Blog\content\post\2025-0309-01\image-20250309162120162.png" alt="image-20250309162120162" style="zoom:80%;" />
+<p>这样就得到了 8 楼的交换机1口状态，这里的值是1，也就是代表了UP，接口1状态正常</p>
+<img src="E:\ToolBox\Lucy\Data\Notes\Blog\content\post\2025-0309-01\image-20250309162333937.png" alt="image-20250309162333937" style="zoom:80%;" />
+<h3 id="配置其它接口状态">配置其它接口状态</h3>
+<p>同理，我们可以配置交换机 2 口状态，那么 interface2 的 Regex 如下：</p>
+<img src="E:\ToolBox\Lucy\Data\Notes\Blog\content\post\2025-0309-01\image-20250309162929847.png" alt="image-20250309162929847" style="zoom:80%;" />
+<pre tabindex="0"><code>^(?!.*description).*1/0/2(?!\d).*|^(?!.*description).*[a-z]0/1(?!\d)(?!.).*|^(?!.*description).*eth1(?!\d).*
+</code></pre><p>interface2_value 的 Regex 如下：</p>
+<img src="E:\ToolBox\Lucy\Data\Notes\Blog\content\post\2025-0309-01\image-20250309163015227.png" alt="image-20250309163015227" style="zoom:80%;" />
+<pre tabindex="0"><code>^(?!.*description).*(?=.*1/0/2: Operational status).*|^(?!.*description).*(?=.*[a-z]0/1: Operational status).*|^(?!.*description).*(?=.*eth1: Operational status).*
+</code></pre><p>其它配置都一模一样</p>
+<h2 id="custom">Custom</h2>
+<p>待续</p></article>
+              </div>
+
+              
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="pagination-nav">
+        <div class="pagination-button next-post">
+          
+          <div>«&nbsp;</div><a class="pagination-link link-reverse" href="https://rvnox.github.io/post/2025-0331-01/"> Golang 入门到入土（基础语法）</a>
+          
+        </div>
+        
+        <div class="pagination-button previous-post">
+          
+          <a class="pagination-link link-reverse" href="https://rvnox.github.io/post/2025-0224-01/">山石 SG-6000 防火墙日志与可视化&nbsp;</a><div> »</div>
+          
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+<script type="application/javascript" src='https://rvnox.github.io/js/toc.js'></script>
+<link rel="stylesheet" href='https://rvnox.github.io/css/toc.css' />
+
+
+  <div class="footer container-xl width-full p-responsive">
+  <div
+    class="position-relative d-flex flex-row-reverse flex-lg-row flex-wrap flex-lg-nowrap flex-justify-center flex-lg-justify-between flex-sm-items-center pt-6 pb-2 mt-6 f6 text-gray border-top border-gray-light ">
+    <a aria-label="Homepage" title="GitHub" class="footer-octicon d-none d-lg-block mr-lg-4" href="https://rvnox.github.io/">
+      <svg height="24" class="octicon octicon-mark-github" viewBox="0 0 16 16" version="1.1" width="24">
+        <path fill-rule="evenodd"
+          d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z">
+        </path>
+      </svg>
+    </a>
+    <ul class="list-style-none d-flex flex-wrap col-12 flex-justify-center flex-lg-justify-between mb-2 mb-lg-0">
+      
+      <li class="mr-3 mr-lg-0">Theme by <a href='https://github.com/MeiK2333/github-style'>github-style</a></li>
+      
+    </ul>
+  </div>
+  <div class="d-flex flex-justify-center pb-6">
+    <span class="f6 text-gray-light"></span>
+  </div>
+
+
+</div>
+</body>
+
+<script type="application/javascript" src="https://rvnox.github.io/js/github-style.js"></script>
+
+<script src="https://rvnox.github.io/js/mark.es6.min.js"></script>
+
+
+
+
+
+
+
+</html>

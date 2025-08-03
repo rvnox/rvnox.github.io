@@ -1,0 +1,1035 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width" />
+  <script
+    type="application/javascript"
+    src='https://rvnox.github.io/js/theme-mode.js'
+  ></script>
+  <link rel="stylesheet" href='https://rvnox.github.io/css/frameworks.min.css' />
+  <link rel="stylesheet" href='https://rvnox.github.io/css/github.min.css' />
+  <link rel="stylesheet" href='https://rvnox.github.io/css/github-style.css' />
+  <link rel="stylesheet" href='https://rvnox.github.io/css/light.css' />
+  <link rel="stylesheet" href='https://rvnox.github.io/css/dark.css' />
+  <link rel="stylesheet" href='https://rvnox.github.io/css/syntax.css' />
+  
+  <link rel="stylesheet" href="/custom.css" />
+  
+  <title>
+    域环境下自动化装机 | rvnox&#39;s Blog
+  </title>
+  
+  <link rel="icon" type="image/x-icon" href="/images/github-mark.png" />
+  
+  <meta name="theme-color" content="#1e2327" />
+
+  
+  <meta
+  name="description"
+  content="本文为域环境下的自动化装机内容，包括自动加域、自动还原网络配置、关联应用默认方式等企业内的常见问题 &amp;hellip;"
+/>
+<meta name="robots" content="noodp" />
+<link rel="canonical" href="https://rvnox.github.io/post/2024-1126-01/" />
+
+
+<meta name="twitter:card" content="summary" />
+<meta
+  name="twitter:title"
+  content="域环境下自动化装机 - rvnox&#39;s Blog"
+/>
+<meta
+  name="twitter:description"
+  content="本文为域环境下的自动化装机内容，包括自动加域、自动还原网络配置、关联应用默认方式等企业内的常见问题 &amp;hellip;"
+/>
+<meta name="twitter:site" content="https://rvnox.github.io/" />
+<meta name="twitter:creator" content="" />
+<meta
+  name="twitter:image"
+  content="https://rvnox.github.io/"
+/>
+
+
+<meta
+  property="og:type"
+  content="article"
+/>
+<meta
+  property="og:title"
+  content="域环境下自动化装机 - rvnox&#39;s Blog"
+/>
+<meta
+  property="og:description"
+  content="本文为域环境下的自动化装机内容，包括自动加域、自动还原网络配置、关联应用默认方式等企业内的常见问题 &amp;hellip;"
+/>
+<meta property="og:url" content="https://rvnox.github.io/post/2024-1126-01/" />
+<meta property="og:site_name" content="域环境下自动化装机" />
+<meta
+  property="og:image"
+  content="https://rvnox.github.io/"
+/>
+<meta property="og:image:width" content="2048" />
+<meta property="og:image:height" content="1024" />
+
+<meta property="article:published_time" content="2024-11-26 18:51:59 &#43;0800 &#43;0800" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+
+<script src="/js/pangu.js"></script>
+
+<script>
+	document.addEventListener('DOMContentLoaded', () => {
+			pangu.autoSpacingPage();
+	});
+</script>
+
+<body>
+  
+
+<style>
+  .height-limitation {
+    max-height: 300px;
+    overflow-y: scroll;
+  }
+
+  .loader {
+    border: 4px solid #f3f3f3;
+    border-bottom: 4px solid var(--color-fg-muted);
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    animation: spin 1s linear infinite;
+    margin: 0 auto;
+  }
+
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+</style>
+
+<div style="position: relative">
+  <header
+    class="Header js-details-container Details px-3 px-md-4 px-lg-5 flex-wrap flex-md-nowrap open Details--on"
+  >
+    <div
+      class="Header-item mobile-none"
+      style="margin-top: -4px; margin-bottom: -4px"
+    >
+      <a class="Header-link" href="https://rvnox.github.io/" aria-label="Home">
+        <svg
+          class="octicon"
+          height="32"
+          viewBox="0 0 16 16"
+          version="1.1"
+          width="32"
+        >
+          <path
+            fill-rule="evenodd"
+            d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"
+          ></path>
+        </svg>
+      </a>
+    </div>
+    <div class="Header-item d-md-none">
+      <button
+        class="Header-link btn-link js-details-target"
+        type="button"
+        onclick="document.querySelector('#header-search').style.display = document.querySelector('#header-search').style.display == 'none'? 'block': 'none'"
+        aria-label="Search"
+      >
+        <svg
+          height="24"
+          class="octicon octicon-three-bars"
+          viewBox="0 0 16 16"
+          version="1.1"
+          width="24"
+        >
+          <path
+            fill-rule="evenodd"
+            d="M1 2.75A.75.75 0 011.75 2h12.5a.75.75 0 110 1.5H1.75A.75.75 0 011 2.75zm0 5A.75.75 0 011.75 7h12.5a.75.75 0 110 1.5H1.75A.75.75 0 011 7.75zM1.75 12a.75.75 0 100 1.5h12.5a.75.75 0 100-1.5H1.75z"
+          ></path>
+        </svg>
+      </button>
+    </div>
+    <div
+      style="display: none"
+      id="header-search"
+      class="Header-item Header-item--full flex-column flex-md-row width-full flex-order-2 flex-md-order-none mr-0 mr-md-3 mt-3 mt-md-0 Details-content--hidden-not-important d-md-flex"
+    >
+      <div
+        class="Header-search header-search flex-auto js-site-search position-relative flex-self-stretch flex-md-self-auto mb-3 mb-md-0 mr-0 mr-md-3 scoped-search site-scoped-search js-jump-to"
+      >
+        <div class="position-relative">
+          <form
+            target="_blank"
+            action="https://www.google.com/search"
+            accept-charset="UTF-8"
+            method="get"
+            autocomplete="off"
+          >
+            <label
+              class="Header-search-label form-control input-sm header-search-wrapper p-0 js-chromeless-input-container header-search-wrapper-jump-to position-relative d-flex flex-justify-between flex-items-center"
+            >
+              <input
+                type="text"
+                class="Header-search-input form-control input-sm header-search-input jump-to-field js-jump-to-field js-site-search-focus js-site-search-field is-clearable"
+                name="q"
+                value=""
+                placeholder="Search"
+                autocomplete="off"
+              />
+              <input type="hidden" name="q" value="site:https://rvnox.github.io/" />
+              <div
+                class="js-jump-to-suggestions-container jump-to-suggestions overflow-hidden position-absolute"
+              >
+                <div
+                  id="search-progress"
+                  class="d-none color-bg-primary no-underline p-2"
+                  role="progress"
+                  aria-selected="false"
+                >
+                  <div class="loader"></div>
+                </div>
+
+                <ul
+                  id="jump-to-results"
+                  role="listbox"
+                  class="Box border-0 p-0 m-0 js-navigation-container jump-to-suggestions-results-container js-jump-to-suggestions-results-container js-active-navigation-container height-limitation"
+                ></ul>
+              </div>
+            </label>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="Header-item Header-item--full flex-justify-center d-md-none position-relative"
+    >
+      <a class="Header-link" href="https://rvnox.github.io/" aria-label="Home">
+        <svg
+          class="octicon octicon-mark-github v-align-middle"
+          height="32"
+          viewBox="0 0 16 16"
+          version="1.1"
+          width="32"
+        >
+          <path
+            fill-rule="evenodd"
+            d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"
+          ></path>
+        </svg>
+      </a>
+    </div>
+    <div class="Theme-switcher Header-item" style="margin-right: 0">
+      <span
+        role="button"
+        class="Header-link no-select"
+        onclick="switchTheme()"
+        style="cursor: pointer"
+        aria-label="Switch theme"
+      >
+        <svg
+          style="fill: var(--color-profile-color-modes-toggle-moon)"
+          class="no-select"
+          viewBox="0 0 16 16"
+          version="1.1"
+          width="16"
+          height="16"
+        >
+          <path
+            fill-rule="evenodd"
+            clip-rule="evenodd"
+            d="M4.52208 7.71754C7.5782 7.71754 10.0557 5.24006 10.0557 2.18394C10.0557 1.93498 10.0392 1.68986 10.0074 1.44961C9.95801 1.07727 10.3495 0.771159 10.6474 0.99992C12.1153 2.12716 13.0615 3.89999 13.0615 5.89383C13.0615 9.29958 10.3006 12.0605 6.89485 12.0605C3.95334 12.0605 1.49286 10.001 0.876728 7.24527C0.794841 6.87902 1.23668 6.65289 1.55321 6.85451C2.41106 7.40095 3.4296 7.71754 4.52208 7.71754Z"
+          ></path>
+        </svg>
+      </span>
+    </div>
+  </header>
+</div>
+
+  
+<script type="text/javascript" src="/js/initimage.js"></script>
+
+
+
+<div>
+  <main>
+    <div class="gisthead pagehead bg-gray-light pb-0 pt-3 mb-4">
+      <div class="px-0">
+        <div class="mb-3 d-flex px-3 px-md-3 px-lg-5">
+          <div class="flex-auto min-width-0 width-fit mr-3">
+            <div class="d-flex">
+              <div class="d-none d-md-block">
+                <a class="avatar mr-2 flex-shrink-0" href="https://rvnox.github.io/">
+                  <img class=" avatar-user"
+                    src="/images/avatar.png"
+                    width="32" height="32" alt="κόραξ"></a>
+              </div>
+              <div class="d-flex flex-column">
+                <h1 class="break-word f3 text-normal mb-md-0 mb-1">
+                  <span class="author">
+                    <a href="https://rvnox.github.io/">κόραξ</a></span><span
+                    class="path-divider">/</span><strong class="css-truncate-target mr-1" style="max-width: 410px"><a
+                      href="https://rvnox.github.io/post/2024-1126-01/">域环境下自动化装机</a></strong>
+                </h1>
+                <div class="note m-0">
+                  Created <relative-time datetime="Tue, 26 Nov 2024 18:51:59 &#43;0800"
+                    class="no-wrap">
+                    Tue, 26 Nov 2024 18:51:59 &#43;0800</relative-time>
+
+                  
+                  <span class="file-info-divider"></span>
+                  Modified <relative-time datetime="Sun, 03 Aug 2025 14:13:51 &#43;0000"
+                    class="no-wrap">
+                    Sun, 03 Aug 2025 14:13:51 &#43;0000</relative-time>
+                  
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container-lg px-3 new-discussion-timeline">
+      <div class="repository-content gist-content">
+        <div>
+          <div class="js-gist-file-update-container js-task-list-container file-box">
+            <div id="file-pytest" class="file my-2">
+              <div id="post-header" class="file-header d-flex flex-md-items-center flex-items-start sticky-header" style="z-index: 2">
+                <div class="file-info d-flex flex-md-items-center flex-items-start flex-order-1 flex-auto">
+                  <div class="text-mono f6 flex-auto pr-3 flex-order-2 flex-md-order-1 mt-2 mt-md-0">
+                    
+                    <summary id="toc-toggle" onclick="clickToc()" class="btn btn-octicon m-0 mr-2 p-2">
+                      <svg aria-hidden="true" viewBox="0 0 16 16" height="16" width="16" class="octicon octicon-list-unordered">
+                        <path fill-rule="evenodd" d="M2 4a1 1 0 100-2 1 1 0 000 2zm3.75-1.5a.75.75 0 000 1.5h8.5a.75.75 0 000-1.5h-8.5zm0 5a.75.75 0 000 1.5h8.5a.75.75 0 000-1.5h-8.5zm0 5a.75.75 0 000 1.5h8.5a.75.75 0 000-1.5h-8.5zM3 8a1 1 0 11-2 0 1 1 0 012 0zm-1 6a1 1 0 100-2 1 1 0 000 2z"></path>
+                      </svg>
+                    </summary>
+                    <details-menu class="SelectMenu" id="toc-details" style="display: none;">
+                      <div class="SelectMenu-modal rounded-3 mt-1" style="max-height: 340px;">
+                        <div class="SelectMenu-list SelectMenu-list--borderless p-2" style="overscroll-behavior: contain;" id="toc-list">
+                        </div>
+                      </div>
+                    </details-menu>
+                      3108 Words
+                    <span class="file-info-divider"></span>
+                                        14 min
+
+                  </div>
+                  <div class="file-actions flex-order-2 pt-0">
+  
+    
+       
+       
+       
+       
+      
+      
+        
+        
+       
+      <a class="muted-link mr-3" href="/tags/%E7%B3%BB%E7%BB%9F%E5%B0%81%E8%A3%85">
+        <span class="repo-language-color" style="background-color: #649b9d"></span>
+        系统封装
+      </a>
+    
+  
+
+                  </div>
+                </div>
+              </div>
+
+
+              <div class="Box-body px-5 pb-5" style="z-index: 1">
+                <article class="markdown-body entry-content container-lg"><p>在企业内，几乎都是域环境，那么就存在如下问题：</p>
+<ul>
+<li>如何最实现自动化装机，最大程度摸鱼 ！</li>
+</ul>
+<h1 id="系统封装注意点">系统封装注意点</h1>
+<p>如果不了解系统封装，可以参考小鱼儿yr封装教程，这个比较基础。</p>
+<p>注意事项：</p>
+<ul>
+<li>母盘精简容易出现各种问题，企业内优先考虑稳定性，非必要不精简。如果精简，推荐使用 NTLITE  。</li>
+<li>不建议使用任何系统优化工具，很多工具存在问题。</li>
+<li>不同的 iso 镜像在封装时细节有区别，所以各类封装教程仅供参考。</li>
+<li>系统封装一定要有耐心，经常会遇到各种问题，一定做好快照 ！</li>
+</ul>
+<p>封装中的常见问题：</p>
+<ul>
+<li>
+<p>关于浏览器：首推 Chrome 和 Edge 的便携版，这里为什么推荐便携版呢 ？对于 chrome 而言，我们需要设置搜索引擎和打开浏览器后的首页为 baidu 。若采用安装版，由于封装会运行 sysrep 工具，那么所有的设置都会失效，而便携版，你可以理解为把相关设置写入电脑的某个文件中，所以即使封装后，浏览器中的插件、设置等依然生效。</p>
+</li>
+<li>
+<p>关于默认应用打开方式：在域环境下，系统安装完后，要由本地用户切换为域用户，那么就存在应用程序的关联方式问题，比如：html 后缀无法直接用浏览器打开等问题 ！</p>
+<ul>
+<li>
+<p>一般来说，我们可以使用 SetUserFTA 和  SetDefaultBrowser 程序修改默认应用和浏览器</p>
+</li>
+<li>
+<p>但 win10 和 win11 推送了 KB5034763 和 KB5034765 更新，其中一项就是阻止用户使用软件或修改注册表方式，配置系统的默认浏览器。经研究，微软引进了 C:\Windows\System32\drivers\UCPD.sys 驱动来阻止随意更改默认关联方式。相关研究参考：<a href="https://kolbi.cz/blog/">Kolbicz</a> 博客</p>
+</li>
+<li>
+<p>若需要阻止或禁用 UCPD.sys 驱动，可参考该部分内容自行研究</p>
+</li>
+<li>
+<p>实际我在测试 win10 企业版镜像时，依然可以用 SetUserFTA 设置默认应用关联方式，暂时未遇到上面问题</p>
+</li>
+<li>
+<p>除了上面的方法外，在域环境中有更好的解决方式，无需考虑 ucpd 限制：</p>
+<ul>
+<li>
+<p>通过 dism 导出默认应用的关联方式：Dism /Online /Export-DefaultAppAssociations:&ldquo;C:\MyProgram\defaultassociations.xml&rdquo;</p>
+</li>
+<li>
+<p>然后再设置域控组策略，为每个域用户设置导出后的关联方式</p>
+<p><img 
+  src="./2024-1126-01/image-20250709225103212.png" 
+  alt="image-20250709225103212" 
+   
+  class="custom-image-class"
+  srcset="./2024-1126-01/image-20250709225103212.png 1.25x"
+ />
+
+
+<script>
+function improveImage() {
+    
+
+    
+    const images = document.querySelectorAll('img');
+
+    images.forEach((item) => {
+        
+        let srcset = item.getAttribute('srcset');
+        if (srcset) {
+            let imageName = srcset.match(/image-(\d+\.(png|jpg|jpeg|gif))\s(\d+(\.\d+)?x)/i); 
+            if (imageName) {
+                item.setAttribute('srcset', imageName[0]);
+            }
+        }
+    });
+}
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    improveImage();
+});
+</script></p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h1 id="自动化流程">自动化流程</h1>
+<p><img 
+  src="./2024-1126-01/image-20250714201418912.png" 
+  alt="image-20250714201418912" 
+   
+  class="custom-image-class"
+  srcset="./2024-1126-01/image-20250714201418912.png 1.25x"
+ />
+
+
+<script>
+function improveImage() {
+    
+
+    
+    const images = document.querySelectorAll('img');
+
+    images.forEach((item) => {
+        
+        let srcset = item.getAttribute('srcset');
+        if (srcset) {
+            let imageName = srcset.match(/image-(\d+\.(png|jpg|jpeg|gif))\s(\d+(\.\d+)?x)/i); 
+            if (imageName) {
+                item.setAttribute('srcset', imageName[0]);
+            }
+        }
+    });
+}
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    improveImage();
+});
+</script></p>
+<h1 id="获取系统配置工具">获取系统配置工具</h1>
+<p>对于使用固定 IP 的情况，重装完系统，必然要自动导入原网络信息，由于还需要自动加域，那么需要重装前，先获取网络配置和计算机名 。可通过 vbs 脚本获取，如下：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-vb" data-lang="vb"><span class="line"><span class="cl"><span class="k">Dim</span> <span class="n">objWMIService</span><span class="p">,</span> <span class="n">colAdapters</span><span class="p">,</span> <span class="n">objAdapter</span><span class="p">,</span> <span class="n">colDrives</span><span class="p">,</span> <span class="n">objDrive</span><span class="p">,</span> <span class="n">fso</span><span class="p">,</span> <span class="n">jsonFile</span><span class="p">,</span> <span class="n">jsonText</span>
+</span></span><span class="line"><span class="cl"><span class="k">Dim</span> <span class="n">ipAddress</span><span class="p">,</span> <span class="n">subnetMask</span><span class="p">,</span> <span class="n">gateway</span><span class="p">,</span> <span class="n">dns</span><span class="p">,</span> <span class="n">macAddress</span><span class="p">,</span> <span class="n">adapterName</span><span class="p">,</span> <span class="n">jsonPath</span><span class="p">,</span> <span class="n">driveLetter</span>
+</span></span><span class="line"><span class="cl"><span class="k">Dim</span> <span class="n">objNetwork</span><span class="p">,</span> <span class="n">computerName</span><span class="p">,</span> <span class="n">computerNamePath</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c">&#39; 连接到 WMI 服务
+</span></span></span><span class="line"><span class="cl"><span class="c"></span><span class="k">Set</span> <span class="n">objWMIService</span> <span class="o">=</span> <span class="n">GetObject</span><span class="p">(</span><span class="s">&#34;winmgmts:\\.\root\cimv2&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="k">Set</span> <span class="n">colAdapters</span> <span class="o">=</span> <span class="n">objWMIService</span><span class="p">.</span><span class="n">ExecQuery</span><span class="p">(</span><span class="s">&#34;SELECT * FROM Win32_NetworkAdapterConfiguration WHERE IPEnabled = True&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c">&#39; 初始化为空
+</span></span></span><span class="line"><span class="cl"><span class="c"></span><span class="n">ipAddress</span> <span class="o">=</span> <span class="s">&#34;&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">subnetMask</span> <span class="o">=</span> <span class="s">&#34;&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">gateway</span> <span class="o">=</span> <span class="s">&#34;&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">dns</span> <span class="o">=</span> <span class="s">&#34;&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">macAddress</span> <span class="o">=</span> <span class="s">&#34;&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">adapterName</span> <span class="o">=</span> <span class="s">&#34;&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c">&#39; 查找有默认网关的网卡（主网卡）
+</span></span></span><span class="line"><span class="cl"><span class="c"></span><span class="k">For</span> <span class="k">Each</span> <span class="n">objAdapter</span> <span class="ow">In</span> <span class="n">colAdapters</span>
+</span></span><span class="line"><span class="cl">    <span class="k">If</span> <span class="k">Not</span> <span class="n">IsNull</span><span class="p">(</span><span class="n">objAdapter</span><span class="p">.</span><span class="n">DefaultIPGateway</span><span class="p">)</span> <span class="k">Then</span>
+</span></span><span class="line"><span class="cl">        <span class="n">ipAddress</span> <span class="o">=</span> <span class="n">objAdapter</span><span class="p">.</span><span class="n">IPAddress</span><span class="p">(</span><span class="n">0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">subnetMask</span> <span class="o">=</span> <span class="n">objAdapter</span><span class="p">.</span><span class="n">IPSubnet</span><span class="p">(</span><span class="n">0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">gateway</span> <span class="o">=</span> <span class="n">objAdapter</span><span class="p">.</span><span class="n">DefaultIPGateway</span><span class="p">(</span><span class="n">0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">If</span> <span class="k">Not</span> <span class="n">IsNull</span><span class="p">(</span><span class="n">objAdapter</span><span class="p">.</span><span class="n">DNSServerSearchOrder</span><span class="p">)</span> <span class="k">Then</span>
+</span></span><span class="line"><span class="cl">            <span class="n">dns</span> <span class="o">=</span> <span class="n">Join</span><span class="p">(</span><span class="n">objAdapter</span><span class="p">.</span><span class="n">DNSServerSearchOrder</span><span class="p">,</span> <span class="s">&#34;&#34;&#34;,&#34;&#34;&#34;</span><span class="p">)</span> <span class="c">&#39; 转成 JSON 数组样式
+</span></span></span><span class="line"><span class="cl"><span class="c"></span>        <span class="k">End</span> <span class="k">If</span>
+</span></span><span class="line"><span class="cl">        <span class="n">macAddress</span> <span class="o">=</span> <span class="n">objAdapter</span><span class="p">.</span><span class="n">MACAddress</span> <span class="c">&#39; 获取 MAC 地址
+</span></span></span><span class="line"><span class="cl"><span class="c"></span>        <span class="n">adapterName</span> <span class="o">=</span> <span class="n">objAdapter</span><span class="p">.</span><span class="n">Description</span> <span class="c">&#39; 获取网卡名称
+</span></span></span><span class="line"><span class="cl"><span class="c"></span>        <span class="k">Exit</span> <span class="k">For</span>
+</span></span><span class="line"><span class="cl">    <span class="k">End</span> <span class="k">If</span>
+</span></span><span class="line"><span class="cl"><span class="k">Next</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c">&#39; 查找外置 U 盘
+</span></span></span><span class="line"><span class="cl"><span class="c"></span><span class="k">Set</span> <span class="n">colDrives</span> <span class="o">=</span> <span class="n">objWMIService</span><span class="p">.</span><span class="n">ExecQuery</span><span class="p">(</span><span class="s">&#34;SELECT * FROM Win32_LogicalDisk WHERE DriveType = 2&#34;</span><span class="p">)</span> <span class="c">&#39; 2 表示外部 USB 驱动器
+</span></span></span><span class="line"><span class="cl"><span class="c"></span><span class="k">For</span> <span class="k">Each</span> <span class="n">objDrive</span> <span class="ow">In</span> <span class="n">colDrives</span>
+</span></span><span class="line"><span class="cl">    <span class="n">driveLetter</span> <span class="o">=</span> <span class="n">objDrive</span><span class="p">.</span><span class="n">DeviceID</span> <span class="c">&#39; 获取外部 U 盘的驱动器字母
+</span></span></span><span class="line"><span class="cl"><span class="c"></span>    <span class="k">Exit</span> <span class="k">For</span> <span class="c">&#39; 只选择第一个外置驱动器
+</span></span></span><span class="line"><span class="cl"><span class="c"></span><span class="k">Next</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c">&#39; 如果找不到外置驱动器，则使用默认路径
+</span></span></span><span class="line"><span class="cl"><span class="c"></span><span class="k">If</span> <span class="n">driveLetter</span> <span class="o">=</span> <span class="s">&#34;&#34;</span> <span class="k">Then</span>
+</span></span><span class="line"><span class="cl">    <span class="n">WScript</span><span class="p">.</span><span class="n">Echo</span> <span class="s">&#34;No external USB drive detected, using default path.&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">driveLetter</span> <span class="o">=</span> <span class="s">&#34;D:&#34;</span> <span class="c">&#39; 默认路径为 C 盘
+</span></span></span><span class="line"><span class="cl"><span class="c"></span><span class="k">End</span> <span class="k">If</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c">&#39; 获取计算机名
+</span></span></span><span class="line"><span class="cl"><span class="c"></span><span class="k">Set</span> <span class="n">objNetwork</span> <span class="o">=</span> <span class="n">CreateObject</span><span class="p">(</span><span class="s">&#34;WScript.Network&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">computerName</span> <span class="o">=</span> <span class="n">objNetwork</span><span class="p">.</span><span class="n">ComputerName</span> <span class="c">&#39; 获取计算机名
+</span></span></span><span class="line"><span class="cl"><span class="c"></span>
+</span></span><span class="line"><span class="cl"><span class="c">&#39; 生成 JSON 字符串
+</span></span></span><span class="line"><span class="cl"><span class="c"></span><span class="n">jsonText</span> <span class="o">=</span> <span class="s">&#34;{&#34;&#34;IPAddress&#34;&#34;:&#34;&#34;&#34;</span> <span class="o">&amp;</span> <span class="n">ipAddress</span> <span class="o">&amp;</span> <span class="s">&#34;&#34;&#34;,&#34;</span> <span class="o">&amp;</span> _
+</span></span><span class="line"><span class="cl">           <span class="s">&#34;&#34;&#34;SubnetMask&#34;&#34;:&#34;&#34;&#34;</span> <span class="o">&amp;</span> <span class="n">subnetMask</span> <span class="o">&amp;</span> <span class="s">&#34;&#34;&#34;,&#34;</span> <span class="o">&amp;</span> _
+</span></span><span class="line"><span class="cl">           <span class="s">&#34;&#34;&#34;Gateway&#34;&#34;:&#34;&#34;&#34;</span> <span class="o">&amp;</span> <span class="n">gateway</span> <span class="o">&amp;</span> <span class="s">&#34;&#34;&#34;,&#34;</span> <span class="o">&amp;</span> _
+</span></span><span class="line"><span class="cl">           <span class="s">&#34;&#34;&#34;DNS&#34;&#34;:[&#34;&#34;&#34;</span> <span class="o">&amp;</span> <span class="n">dns</span> <span class="o">&amp;</span> <span class="s">&#34;&#34;&#34;]&#34;</span> <span class="o">&amp;</span> _
+</span></span><span class="line"><span class="cl">           <span class="s">&#34;, &#34;&#34;MACAddress&#34;&#34;:&#34;&#34;&#34;</span> <span class="o">&amp;</span> <span class="n">macAddress</span> <span class="o">&amp;</span> <span class="s">&#34;&#34;&#34;,&#34;</span> <span class="o">&amp;</span> _
+</span></span><span class="line"><span class="cl">           <span class="s">&#34;&#34;&#34;AdapterName&#34;&#34;:&#34;&#34;&#34;</span> <span class="o">&amp;</span> <span class="n">adapterName</span> <span class="o">&amp;</span> <span class="s">&#34;&#34;&#34;}&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c">&#39; 设置 JSON 文件路径到外置 U 盘
+</span></span></span><span class="line"><span class="cl"><span class="c"></span><span class="n">jsonPath</span> <span class="o">=</span> <span class="n">driveLetter</span> <span class="o">&amp;</span> <span class="s">&#34;\ipconfig.json&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c">&#39; 写入到文件
+</span></span></span><span class="line"><span class="cl"><span class="c"></span><span class="k">Set</span> <span class="n">fso</span> <span class="o">=</span> <span class="n">CreateObject</span><span class="p">(</span><span class="s">&#34;Scripting.FileSystemObject&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="k">Set</span> <span class="n">jsonFile</span> <span class="o">=</span> <span class="n">fso</span><span class="p">.</span><span class="n">CreateTextFile</span><span class="p">(</span><span class="n">jsonPath</span><span class="p">,</span> <span class="k">True</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">jsonFile</span><span class="p">.</span><span class="n">WriteLine</span> <span class="n">jsonText</span>
+</span></span><span class="line"><span class="cl"><span class="n">jsonFile</span><span class="p">.</span><span class="n">Close</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c">&#39; 获取计算机名并保存为 computer-name.json
+</span></span></span><span class="line"><span class="cl"><span class="c"></span><span class="n">computerNamePath</span> <span class="o">=</span> <span class="n">driveLetter</span> <span class="o">&amp;</span> <span class="s">&#34;\computer-name.json&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="k">Set</span> <span class="n">computerNameFile</span> <span class="o">=</span> <span class="n">fso</span><span class="p">.</span><span class="n">CreateTextFile</span><span class="p">(</span><span class="n">computerNamePath</span><span class="p">,</span> <span class="k">True</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">computerNameFile</span><span class="p">.</span><span class="n">WriteLine</span> <span class="s">&#34;{&#34;&#34;ComputerName&#34;&#34;:&#34;&#34;&#34;</span> <span class="o">&amp;</span> <span class="n">computerName</span> <span class="o">&amp;</span> <span class="s">&#34;&#34;&#34;}&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">computerNameFile</span><span class="p">.</span><span class="n">Close</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c">&#39; 清理对象
+</span></span></span><span class="line"><span class="cl"><span class="c"></span><span class="k">Set</span> <span class="n">colAdapters</span> <span class="o">=</span> <span class="k">Nothing</span>
+</span></span><span class="line"><span class="cl"><span class="k">Set</span> <span class="n">objWMIService</span> <span class="o">=</span> <span class="k">Nothing</span>
+</span></span><span class="line"><span class="cl"><span class="k">Set</span> <span class="n">fso</span> <span class="o">=</span> <span class="k">Nothing</span>
+</span></span><span class="line"><span class="cl"><span class="k">Set</span> <span class="n">colDrives</span> <span class="o">=</span> <span class="k">Nothing</span>
+</span></span><span class="line"><span class="cl"><span class="k">Set</span> <span class="n">objNetwork</span> <span class="o">=</span> <span class="k">Nothing</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">WScript</span><span class="p">.</span><span class="n">Echo</span> <span class="s">&#34;NetConfig saved in -&gt; &#34;</span> <span class="o">&amp;</span> <span class="n">jsonPath</span>
+</span></span><span class="line"><span class="cl"><span class="n">WScript</span><span class="p">.</span><span class="n">Echo</span> <span class="s">&#34;Computer name saved in -&gt; &#34;</span> <span class="o">&amp;</span> <span class="n">computerNamePath</span>
+</span></span></code></pre></div><p>上面的脚本会生成 computer-name.json 和 ipconfig.json 文件，两个文件分别保存计算机名和网络信息。</p>
+<h1 id="导入网络配置工具">导入网络配置工具</h1>
+<p>系统重装后，需要导入网络信息，编写如下 vbs 导入网络信息：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-vb" data-lang="vb"><span class="line"><span class="cl"><span class="c">&#39; -------- 初始化变量 --------
+</span></span></span><span class="line"><span class="cl"><span class="c"></span><span class="n">usbPath</span> <span class="o">=</span> <span class="s">&#34;&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c">&#39; -------- 检查固定路径 C: 和 D: 中是否存在 ipconfig.json --------
+</span></span></span><span class="line"><span class="cl"><span class="c"></span><span class="k">If</span> <span class="n">fso</span><span class="p">.</span><span class="n">FileExists</span><span class="p">(</span><span class="s">&#34;C:\ipconfig.json&#34;</span><span class="p">)</span> <span class="k">Then</span>
+</span></span><span class="line"><span class="cl">    <span class="n">usbPath</span> <span class="o">=</span> <span class="s">&#34;C:&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">WScript</span><span class="p">.</span><span class="n">Echo</span> <span class="s">&#34;Found config in C:&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="k">ElseIf</span> <span class="n">fso</span><span class="p">.</span><span class="n">FileExists</span><span class="p">(</span><span class="s">&#34;D:\ipconfig.json&#34;</span><span class="p">)</span> <span class="k">Then</span>
+</span></span><span class="line"><span class="cl">    <span class="n">usbPath</span> <span class="o">=</span> <span class="s">&#34;D:&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">WScript</span><span class="p">.</span><span class="n">Echo</span> <span class="s">&#34;Found config in D:&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="k">Else</span>
+</span></span><span class="line"><span class="cl">    <span class="c">&#39; -------- 检查所有可移动驱动器 --------
+</span></span></span><span class="line"><span class="cl"><span class="c"></span>    <span class="k">Set</span> <span class="n">colDrives</span> <span class="o">=</span> <span class="n">objWMIService</span><span class="p">.</span><span class="n">ExecQuery</span><span class="p">(</span><span class="s">&#34;SELECT * FROM Win32_LogicalDisk WHERE DriveType = 2&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">For</span> <span class="k">Each</span> <span class="n">drive</span> <span class="ow">In</span> <span class="n">colDrives</span>
+</span></span><span class="line"><span class="cl">        <span class="k">If</span> <span class="n">fso</span><span class="p">.</span><span class="n">FileExists</span><span class="p">(</span><span class="n">drive</span><span class="p">.</span><span class="n">DeviceID</span> <span class="o">&amp;</span> <span class="s">&#34;\ipconfig.json&#34;</span><span class="p">)</span> <span class="k">Then</span>
+</span></span><span class="line"><span class="cl">            <span class="n">usbPath</span> <span class="o">=</span> <span class="n">drive</span><span class="p">.</span><span class="n">DeviceID</span>
+</span></span><span class="line"><span class="cl">            <span class="n">WScript</span><span class="p">.</span><span class="n">Echo</span> <span class="s">&#34;Found config in removable drive: &#34;</span> <span class="o">&amp;</span> <span class="n">usbPath</span>
+</span></span><span class="line"><span class="cl">            <span class="k">Exit</span> <span class="k">For</span>
+</span></span><span class="line"><span class="cl">        <span class="k">End</span> <span class="k">If</span>
+</span></span><span class="line"><span class="cl">    <span class="k">Next</span>
+</span></span><span class="line"><span class="cl"><span class="k">End</span> <span class="k">If</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c">&#39; -------- 如果找不到配置文件，则退出 --------
+</span></span></span><span class="line"><span class="cl"><span class="c"></span><span class="k">If</span> <span class="n">usbPath</span> <span class="o">=</span> <span class="s">&#34;&#34;</span> <span class="k">Then</span>
+</span></span><span class="line"><span class="cl">    <span class="n">WScript</span><span class="p">.</span><span class="n">Echo</span> <span class="s">&#34;No configuration file found in C:, D: or removable drive.&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">WScript</span><span class="p">.</span><span class="n">Quit</span>
+</span></span><span class="line"><span class="cl"><span class="k">End</span> <span class="k">If</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c">&#39; -------- 构造配置文件完整路径 --------
+</span></span></span><span class="line"><span class="cl"><span class="c"></span><span class="n">jsonFilePath</span> <span class="o">=</span> <span class="n">usbPath</span> <span class="o">&amp;</span> <span class="s">&#34;\ipconfig.json&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c">&#39; -------- 读取 JSON 文件内容 --------
+</span></span></span><span class="line"><span class="cl"><span class="c"></span><span class="k">Set</span> <span class="n">jsonFile</span> <span class="o">=</span> <span class="n">fso</span><span class="p">.</span><span class="n">OpenTextFile</span><span class="p">(</span><span class="n">jsonFilePath</span><span class="p">,</span> <span class="n">1</span><span class="p">)</span> <span class="c">&#39; 1 = ForReading
+</span></span></span><span class="line"><span class="cl"><span class="c"></span><span class="n">jsonText</span> <span class="o">=</span> <span class="n">jsonFile</span><span class="p">.</span><span class="n">ReadAll</span>
+</span></span><span class="line"><span class="cl"><span class="n">jsonFile</span><span class="p">.</span><span class="n">Close</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c">&#39; -------- 解析 JSON 中的配置项 --------
+</span></span></span><span class="line"><span class="cl"><span class="c"></span><span class="n">targetMac</span> <span class="o">=</span> <span class="n">ExtractValue</span><span class="p">(</span><span class="n">jsonText</span><span class="p">,</span> <span class="s">&#34;MACAddress&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">targetIP</span> <span class="o">=</span> <span class="n">ExtractValue</span><span class="p">(</span><span class="n">jsonText</span><span class="p">,</span> <span class="s">&#34;IPAddress&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">subnetMask</span> <span class="o">=</span> <span class="n">ExtractValue</span><span class="p">(</span><span class="n">jsonText</span><span class="p">,</span> <span class="s">&#34;SubnetMask&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">gateway</span> <span class="o">=</span> <span class="n">ExtractValue</span><span class="p">(</span><span class="n">jsonText</span><span class="p">,</span> <span class="s">&#34;Gateway&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">dnsList</span> <span class="o">=</span> <span class="n">ExtractValue</span><span class="p">(</span><span class="n">jsonText</span><span class="p">,</span> <span class="s">&#34;DNS&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c">&#39; -------- 如果 DNS 为空则退出 --------
+</span></span></span><span class="line"><span class="cl"><span class="c"></span><span class="k">If</span> <span class="n">dnsList</span> <span class="o">=</span> <span class="s">&#34;&#34;</span> <span class="k">Then</span>
+</span></span><span class="line"><span class="cl">    <span class="n">WScript</span><span class="p">.</span><span class="n">Echo</span> <span class="s">&#34;No DNS found in the JSON configuration.&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">WScript</span><span class="p">.</span><span class="n">Quit</span>
+</span></span><span class="line"><span class="cl"><span class="k">End</span> <span class="k">If</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c">&#39; -------- 循环查找匹配的网卡 MAC 地址 --------
+</span></span></span><span class="line"><span class="cl"><span class="c"></span><span class="k">Do</span>
+</span></span><span class="line"><span class="cl">    <span class="c">&#39; 获取所有带 MAC 地址的网络适配器
+</span></span></span><span class="line"><span class="cl"><span class="c"></span>    <span class="k">Set</span> <span class="n">colAdapters</span> <span class="o">=</span> <span class="n">objWMIService</span><span class="p">.</span><span class="n">ExecQuery</span><span class="p">(</span><span class="s">&#34;SELECT * FROM Win32_NetworkAdapter WHERE MACAddress IS NOT NULL&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">found</span> <span class="o">=</span> <span class="k">False</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">For</span> <span class="k">Each</span> <span class="n">objAdapter</span> <span class="ow">in</span> <span class="n">colAdapters</span>
+</span></span><span class="line"><span class="cl">        <span class="k">If</span> <span class="k">Not</span> <span class="n">IsNull</span><span class="p">(</span><span class="n">objAdapter</span><span class="p">.</span><span class="n">MACAddress</span><span class="p">)</span> <span class="k">Then</span>
+</span></span><span class="line"><span class="cl">            <span class="n">mac</span> <span class="o">=</span> <span class="n">objAdapter</span><span class="p">.</span><span class="n">MACAddress</span>
+</span></span><span class="line"><span class="cl">            <span class="k">If</span> <span class="n">mac</span> <span class="o">=</span> <span class="n">targetMac</span> <span class="k">Then</span>
+</span></span><span class="line"><span class="cl">                <span class="c">&#39; 如果找到了目标网卡
+</span></span></span><span class="line"><span class="cl"><span class="c"></span>                <span class="k">If</span> <span class="k">Not</span> <span class="n">IsNull</span><span class="p">(</span><span class="n">objAdapter</span><span class="p">.</span><span class="n">NetConnectionID</span><span class="p">)</span> <span class="k">Then</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">WScript</span><span class="p">.</span><span class="n">Echo</span> <span class="s">&#34;Configuring adapter: &#34;</span> <span class="o">&amp;</span> <span class="n">objAdapter</span><span class="p">.</span><span class="n">NetConnectionID</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">                    <span class="c">&#39; -------- 先设置为 DHCP 自动获取 IP --------
+</span></span></span><span class="line"><span class="cl"><span class="c"></span>                    <span class="k">Dim</span> <span class="n">dhcp</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">dhcp</span> <span class="o">=</span> <span class="s">&#34;netsh interface ipv4 set address name=&#34;&#34;&#34;</span> <span class="o">&amp;</span> <span class="n">objAdapter</span><span class="p">.</span><span class="n">InterfaceIndex</span> <span class="o">&amp;</span> <span class="s">&#34;&#34;&#34; source=dhcp &#34;</span>
+</span></span><span class="line"><span class="cl">                    <span class="k">Call</span> <span class="n">ExecuteCommand</span><span class="p">(</span><span class="n">dhcp</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">                    <span class="c">&#39; -------- 设置静态 IP 地址 --------
+</span></span></span><span class="line"><span class="cl"><span class="c"></span>                    <span class="k">Dim</span> <span class="n">command</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">command</span> <span class="o">=</span> <span class="s">&#34;netsh interface ipv4 set address name=&#34;&#34;&#34;</span> <span class="o">&amp;</span> <span class="n">objAdapter</span><span class="p">.</span><span class="n">InterfaceIndex</span> <span class="o">&amp;</span> <span class="s">&#34;&#34;&#34; static &#34;</span> <span class="o">&amp;</span> <span class="n">targetIP</span> <span class="o">&amp;</span> <span class="s">&#34; &#34;</span> <span class="o">&amp;</span> <span class="n">subnetMask</span> <span class="o">&amp;</span> <span class="s">&#34; &#34;</span> <span class="o">&amp;</span> <span class="n">gateway</span>
+</span></span><span class="line"><span class="cl">                    <span class="k">Call</span> <span class="n">ExecuteCommand</span><span class="p">(</span><span class="n">command</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">                    <span class="c">&#39; -------- 设置 DNS --------
+</span></span></span><span class="line"><span class="cl"><span class="c"></span>                    <span class="k">Dim</span> <span class="n">dns</span>
+</span></span><span class="line"><span class="cl">                    <span class="k">Dim</span> <span class="n">dnsArray</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">dnsArray</span> <span class="o">=</span> <span class="n">Split</span><span class="p">(</span><span class="n">dnsList</span><span class="p">,</span> <span class="s">&#34;,&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">                    <span class="k">For</span> <span class="k">Each</span> <span class="n">dns</span> <span class="ow">In</span> <span class="n">dnsArray</span>
+</span></span><span class="line"><span class="cl">                        <span class="n">dns</span> <span class="o">=</span> <span class="n">Trim</span><span class="p">(</span><span class="n">dns</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">                        <span class="n">command</span> <span class="o">=</span> <span class="s">&#34;netsh interface ipv4 add dns name=&#34;&#34;&#34;</span> <span class="o">&amp;</span> <span class="n">objAdapter</span><span class="p">.</span><span class="n">InterfaceIndex</span> <span class="o">&amp;</span> <span class="s">&#34;&#34;&#34; &#34;</span> <span class="o">&amp;</span> <span class="n">dns</span>
+</span></span><span class="line"><span class="cl">                        <span class="k">Call</span> <span class="n">ExecuteCommand</span><span class="p">(</span><span class="n">command</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">                    <span class="k">Next</span>
+</span></span><span class="line"><span class="cl">                <span class="k">Else</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">WScript</span><span class="p">.</span><span class="n">Echo</span> <span class="s">&#34;NetConnectionID is Null&#34;</span>
+</span></span><span class="line"><span class="cl">                <span class="k">End</span> <span class="k">If</span>
+</span></span><span class="line"><span class="cl">                <span class="n">found</span> <span class="o">=</span> <span class="k">True</span>
+</span></span><span class="line"><span class="cl">                <span class="k">Exit</span> <span class="k">For</span>
+</span></span><span class="line"><span class="cl">            <span class="k">End</span> <span class="k">If</span>
+</span></span><span class="line"><span class="cl">        <span class="k">End</span> <span class="k">If</span>
+</span></span><span class="line"><span class="cl">    <span class="k">Next</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c">&#39; -------- 如果没找到，等待 5 秒重试 --------
+</span></span></span><span class="line"><span class="cl"><span class="c"></span>    <span class="k">If</span> <span class="k">Not</span> <span class="n">found</span> <span class="k">Then</span>
+</span></span><span class="line"><span class="cl">        <span class="n">WScript</span><span class="p">.</span><span class="n">Echo</span> <span class="s">&#34;No matching MAC address found: &#34;</span> <span class="o">&amp;</span> <span class="n">targetMac</span> <span class="o">&amp;</span> <span class="s">&#34;. Retrying...&#34;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">WScript</span><span class="p">.</span><span class="n">Sleep</span> <span class="n">5000</span> <span class="c">&#39; 每隔 5 秒重试一次
+</span></span></span><span class="line"><span class="cl"><span class="c"></span>    <span class="k">End</span> <span class="k">If</span>
+</span></span><span class="line"><span class="cl"><span class="k">Loop</span> <span class="n">Until</span> <span class="n">found</span> <span class="c">&#39; 一直循环直到找到匹配的 MAC 地址
+</span></span></span><span class="line"><span class="cl"><span class="c"></span>
+</span></span><span class="line"><span class="cl"><span class="n">WScript</span><span class="p">.</span><span class="n">Echo</span> <span class="s">&#34;Configuration completed.&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">WScript</span><span class="p">.</span><span class="n">Quit</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c">&#39; -------- 自定义函数：提取 JSON 字符串中的指定键的值 --------
+</span></span></span><span class="line"><span class="cl"><span class="c"></span><span class="k">Function</span> <span class="nf">ExtractValue</span><span class="p">(</span><span class="n">jsonText</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">Dim</span> <span class="n">regex</span><span class="p">,</span> <span class="n">matches</span><span class="p">,</span> <span class="n">match</span><span class="p">,</span> <span class="n">rawValue</span>
+</span></span><span class="line"><span class="cl">    <span class="k">Set</span> <span class="n">regex</span> <span class="o">=</span> <span class="k">New</span> <span class="n">RegExp</span>
+</span></span><span class="line"><span class="cl">    <span class="n">regex</span><span class="p">.</span><span class="n">IgnoreCase</span> <span class="o">=</span> <span class="k">True</span>
+</span></span><span class="line"><span class="cl">    <span class="n">regex</span><span class="p">.</span><span class="n">Global</span> <span class="o">=</span> <span class="k">True</span>
+</span></span><span class="line"><span class="cl">    <span class="n">regex</span><span class="p">.</span><span class="n">Pattern</span> <span class="o">=</span> <span class="s">&#34;&#34;&#34;&#34;</span> <span class="o">&amp;</span> <span class="n">key</span> <span class="o">&amp;</span> <span class="s">&#34;&#34;&#34;:\s*(\[[^\]]+\]|&#34;&#34;[^&#34;&#34;]*&#34;&#34;)&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">Set</span> <span class="n">matches</span> <span class="o">=</span> <span class="n">regex</span><span class="p">.</span><span class="n">Execute</span><span class="p">(</span><span class="n">jsonText</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">If</span> <span class="n">matches</span><span class="p">.</span><span class="n">Count</span> <span class="o">&gt;</span> <span class="n">0</span> <span class="k">Then</span>
+</span></span><span class="line"><span class="cl">        <span class="n">rawValue</span> <span class="o">=</span> <span class="n">matches</span><span class="p">(</span><span class="n">0</span><span class="p">).</span><span class="n">Submatches</span><span class="p">(</span><span class="n">0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">rawValue</span> <span class="o">=</span> <span class="n">Replace</span><span class="p">(</span><span class="n">rawValue</span><span class="p">,</span> <span class="s">&#34;&#34;&#34;&#34;</span><span class="p">,</span> <span class="s">&#34;&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">If</span> <span class="n">Left</span><span class="p">(</span><span class="n">rawValue</span><span class="p">,</span> <span class="n">1</span><span class="p">)</span> <span class="o">=</span> <span class="s">&#34;[&#34;</span> <span class="k">Then</span>
+</span></span><span class="line"><span class="cl">            <span class="n">rawValue</span> <span class="o">=</span> <span class="n">Mid</span><span class="p">(</span><span class="n">rawValue</span><span class="p">,</span> <span class="n">2</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">End</span> <span class="k">If</span>
+</span></span><span class="line"><span class="cl">        <span class="k">If</span> <span class="n">Right</span><span class="p">(</span><span class="n">rawValue</span><span class="p">,</span> <span class="n">1</span><span class="p">)</span> <span class="o">=</span> <span class="s">&#34;]&#34;</span> <span class="k">Then</span>
+</span></span><span class="line"><span class="cl">            <span class="n">rawValue</span> <span class="o">=</span> <span class="n">Left</span><span class="p">(</span><span class="n">rawValue</span><span class="p">,</span> <span class="n">Len</span><span class="p">(</span><span class="n">rawValue</span><span class="p">)</span> <span class="o">-</span> <span class="n">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">End</span> <span class="k">If</span>
+</span></span><span class="line"><span class="cl">        <span class="n">ExtractValue</span> <span class="o">=</span> <span class="n">rawValue</span>
+</span></span><span class="line"><span class="cl">    <span class="k">Else</span>
+</span></span><span class="line"><span class="cl">        <span class="n">ExtractValue</span> <span class="o">=</span> <span class="s">&#34;&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">End</span> <span class="k">If</span>
+</span></span><span class="line"><span class="cl"><span class="k">End</span> <span class="k">Function</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c">&#39; -------- 自定义函数：执行命令行命令 --------
+</span></span></span><span class="line"><span class="cl"><span class="c"></span><span class="k">Function</span> <span class="nf">ExecuteCommand</span><span class="p">(</span><span class="n">command</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">Set</span> <span class="n">objShell</span> <span class="o">=</span> <span class="n">CreateObject</span><span class="p">(</span><span class="s">&#34;WScript.Shell&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">objShell</span><span class="p">.</span><span class="n">Run</span> <span class="n">command</span><span class="p">,</span> <span class="n">0</span><span class="p">,</span> <span class="k">True</span>
+</span></span><span class="line"><span class="cl"><span class="k">End</span> <span class="k">Function</span>
+</span></span></code></pre></div><h1 id="自动加域工具">自动加域工具</h1>
+<p>自动加域工具，通过 golang 来实现，在加域前，需要先判断当前计算机是否在域中。如果在域中，要先删除相关计算机，然后再进行加域，否则会报错，代码如下：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="kn">package</span> <span class="nx">main</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="p">(</span>
+</span></span><span class="line"><span class="cl">	<span class="s">&#34;crypto/tls&#34;</span>
+</span></span><span class="line"><span class="cl">	<span class="s">&#34;encoding/json&#34;</span>
+</span></span><span class="line"><span class="cl">	<span class="s">&#34;fmt&#34;</span>
+</span></span><span class="line"><span class="cl">	<span class="s">&#34;github.com/go-ldap/ldap/v3&#34;</span>
+</span></span><span class="line"><span class="cl">	<span class="s">&#34;golang.org/x/text/encoding/simplifiedchinese&#34;</span>
+</span></span><span class="line"><span class="cl">	<span class="s">&#34;net&#34;</span>
+</span></span><span class="line"><span class="cl">	<span class="s">&#34;os&#34;</span>
+</span></span><span class="line"><span class="cl">	<span class="s">&#34;os/exec&#34;</span>
+</span></span><span class="line"><span class="cl">	<span class="s">&#34;strings&#34;</span>
+</span></span><span class="line"><span class="cl">	<span class="s">&#34;time&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">type</span> <span class="nx">Charset</span> <span class="kt">string</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">const</span> <span class="p">(</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">UTF8</span>    <span class="p">=</span> <span class="nf">Charset</span><span class="p">(</span><span class="s">&#34;UTF-8&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">GB18030</span> <span class="p">=</span> <span class="nf">Charset</span><span class="p">(</span><span class="s">&#34;GB18030&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">ConvertByte2String</span><span class="p">(</span><span class="kt">byte</span> <span class="p">[]</span><span class="kt">byte</span><span class="p">,</span> <span class="nx">charset</span> <span class="nx">Charset</span><span class="p">)</span> <span class="kt">string</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="kd">var</span> <span class="nx">str</span> <span class="kt">string</span>
+</span></span><span class="line"><span class="cl">	<span class="k">switch</span> <span class="nx">charset</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="k">case</span> <span class="nx">GB18030</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">decodeBytes</span><span class="p">,</span> <span class="nx">_</span> <span class="o">:=</span> <span class="nx">simplifiedchinese</span><span class="p">.</span><span class="nx">GB18030</span><span class="p">.</span><span class="nf">NewDecoder</span><span class="p">().</span><span class="nf">Bytes</span><span class="p">(</span><span class="kt">byte</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">str</span> <span class="p">=</span> <span class="nb">string</span><span class="p">(</span><span class="nx">decodeBytes</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="k">case</span> <span class="nx">UTF8</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">		<span class="k">fallthrough</span>
+</span></span><span class="line"><span class="cl">	<span class="k">default</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">str</span> <span class="p">=</span> <span class="nb">string</span><span class="p">(</span><span class="kt">byte</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="k">return</span> <span class="nx">str</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">type</span> <span class="nx">ComputerInfo</span> <span class="kd">struct</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">ComputerName</span> <span class="kt">string</span> <span class="s">`json:&#34;ComputerName&#34;`</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">LdapSearch</span><span class="p">(</span><span class="nx">computerName</span> <span class="kt">string</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="nx">ldapServer</span> <span class="o">:=</span> <span class="s">&#34;10.64.110.1&#34;</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">ldapPort</span> <span class="o">:=</span> <span class="mi">389</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">ldapBindUsername</span> <span class="o">:=</span> <span class="s">&#34;test@dc.local&#34;</span>		<span class="c1">//域为 dc.local
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nx">ldapBindPassword</span> <span class="o">:=</span> <span class="s">&#34;123456&#34;</span>			<span class="c1">//密码123456
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nx">baseDN</span> <span class="o">:=</span> <span class="s">&#34;dc=ZG,dc=local&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="nx">conn</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">ldap</span><span class="p">.</span><span class="nf">Dial</span><span class="p">(</span><span class="s">&#34;tcp&#34;</span><span class="p">,</span> <span class="nx">fmt</span><span class="p">.</span><span class="nf">Sprintf</span><span class="p">(</span><span class="s">&#34;%s:%d&#34;</span><span class="p">,</span> <span class="nx">ldapServer</span><span class="p">,</span> <span class="nx">ldapPort</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;Failed to connect to LDAP: %v&#34;</span><span class="p">,</span> <span class="nx">err</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="k">defer</span> <span class="nx">conn</span><span class="p">.</span><span class="nf">Close</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="nx">err</span> <span class="p">=</span> <span class="nx">conn</span><span class="p">.</span><span class="nf">StartTLS</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">tls</span><span class="p">.</span><span class="nx">Config</span><span class="p">{</span><span class="nx">InsecureSkipVerify</span><span class="p">:</span> <span class="kc">true</span><span class="p">})</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;TLS Error: %v&#34;</span><span class="p">,</span> <span class="nx">err</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="nx">err</span> <span class="p">=</span> <span class="nx">conn</span><span class="p">.</span><span class="nf">Bind</span><span class="p">(</span><span class="nx">ldapBindUsername</span><span class="p">,</span> <span class="nx">ldapBindPassword</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;Bind Error: %v&#34;</span><span class="p">,</span> <span class="nx">err</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="nx">searchRequest</span> <span class="o">:=</span> <span class="nx">ldap</span><span class="p">.</span><span class="nf">NewSearchRequest</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">baseDN</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">ldap</span><span class="p">.</span><span class="nx">ScopeWholeSubtree</span><span class="p">,</span> <span class="nx">ldap</span><span class="p">.</span><span class="nx">NeverDerefAliases</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="kc">false</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">fmt</span><span class="p">.</span><span class="nf">Sprintf</span><span class="p">(</span><span class="s">&#34;(&amp;(objectClass=computer)(sAMAccountName=%s))&#34;</span><span class="p">,</span> <span class="nx">computerName</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl">		<span class="p">[]</span><span class="kt">string</span><span class="p">{</span><span class="s">&#34;dn&#34;</span><span class="p">,</span> <span class="s">&#34;sAMAccountName&#34;</span><span class="p">},</span>
+</span></span><span class="line"><span class="cl">		<span class="kc">nil</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">	<span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="nx">result</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">conn</span><span class="p">.</span><span class="nf">Search</span><span class="p">(</span><span class="nx">searchRequest</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;Search from ldap failed: %v&#34;</span><span class="p">,</span> <span class="nx">err</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nx">result</span><span class="p">.</span><span class="nx">Entries</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;Not Find Computer %s in DC, No need to delete.\n&#34;</span><span class="p">,</span> <span class="nx">computerName</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">entry</span> <span class="o">:=</span> <span class="nx">result</span><span class="p">.</span><span class="nx">Entries</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">dn</span> <span class="o">:=</span> <span class="nx">entry</span><span class="p">.</span><span class="nx">DN</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;Computer already exists in DC, Must delete it before rename.\n&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">		<span class="c1">// 删除对象
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>		<span class="nx">delReq</span> <span class="o">:=</span> <span class="nx">ldap</span><span class="p">.</span><span class="nf">NewDelRequest</span><span class="p">(</span><span class="nx">dn</span><span class="p">,</span> <span class="kc">nil</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">		<span class="k">if</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">conn</span><span class="p">.</span><span class="nf">Del</span><span class="p">(</span><span class="nx">delReq</span><span class="p">);</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">			<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;Delete computer Error: %v&#34;</span><span class="p">,</span> <span class="nx">err</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">		<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">			<span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;Delete %s success, Ready to rename.\n&#34;</span><span class="p">,</span> <span class="nx">computerName</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">		<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">LoadComputerName</span><span class="p">(</span><span class="nx">path</span> <span class="kt">string</span><span class="p">)</span> <span class="p">(</span><span class="kt">string</span><span class="p">,</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">file</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">os</span><span class="p">.</span><span class="nf">Open</span><span class="p">(</span><span class="nx">path</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="k">return</span> <span class="s">&#34;&#34;</span><span class="p">,</span> <span class="nx">err</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="k">defer</span> <span class="nx">file</span><span class="p">.</span><span class="nf">Close</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="kd">var</span> <span class="nx">info</span> <span class="nx">ComputerInfo</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">json</span><span class="p">.</span><span class="nf">NewDecoder</span><span class="p">(</span><span class="nx">file</span><span class="p">).</span><span class="nf">Decode</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">info</span><span class="p">);</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="k">return</span> <span class="s">&#34;&#34;</span><span class="p">,</span> <span class="nx">err</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">name</span> <span class="o">:=</span> <span class="nx">strings</span><span class="p">.</span><span class="nf">ToLower</span><span class="p">(</span><span class="nx">info</span><span class="p">.</span><span class="nx">ComputerName</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="p">!</span><span class="nx">strings</span><span class="p">.</span><span class="nf">HasSuffix</span><span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="s">&#34;$&#34;</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">name</span> <span class="o">+=</span> <span class="s">&#34;$&#34;</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="k">return</span> <span class="nx">name</span><span class="p">,</span> <span class="kc">nil</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">checkFileExists</span><span class="p">(</span><span class="nx">path</span> <span class="kt">string</span><span class="p">)</span> <span class="kt">bool</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">_</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">os</span><span class="p">.</span><span class="nf">Stat</span><span class="p">(</span><span class="nx">path</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="k">return</span> <span class="p">!</span><span class="nx">os</span><span class="p">.</span><span class="nf">IsNotExist</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">getFilePath</span><span class="p">()</span> <span class="kt">string</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">cDrive</span> <span class="o">:=</span> <span class="s">`C:\computer-name.json`</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">dDrive</span> <span class="o">:=</span> <span class="s">`D:\computer-name.json`</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="c1">// 判断 C 盘是否存在文件
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="k">if</span> <span class="nf">checkFileExists</span><span class="p">(</span><span class="nx">cDrive</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="k">return</span> <span class="nx">cDrive</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="c1">// 判断 D 盘是否存在文件
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="k">if</span> <span class="nf">checkFileExists</span><span class="p">(</span><span class="nx">dDrive</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="k">return</span> <span class="nx">dDrive</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="c1">// 如果都不存在
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="k">return</span> <span class="s">&#34;&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 关机倒计时重启提示
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kd">func</span> <span class="nf">countdownReboot</span><span class="p">(</span><span class="nx">seconds</span> <span class="kt">int</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;The computer is about to restart, Press Ctrl+C to cancel.\n&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="k">for</span> <span class="nx">i</span> <span class="o">:=</span> <span class="nx">seconds</span><span class="p">;</span> <span class="nx">i</span> <span class="p">&gt;</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span><span class="o">--</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;\rRestart countdown：%2d s&#34;</span><span class="p">,</span> <span class="nx">i</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">time</span><span class="p">.</span><span class="nf">Sleep</span><span class="p">(</span><span class="nx">time</span><span class="p">.</span><span class="nx">Second</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;\nRestarting Computer ...&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">exec</span><span class="p">.</span><span class="nf">Command</span><span class="p">(</span><span class="s">&#34;shutdown&#34;</span><span class="p">,</span> <span class="s">&#34;/r&#34;</span><span class="p">,</span> <span class="s">&#34;/t&#34;</span><span class="p">,</span> <span class="s">&#34;0&#34;</span><span class="p">).</span><span class="nf">Run</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">CheckNetwork</span><span class="p">()</span> <span class="kt">bool</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">conn</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">net</span><span class="p">.</span><span class="nf">DialTimeout</span><span class="p">(</span><span class="s">&#34;tcp&#34;</span><span class="p">,</span> <span class="s">&#34;10.64.110.1:389&#34;</span><span class="p">,</span> <span class="mi">3</span><span class="o">*</span><span class="nx">time</span><span class="p">.</span><span class="nx">Second</span><span class="p">)</span> <span class="c1">// Google DNS
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="k">return</span> <span class="kc">false</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">conn</span><span class="p">.</span><span class="nf">Close</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">	<span class="k">return</span> <span class="kc">true</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">WaitForNetwork</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;Checking network connection, Please Wait ...&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="k">for</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="k">if</span> <span class="nf">CheckNetwork</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">			<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;Network connected, Continue.&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">			<span class="k">return</span>
+</span></span><span class="line"><span class="cl">		<span class="p">}</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;Network Error, Retry after 5 seconds ...&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">time</span><span class="p">.</span><span class="nf">Sleep</span><span class="p">(</span><span class="mi">5</span> <span class="o">*</span> <span class="nx">time</span><span class="p">.</span><span class="nx">Second</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">RunCmdCommand</span><span class="p">(</span><span class="nx">name</span> <span class="kt">string</span><span class="p">,</span> <span class="nx">args</span> <span class="o">...</span><span class="kt">string</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">cmd</span> <span class="o">:=</span> <span class="nx">exec</span><span class="p">.</span><span class="nf">Command</span><span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">args</span><span class="o">...</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">cmd</span><span class="p">.</span><span class="nx">Stdout</span> <span class="p">=</span> <span class="kc">nil</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">cmd</span><span class="p">.</span><span class="nx">Stderr</span> <span class="p">=</span> <span class="kc">nil</span> 
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">RunPowerShellInNewWindow</span><span class="p">(</span><span class="nx">script</span> <span class="kt">string</span><span class="p">)</span> <span class="p">(</span><span class="kt">string</span><span class="p">,</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">cmd</span> <span class="o">:=</span> <span class="nx">exec</span><span class="p">.</span><span class="nf">Command</span><span class="p">(</span><span class="s">&#34;powershell&#34;</span><span class="p">,</span> <span class="s">&#34;-NoProfile&#34;</span><span class="p">,</span> <span class="s">&#34;-NoExit&#34;</span><span class="p">,</span> <span class="s">&#34;-Command&#34;</span><span class="p">,</span> <span class="nx">script</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">err</span> <span class="o">:=</span> <span class="nx">cmd</span><span class="p">.</span><span class="nf">Start</span><span class="p">()</span> 
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;Error starting PowerShell window:&#34;</span><span class="p">,</span> <span class="nx">err</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">output</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">cmd</span><span class="p">.</span><span class="nf">CombinedOutput</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">convertedOutput</span> <span class="o">:=</span> <span class="nf">ConvertByte2String</span><span class="p">(</span><span class="nx">output</span><span class="p">,</span> <span class="nx">GB18030</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="k">return</span> <span class="nx">convertedOutput</span><span class="p">,</span> <span class="nx">err</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">//等待网络连接
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nf">WaitForNetwork</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="nx">json_path</span> <span class="o">:=</span> <span class="nf">getFilePath</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="nx">json_path</span> <span class="o">==</span> <span class="s">&#34;&#34;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;No computer-name.json file found on C: or D: drives.&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">		<span class="k">return</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="c1">// computerName_dc 的结果额外带有 $
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nx">computerName_dc</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nf">LoadComputerName</span><span class="p">(</span><span class="nx">json_path</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;LoadComputerName failed:&#34;</span><span class="p">,</span> <span class="nx">err</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="c1">// 去掉 $ 符号
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nx">computerName</span> <span class="o">:=</span> <span class="nx">strings</span><span class="p">.</span><span class="nf">ToLower</span><span class="p">(</span><span class="nx">strings</span><span class="p">.</span><span class="nf">TrimSuffix</span><span class="p">(</span><span class="nx">computerName_dc</span><span class="p">,</span> <span class="s">&#34;$&#34;</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;Find computerName:&#34;</span><span class="p">,</span> <span class="nx">computerName</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="nf">LdapSearch</span><span class="p">(</span><span class="nx">computerName_dc</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="nf">RunCmdCommand</span><span class="p">(</span><span class="s">&#34;ipconfig&#34;</span><span class="p">,</span> <span class="s">&#34;/flushdns&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="nf">RunCmdCommand</span><span class="p">(</span><span class="s">&#34;nbtstat&#34;</span><span class="p">,</span> <span class="s">&#34;-R&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="nf">RunCmdCommand</span><span class="p">(</span><span class="s">&#34;klist&#34;</span><span class="p">,</span> <span class="s">&#34;purge&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="k">for</span> <span class="nx">i</span> <span class="o">:=</span> <span class="mi">10</span><span class="p">;</span> <span class="nx">i</span> <span class="p">&gt;</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span><span class="o">--</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;\rFlushing DNS cache：%2d s&#34;</span><span class="p">,</span> <span class="nx">i</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">time</span><span class="p">.</span><span class="nf">Sleep</span><span class="p">(</span><span class="nx">time</span><span class="p">.</span><span class="nx">Second</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">time</span><span class="p">.</span><span class="nf">Sleep</span><span class="p">(</span><span class="mi">10</span> <span class="o">*</span> <span class="nx">time</span><span class="p">.</span><span class="nx">Second</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;\nStart rename the computer and joining the domain, please wait ...&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="nx">powershellScript</span> <span class="o">:=</span> <span class="nx">fmt</span><span class="p">.</span><span class="nf">Sprintf</span><span class="p">(</span><span class="s">`
+</span></span></span><span class="line"><span class="cl"><span class="s">		$secpasswd = ConvertTo-SecureString &#34;123456&#34; -AsPlainText -Force
+</span></span></span><span class="line"><span class="cl"><span class="s">		$credential = New-Object System.Management.Automation.PSCredential(&#34;dc.local\test&#34;, $secpasswd)
+</span></span></span><span class="line"><span class="cl"><span class="s">		Add-Computer -DomainName &#34;zg.local&#34; -Credential $credential -NewName &#34;%s&#34; -Force
+</span></span></span><span class="line"><span class="cl"><span class="s">		`</span><span class="p">,</span> <span class="nx">computerName</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="nx">cmd</span> <span class="o">:=</span> <span class="nx">exec</span><span class="p">.</span><span class="nf">Command</span><span class="p">(</span><span class="s">&#34;powershell&#34;</span><span class="p">,</span> <span class="s">&#34;-NoProfile&#34;</span><span class="p">,</span> <span class="s">&#34;-NonInteractive&#34;</span><span class="p">,</span> <span class="s">&#34;-Command&#34;</span><span class="p">,</span> <span class="nx">powershellScript</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">output</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">cmd</span><span class="p">.</span><span class="nf">CombinedOutput</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">convertedOutput</span> <span class="o">:=</span> <span class="nf">ConvertByte2String</span><span class="p">(</span><span class="nx">output</span><span class="p">,</span> <span class="nx">GB18030</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;Error executing PowerShell script:&#34;</span><span class="p">,</span> <span class="nx">err</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="nx">strings</span><span class="p">.</span><span class="nf">Contains</span><span class="p">(</span><span class="nb">string</span><span class="p">(</span><span class="nx">convertedOutput</span><span class="p">),</span> <span class="s">&#34;生效&#34;</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="nf">countdownReboot</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="nx">strings</span><span class="p">.</span><span class="nf">Contains</span><span class="p">(</span><span class="nb">string</span><span class="p">(</span><span class="nx">convertedOutput</span><span class="p">),</span> <span class="s">&#34;帐户已存在&#34;</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="k">for</span> <span class="nx">i</span> <span class="o">:=</span> <span class="mi">5</span><span class="p">;</span> <span class="nx">i</span> <span class="p">&gt;</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span><span class="o">--</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">			<span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;\rFailed to modify the computer name, try again：%2d s&#34;</span><span class="p">,</span> <span class="nx">i</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">			<span class="nx">time</span><span class="p">.</span><span class="nf">Sleep</span><span class="p">(</span><span class="nx">time</span><span class="p">.</span><span class="nx">Second</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">		<span class="p">}</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">time</span><span class="p">.</span><span class="nf">Sleep</span><span class="p">(</span><span class="mi">5</span> <span class="o">*</span> <span class="nx">time</span><span class="p">.</span><span class="nx">Second</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">powershellScript2</span> <span class="o">:=</span> <span class="nx">fmt</span><span class="p">.</span><span class="nf">Sprintf</span><span class="p">(</span><span class="s">`
+</span></span></span><span class="line"><span class="cl"><span class="s">Rename-Computer -NewName &#34;%s&#34; -DomainCredential (New-Object System.Management.Automation.PSCredential(&#34;dc.local\test&#34;, (ConvertTo-SecureString &#34;123456&#34; -AsPlainText -Force))) -Force
+</span></span></span><span class="line"><span class="cl"><span class="s">		`</span><span class="p">,</span> <span class="nx">computerName</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">result</span><span class="p">,</span> <span class="nx">_</span> <span class="o">:=</span> <span class="nf">RunPowerShellInNewWindow</span><span class="p">(</span><span class="nx">powershellScript2</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">		<span class="k">if</span> <span class="nx">strings</span><span class="p">.</span><span class="nf">Contains</span><span class="p">(</span><span class="nb">string</span><span class="p">(</span><span class="nx">result</span><span class="p">),</span> <span class="s">&#34;重启&#34;</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">			<span class="nf">countdownReboot</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">		<span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;JoinDomain-Output Error:\n&#34;</span><span class="p">,</span> <span class="nb">string</span><span class="p">(</span><span class="nx">convertedOutput</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;Press Enter to exit.&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Scanln</span><span class="p">()</span> 
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><h1 id="开启远程桌面工具">开启远程桌面工具</h1>
+<p>对于需要远程装机的情况下，装机后，需要自动开启远程桌面，只要在 D 盘下存在 D:\RemotePC.flag ，就会自动开启，cmd 脚本如下：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cmd" data-lang="cmd"><span class="line"><span class="cl"><span class="p">@</span><span class="k">echo</span> off
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="k">exist</span> <span class="s2">&#34;D:\RemotePC.flag&#34;</span> <span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="k">echo</span> RemotePC.flag found, enabling Remote Desktop...
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    reg add <span class="s2">&#34;HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server&#34;</span> /v fDenyTSConnections /t REG_DWORD /d 0 /f
+</span></span><span class="line"><span class="cl">    reg add <span class="s2">&#34;HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations\RDP-TCP&#34;</span> /v UserAuthentication /t REG_DWORD /d 0 /f
+</span></span><span class="line"><span class="cl">    net localgroup <span class="s2">&#34;Remote Desktop Users&#34;</span> Everyone /add
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">echo</span> Remote Desktop has been enabled.
+</span></span><span class="line"><span class="cl"><span class="p">)</span> <span class="k">else</span> <span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="k">echo</span> RemotePC.flag not found. Skipping Remote Desktop configuration.
+</span></span><span class="line"><span class="cl"><span class="p">)</span>
+</span></span></code></pre></div><h1 id="关于远程装机">关于远程装机</h1>
+<p>只要我们能够远程过对方电脑（绿盾、向日葵等），就可以远程装机，优先推荐 <code>EasyRCV3一键装机</code> 工具。</p>
+<p>把<code>网络配置</code>和<code>计算机名配置</code>和<code>RemotePC.flag</code>文件放到 D 盘—》 使用EasyRCV3一键装机工具把封装后的 esd 或 wim 镜像安装到 C 盘中 —》 安装后通过远程桌面安装软件即可</p>
+<h1 id="其他">其他</h1>
+<p>注：上面的 vbs 或 cmd 等文件，最后在使用的时候都要转为 exe 程序</p>
+</article>
+              </div>
+
+              
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="pagination-nav">
+        <div class="pagination-button next-post">
+          
+          <div>«&nbsp;</div><a class="pagination-link link-reverse" href="https://rvnox.github.io/post/2024-1211-01/"> Qexo 搭建指南</a>
+          
+        </div>
+        
+        <div class="pagination-button previous-post">
+          
+          <a class="pagination-link link-reverse" href="https://rvnox.github.io/post/2024-1103-01/">Runasspc 技巧&nbsp;</a><div> »</div>
+          
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+<script type="application/javascript" src='https://rvnox.github.io/js/toc.js'></script>
+<link rel="stylesheet" href='https://rvnox.github.io/css/toc.css' />
+
+
+  <div class="footer container-xl width-full p-responsive">
+  <div
+    class="position-relative d-flex flex-row-reverse flex-lg-row flex-wrap flex-lg-nowrap flex-justify-center flex-lg-justify-between flex-sm-items-center pt-6 pb-2 mt-6 f6 text-gray border-top border-gray-light ">
+    <a aria-label="Homepage" title="GitHub" class="footer-octicon d-none d-lg-block mr-lg-4" href="https://rvnox.github.io/">
+      <svg height="24" class="octicon octicon-mark-github" viewBox="0 0 16 16" version="1.1" width="24">
+        <path fill-rule="evenodd"
+          d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z">
+        </path>
+      </svg>
+    </a>
+    <ul class="list-style-none d-flex flex-wrap col-12 flex-justify-center flex-lg-justify-between mb-2 mb-lg-0">
+      
+      <li class="mr-3 mr-lg-0">Theme by <a href='https://github.com/MeiK2333/github-style'>github-style</a></li>
+      
+    </ul>
+  </div>
+  <div class="d-flex flex-justify-center pb-6">
+    <span class="f6 text-gray-light"></span>
+  </div>
+
+
+</div>
+</body>
+
+<script type="application/javascript" src="https://rvnox.github.io/js/github-style.js"></script>
+
+<script src="https://rvnox.github.io/js/mark.es6.min.js"></script>
+
+
+
+
+
+
+
+</html>

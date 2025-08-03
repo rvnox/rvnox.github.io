@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>rvnox&#39;s Blog</title>
+    <link>https://rvnox.github.io/</link>
+    <description>Recent content on rvnox&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Tue, 08 Jul 2025 19:41:11 +0800</lastBuildDate><atom:link href="https://rvnox.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Md 中图片转换工具</title>
+      <link>https://rvnox.github.io/post/2025-0708-01/</link>
+      <pubDate>Tue, 08 Jul 2025 19:41:11 +0800</pubDate>
+      
+      <guid>https://rvnox.github.io/post/2025-0708-01/</guid>
+      <description>Hugo 博客中阿里云 oss 存储的图片转换成本地图片的工具！</description>
+    </item>
+    
+    <item>
+      <title>Goland 环境配置</title>
+      <link>https://rvnox.github.io/post/2025-0615-01/</link>
+      <pubDate>Sun, 15 Jun 2025 20:36:41 +0800</pubDate>
+      
+      <guid>https://rvnox.github.io/post/2025-0615-01/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Linux分区详情</title>
+      <link>https://rvnox.github.io/post/2025-0604-01/</link>
+      <pubDate>Wed, 04 Jun 2025 20:52:01 +0800</pubDate>
+      
+      <guid>https://rvnox.github.io/post/2025-0604-01/</guid>
+      <description>详解 Linux 中的分区问题</description>
+    </item>
+    
+    <item>
+      <title>Grafana TransForm Data</title>
+      <link>https://rvnox.github.io/post/2025-0428-01/</link>
+      <pubDate>Mon, 28 Apr 2025 20:14:16 +0800</pubDate>
+      
+      <guid>https://rvnox.github.io/post/2025-0428-01/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>K8s安装前准备-Pod、网络</title>
+      <link>https://rvnox.github.io/post/2025-0415-01/</link>
+      <pubDate>Tue, 15 Apr 2025 21:22:54 +0800</pubDate>
+      
+      <guid>https://rvnox.github.io/post/2025-0415-01/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>kubernetes 介绍</title>
+      <link>https://rvnox.github.io/post/2025-0414-01/</link>
+      <pubDate>Mon, 14 Apr 2025 19:22:54 +0800</pubDate>
+      
+      <guid>https://rvnox.github.io/post/2025-0414-01/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Golang 入门到入土（基础语法）</title>
+      <link>https://rvnox.github.io/post/2025-0331-01/</link>
+      <pubDate>Mon, 31 Mar 2025 20:14:01 +0800</pubDate>
+      
+      <guid>https://rvnox.github.io/post/2025-0331-01/</guid>
+      <description>Golang 基础语法+demo，适合快速入门和回顾基础知识</description>
+    </item>
+    
+    <item>
+      <title>Grafana 变量</title>
+      <link>https://rvnox.github.io/post/2025-0309-01/</link>
+      <pubDate>Sun, 09 Mar 2025 11:26:45 +0800</pubDate>
+      
+      <guid>https://rvnox.github.io/post/2025-0309-01/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>山石 SG-6000 防火墙日志与可视化</title>
+      <link>https://rvnox.github.io/post/2025-0224-01/</link>
+      <pubDate>Mon, 24 Feb 2025 19:07:02 +0800</pubDate>
+      
+      <guid>https://rvnox.github.io/post/2025-0224-01/</guid>
+      <description>本文为山石防火墙 SG-6000 中日志的的可视化教程，以 VPN 用户的登陆情况为例 &amp;hellip;</description>
+    </item>
+    
+    <item>
+      <title>Go modules 剖析</title>
+      <link>https://rvnox.github.io/post/2024-1225-01/</link>
+      <pubDate>Wed, 25 Dec 2024 21:28:30 +0800</pubDate>
+      
+      <guid>https://rvnox.github.io/post/2024-1225-01/</guid>
+      <description>Go 的包依赖管理一直都被大家所诟病，从最初的 GOPATH 到最新的 GO Modules，虽然走了不少的弯路，但最终还是拿出了 Go Modules 这样像样的解决方案 &amp;hellip;</description>
+    </item>
+    
+    <item>
+      <title>Windows共享盘权限审计</title>
+      <link>https://rvnox.github.io/post/2024-1220-01/</link>
+      <pubDate>Fri, 20 Dec 2024 08:27:38 +0800</pubDate>
+      
+      <guid>https://rvnox.github.io/post/2024-1220-01/</guid>
+      <description>目前，依然有不少企业使用传统的 Windows 共享盘，但使用传统 Windwos 的共享很难对已有的权限进行梳理和分析&amp;hellip;</description>
+    </item>
+    
+    <item>
+      <title>Qexo 搭建指南</title>
+      <link>https://rvnox.github.io/post/2024-1211-01/</link>
+      <pubDate>Wed, 11 Dec 2024 20:59:35 +0800</pubDate>
+      
+      <guid>https://rvnox.github.io/post/2024-1211-01/</guid>
+      <description>Qexo+Github+Vercel 在线编辑 Hugo 博客的文章指南</description>
+    </item>
+    
+    <item>
+      <title>域环境下自动化装机</title>
+      <link>https://rvnox.github.io/post/2024-1126-01/</link>
+      <pubDate>Tue, 26 Nov 2024 18:51:59 +0800</pubDate>
+      
+      <guid>https://rvnox.github.io/post/2024-1126-01/</guid>
+      <description>本文为域环境下的自动化装机内容，包括自动加域、自动还原网络配置、关联应用默认方式等企业内的常见问题 &amp;hellip;</description>
+    </item>
+    
+    <item>
+      <title>Runasspc 技巧</title>
+      <link>https://rvnox.github.io/post/2024-1103-01/</link>
+      <pubDate>Sun, 03 Nov 2024 09:53:18 +0800</pubDate>
+      
+      <guid>https://rvnox.github.io/post/2024-1103-01/</guid>
+      <description>在企业内有时会限制员工自行安装软件，这会带来大量工作。本文旨在优化域环境下的软件安装问题&amp;hellip;</description>
+    </item>
+    
+    <item>
+      <title>Docker Swarm 入门指北</title>
+      <link>https://rvnox.github.io/post/2024-0923-01/</link>
+      <pubDate>Mon, 23 Sep 2024 22:19:22 +0800</pubDate>
+      
+      <guid>https://rvnox.github.io/post/2024-0923-01/</guid>
+      <description>Docker的三件套即Docker、Docker compose、Docker Swarm，本文主要介绍Docker Swarm相关的内容，虽然现在使用较多的依然是K8s，但在使用中 Swarm 也有自己的优势&amp;hellip;</description>
+    </item>
+    
+    <item>
+      <title>Zabbix 6.2 数据库分析</title>
+      <link>https://rvnox.github.io/post/2024-0905-01/</link>
+      <pubDate>Thu, 05 Sep 2024 20:52:27 +0800</pubDate>
+      
+      <guid>https://rvnox.github.io/post/2024-0905-01/</guid>
+      <description>通过grafana展示zabbix数据的时候，最好的方法就是直连zabbix数据库，本文记录对grafana直连zabbix数据库的一些语法 &amp;hellip;</description>
+    </item>
+    
+    <item>
+      <title>水坑技巧</title>
+      <link>https://rvnox.github.io/post/2024-0819-01/</link>
+      <pubDate>Mon, 19 Aug 2024 21:43:50 +0800</pubDate>
+      
+      <guid>https://rvnox.github.io/post/2024-0819-01/</guid>
+      <description>本文主要是介绍如何利用反向代理伪造各种网站来钓鱼，同时通过注入js来解决反向代理后出现的一些问题，简单暴力，特别适用于企业内钓鱼演练 &amp;hellip;</description>
+    </item>
+    
+    <item>
+      <title>JumpServer 的各种踩坑</title>
+      <link>https://rvnox.github.io/post/2024-0807-01/</link>
+      <pubDate>Wed, 07 Aug 2024 18:50:31 +0800</pubDate>
+      
+      <guid>https://rvnox.github.io/post/2024-0807-01/</guid>
+      <description>JumpServer 的入门到入土笔记，包含各类搭建方法，升级的注意事项，如何处理常见的报错，以及日常使用中的各类注意事项，实现登录审计的可视化大屏等技巧&amp;hellip;&amp;hellip;</description>
+    </item>
+    
+    <item>
+      <title>Readme</title>
+      <link>https://rvnox.github.io/readme/</link>
+      <pubDate>Thu, 01 Aug 2024 21:39:59 +0800</pubDate>
+      
+      <guid>https://rvnox.github.io/readme/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>github-style 主题优化</title>
+      <link>https://rvnox.github.io/post/2024-0726-01/</link>
+      <pubDate>Fri, 26 Jul 2024 21:41:05 +0800</pubDate>
+      
+      <guid>https://rvnox.github.io/post/2024-0726-01/</guid>
+      <description>文章主要记录对该hugo主题的一些优化等技巧</description>
+    </item>
+    
+    <item>
+      <title>Rayder 代码重构</title>
+      <link>https://rvnox.github.io/post/2024-0309-01/</link>
+      <pubDate>Sat, 09 Mar 2024 18:18:22 +0800</pubDate>
+      
+      <guid>https://rvnox.github.io/post/2024-0309-01/</guid>
+      <description>Rayder 是一款命令行工具，旨在简化工作流程的编排和执行。它允许您在 YAML 文件中定义一系列模块，每个模块包含要执行的命令。Rayder 可帮助您自动化复杂的流程，轻松简化重复的模块，并在命令彼此不依赖的情况下并行执行它们。</description>
+    </item>
+    
+    <item>
+      <title>8086 汇编语言（二）</title>
+      <link>https://rvnox.github.io/post/2024-0825-01/</link>
+      <pubDate>Thu, 25 Aug 2022 08:41:24 +0800</pubDate>
+      
+      <guid>https://rvnox.github.io/post/2024-0825-01/</guid>
+      <description>汇编</description>
+    </item>
+    
+    <item>
+      <title>8086 汇编语言（一）</title>
+      <link>https://rvnox.github.io/post/2024-0728-01/</link>
+      <pubDate>Thu, 28 Jul 2022 19:19:29 +0800</pubDate>
+      
+      <guid>https://rvnox.github.io/post/2024-0728-01/</guid>
+      <description>对于绝大多数人来说，二进制程序是不可读的，当然有能人可以读，比如第一代程序员，但这类人快灭绝了，直接看二进制不容易看出来究竟做了什么事情&amp;hellip;&amp;hellip;</description>
+    </item>
+    
+  </channel>
+</rss>

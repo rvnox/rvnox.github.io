@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Golang on rvnox&#39;s Blog</title>
+    <link>https://rvnox.github.io/tags/golang/</link>
+    <description>Recent content in Golang on rvnox&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sun, 15 Jun 2025 20:36:41 +0800</lastBuildDate><atom:link href="https://rvnox.github.io/tags/golang/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Goland 环境配置</title>
+      <link>https://rvnox.github.io/post/2025-0615-01/</link>
+      <pubDate>Sun, 15 Jun 2025 20:36:41 +0800</pubDate>
+      
+      <guid>https://rvnox.github.io/post/2025-0615-01/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Golang 入门到入土（基础语法）</title>
+      <link>https://rvnox.github.io/post/2025-0331-01/</link>
+      <pubDate>Mon, 31 Mar 2025 20:14:01 +0800</pubDate>
+      
+      <guid>https://rvnox.github.io/post/2025-0331-01/</guid>
+      <description>Golang 基础语法+demo，适合快速入门和回顾基础知识</description>
+    </item>
+    
+    <item>
+      <title>Go modules 剖析</title>
+      <link>https://rvnox.github.io/post/2024-1225-01/</link>
+      <pubDate>Wed, 25 Dec 2024 21:28:30 +0800</pubDate>
+      
+      <guid>https://rvnox.github.io/post/2024-1225-01/</guid>
+      <description>Go 的包依赖管理一直都被大家所诟病，从最初的 GOPATH 到最新的 GO Modules，虽然走了不少的弯路，但最终还是拿出了 Go Modules 这样像样的解决方案 &amp;hellip;</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Hugo辅助工具 on rvnox&#39;s Blog</title>
+    <link>https://rvnox.github.io/tags/hugo%E8%BE%85%E5%8A%A9%E5%B7%A5%E5%85%B7/</link>
+    <description>Recent content in Hugo辅助工具 on rvnox&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Tue, 08 Jul 2025 19:41:11 +0800</lastBuildDate><atom:link href="https://rvnox.github.io/tags/hugo%E8%BE%85%E5%8A%A9%E5%B7%A5%E5%85%B7/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Md 中图片转换工具</title>
+      <link>https://rvnox.github.io/post/2025-0708-01/</link>
+      <pubDate>Tue, 08 Jul 2025 19:41:11 +0800</pubDate>
+      
+      <guid>https://rvnox.github.io/post/2025-0708-01/</guid>
+      <description>Hugo 博客中阿里云 oss 存储的图片转换成本地图片的工具！</description>
+    </item>
+    
+  </channel>
+</rss>
