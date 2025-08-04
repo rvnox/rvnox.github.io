@@ -17,7 +17,7 @@
   <link rel="stylesheet" href="/custom.css" />
   
   <title>
-    8086 汇编语言（二） | rvnox&#39;s Blog
+     | rvnox&#39;s Blog
   </title>
   
   <link rel="icon" type="image/x-icon" href="/images/github-mark.png" />
@@ -27,20 +27,20 @@
   
   <meta
   name="description"
-  content="汇编"
+  content=""
 />
 <meta name="robots" content="noodp" />
-<link rel="canonical" href="https://rvnox.github.io/post/2024-0825-01/" />
+<link rel="canonical" href="https://rvnox.github.io/_drafts/2025-0804-02/" />
 
 
 <meta name="twitter:card" content="summary" />
 <meta
   name="twitter:title"
-  content="8086 汇编语言（二） - rvnox&#39;s Blog"
+  content=" - rvnox&#39;s Blog"
 />
 <meta
   name="twitter:description"
-  content="汇编"
+  content=""
 />
 <meta name="twitter:site" content="https://rvnox.github.io/" />
 <meta name="twitter:creator" content="" />
@@ -56,22 +56,20 @@
 />
 <meta
   property="og:title"
-  content="8086 汇编语言（二） - rvnox&#39;s Blog"
+  content=" - rvnox&#39;s Blog"
 />
 <meta
   property="og:description"
-  content="汇编"
+  content=""
 />
-<meta property="og:url" content="https://rvnox.github.io/post/2024-0825-01/" />
-<meta property="og:site_name" content="8086 汇编语言（二）" />
+<meta property="og:url" content="https://rvnox.github.io/_drafts/2025-0804-02/" />
+<meta property="og:site_name" content="" />
 <meta
   property="og:image"
   content="https://rvnox.github.io/"
 />
 <meta property="og:image:width" content="2048" />
 <meta property="og:image:height" content="1024" />
-
-<meta property="article:published_time" content="2022-08-25 08:41:24 &#43;0800 &#43;0800" />
 
 
 
@@ -291,12 +289,12 @@
                   <span class="author">
                     <a href="https://rvnox.github.io/">κόραξ</a></span><span
                     class="path-divider">/</span><strong class="css-truncate-target mr-1" style="max-width: 410px"><a
-                      href="https://rvnox.github.io/post/2024-0825-01/">8086 汇编语言（二）</a></strong>
+                      href="https://rvnox.github.io/_drafts/2025-0804-02/"></a></strong>
                 </h1>
                 <div class="note m-0">
-                  Created <relative-time datetime="Thu, 25 Aug 2022 08:41:24 &#43;0800"
+                  Created <relative-time datetime="Mon, 01 Jan 0001 00:00:00 &#43;0000"
                     class="no-wrap">
-                    Thu, 25 Aug 2022 08:41:24 &#43;0800</relative-time>
+                    Mon, 01 Jan 0001 00:00:00 &#43;0000</relative-time>
 
                   
                   <span class="file-info-divider"></span>
@@ -332,28 +330,12 @@
                         </div>
                       </div>
                     </details-menu>
-                      876 Words
+                      0 Words
                     <span class="file-info-divider"></span>
-                                        4 min
+                                        0 min
 
                   </div>
                   <div class="file-actions flex-order-2 pt-0">
-  
-    
-       
-       
-       
-       
-      
-        
-        
-        
-       
-      <a class="muted-link mr-3" href="/tags/8086%E6%B1%87%E7%BC%96">
-        <span class="repo-language-color" style="background-color: #9d9c97"></span>
-        8086汇编
-      </a>
-    
   
 
                   </div>
@@ -362,243 +344,7 @@
 
 
               <div class="Box-body px-5 pb-5" style="z-index: 1">
-                <article class="markdown-body entry-content container-lg"><h1 id="bxloop指令">[bx]、loop指令</h1>
-<h2 id="bx">[bx]</h2>
-<p>前面的学习中，我们了解到了[0]的用法，如下：</p>
-<pre tabindex="0"><code>mov bx,1000H 
-mov ds,bx	
-mov al,[0]X86ASM
-</code></pre><p>但这里中括号中的0是常量，我们还可放变量，比如：[bx]</p>
-<pre tabindex="0"><code>;如果ds已经是2000H
-mov bx,10
-mov ax,[bx]		;这个指令就相当于mov ax,2000H:10,也就是把2000H:10这个字型数据给ax
-;如果是mov dl,[0]，那么这个是把字节型数据给mov，因为dl只有8位X86ASM
-</code></pre><p>inx bx 指令的作用是让bx+1，相当于bx=bx+1或者是bx++</p>
-<h2 id="loop指令">loop指令</h2>
-<p>loop 指令，在汇编里面代表循环，类似于c语言的while、for循环。</p>
-<p>loop 指令的使用格式：<code>loop 标号</code>，CPU 执行 loop 指令时，首先执行 CX = CX-1，然后判断 CX 的值，CX的值如果不为0，就会跳到标号处执行程序，如果为0，就按顺序向下执行。</p>
-<pre tabindex="0"><code>;比如：如果要用指令实现2的三次方，可用如下方法
-mov ax,2	;ax=2
-add ax,ax	;ax=2+2=4  
-add ax,ax	;ax=4+4=8
-;但是这里如果要实现2的12次方呢？？？用上面的方法一直加下去就不太好，这里就用循环实现，用如下代码实现
-assume cs:code
-code segment    
-	mov ax,2    
-	mov cx,11    
-	
-s:  add ax,ax    
-	loop s            
-	
-	mov ax,4c00h    
-	int 21h
-code ends
-endX86ASM
-</code></pre><p>对上面2的12次方debug下，-u后我们发现ayu.exe会先执行mov ax,0002，然后再执行mov cx,000B，一直向下执行下去，然后到loop指令的时候，会再跳回到上面的add ax,ax指令</p>
-<p><img 
-  src="2024-0825-01%5cimage-20220830212722071.png" 
-  alt="image-20220830212722071" 
-   
-  class="custom-image-class"
-  srcset="2024-0825-01%5cimage-20220830212722071.png 1.25x"
- />
-
-
-<script>
-function improveImage() {
-    
-
-    
-    const images = document.querySelectorAll('img');
-
-    images.forEach((item) => {
-        
-        let srcset = item.getAttribute('srcset');
-        if (srcset) {
-            let imageName = srcset.match(/image-(\d+\.(png|jpg|jpeg|gif))\s(\d+(\.\d+)?x)/i); 
-            if (imageName) {
-                item.setAttribute('srcset', imageName[0]);
-            }
-        }
-    });
-}
-
-
-document.addEventListener('DOMContentLoaded', () => {
-    improveImage();
-});
-</script></p>
-<p>然后我们可以-t来一条条的指令看下</p>
-<p><img 
-  src="2024-0825-01%5cimage-20220830212728134.png" 
-  alt="image-20220830212728134" 
-   
-  class="custom-image-class"
-  srcset="2024-0825-01%5cimage-20220830212728134.png 1.25x"
- />
-
-
-<script>
-function improveImage() {
-    
-
-    
-    const images = document.querySelectorAll('img');
-
-    images.forEach((item) => {
-        
-        let srcset = item.getAttribute('srcset');
-        if (srcset) {
-            let imageName = srcset.match(/image-(\d+\.(png|jpg|jpeg|gif))\s(\d+(\.\d+)?x)/i); 
-            if (imageName) {
-                item.setAttribute('srcset', imageName[0]);
-            }
-        }
-    });
-}
-
-
-document.addEventListener('DOMContentLoaded', () => {
-    improveImage();
-});
-</script></p>
-<p>注意，上面的第二条指令<code>mov cx,000B</code>，这里000B实际就是十进制的11，也就是源程序中的<code>mov cx,11</code>，当然mov cx,11也可以写成<code>mov cx,0BH</code>，这里必须是0BH，不能写成BH，在汇编中数据不能以字母开头，所以在前面加个0</p>
-<p><img 
-  src="2024-0825-01%5cimage-20220830212735344.png" 
-  alt="image-20220830212735344" 
-   
-  class="custom-image-class"
-  srcset="2024-0825-01%5cimage-20220830212735344.png 1.25x"
- />
-
-
-<script>
-function improveImage() {
-    
-
-    
-    const images = document.querySelectorAll('img');
-
-    images.forEach((item) => {
-        
-        let srcset = item.getAttribute('srcset');
-        if (srcset) {
-            let imageName = srcset.match(/image-(\d+\.(png|jpg|jpeg|gif))\s(\d+(\.\d+)?x)/i); 
-            if (imageName) {
-                item.setAttribute('srcset', imageName[0]);
-            }
-        }
-    });
-}
-
-
-document.addEventListener('DOMContentLoaded', () => {
-    improveImage();
-});
-</script></p>
-<p>cx存放的是程序（机器码）长度（字节数），一共15个字节，也就是十六进制的F</p>
-<p><img 
-  src="2024-0825-01%5cimage-20220830212744246.png" 
-  alt="image-20220830212744246" 
-   
-  class="custom-image-class"
-  srcset="2024-0825-01%5cimage-20220830212744246.png 1.25x"
- />
-
-
-<script>
-function improveImage() {
-    
-
-    
-    const images = document.querySelectorAll('img');
-
-    images.forEach((item) => {
-        
-        let srcset = item.getAttribute('srcset');
-        if (srcset) {
-            let imageName = srcset.match(/image-(\d+\.(png|jpg|jpeg|gif))\s(\d+(\.\d+)?x)/i); 
-            if (imageName) {
-                item.setAttribute('srcset', imageName[0]);
-            }
-        }
-    });
-}
-
-
-document.addEventListener('DOMContentLoaded', () => {
-    improveImage();
-});
-</script></p>
-<pre tabindex="0"><code>作业:
-编程，用加法计算123*236,结果存在ax中
-123*236就是236个123相乘，即123×123×123×123...
-代码如下：
-code segment
-	mov ax,123
-	mov cx,236
-s:	add ax,ax
-	loop s
-	mov ax,4c00h
-	int 21h
-code ends
-end
-</code></pre><h1 id="debug和汇编编译器处理指令的区别">Debug和汇编编译器处理指令的区别</h1>
-<p>用debug输入如下指令</p>
-<pre tabindex="0"><code>mov ax,2000h
-mov ds,ax
-mov al,[0]
-mov bl,[1]
-mov cl,[2]
-mov dl,[3]
-</code></pre><p><img 
-  src="2024-0825-01%5cimage-20220902093058566.png" 
-  alt="image-20220902093058566" 
-   
-  class="custom-image-class"
-  srcset="2024-0825-01%5cimage-20220902093058566.png 1.25x"
- />
-
-
-<script>
-function improveImage() {
-    
-
-    
-    const images = document.querySelectorAll('img');
-
-    images.forEach((item) => {
-        
-        let srcset = item.getAttribute('srcset');
-        if (srcset) {
-            let imageName = srcset.match(/image-(\d+\.(png|jpg|jpeg|gif))\s(\d+(\.\d+)?x)/i); 
-            if (imageName) {
-                item.setAttribute('srcset', imageName[0]);
-            }
-        }
-    });
-}
-
-
-document.addEventListener('DOMContentLoaded', () => {
-    improveImage();
-});
-</script></p>
-<p>然后用编译器编译和debug如下程序</p>
-<pre tabindex="0"><code>assume cs:code
-code segment
-	mov ax,2000h
-	mov ds,ax
-	mov al,[0]
-	mov bl,[1]
-	mov cl,[2]
-	mov dl,[3]
-	
-	mov ax,4c00h
-	int 21h
-code ends
-end
-</code></pre></article>
+                <article class="markdown-body entry-content container-lg"></article>
               </div>
 
               
@@ -610,13 +356,11 @@ end
       <div class="pagination-nav">
         <div class="pagination-button next-post">
           
-          <div>«&nbsp;</div><a class="pagination-link link-reverse" href="https://rvnox.github.io/post/2024-0309-01/"> Rayder 代码重构</a>
+          <div>«&nbsp;</div><a class="pagination-link link-reverse" href="https://rvnox.github.io/post/2024-0728-01/"> 8086 汇编语言（一）</a>
           
         </div>
         
         <div class="pagination-button previous-post">
-          
-          <a class="pagination-link link-reverse" href="https://rvnox.github.io/post/2024-0728-01/">8086 汇编语言（一）&nbsp;</a><div> »</div>
           
         </div>
       </div>
