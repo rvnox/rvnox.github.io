@@ -193,7 +193,7 @@
       <pubDate>Sat, 09 Mar 2024 18:18:22 +0800</pubDate>
       
       <guid>https://rvnox.github.io/post/2024-0309-01/</guid>
-      <description>Rayder 是一款命令行工具，旨在简化工作流程的编排和执行。它允许您在 YAML 文件中定义一系列模块，每个模块包含要执行的命令。Rayder 可帮助您自动化复杂的流程，轻松简化重复的模块，并在命令彼此不依赖的情况下并行执行它们。</description>
+      <description>Rayder 是一款命令行工具，旨在简化工作流程的编排和执行。它允许您在 YAML 文件中定义一系列模块，每个模块包含要执行的命令。Rayder 可帮助您自动化复杂的流程，轻松简化重复的模块，并在命令彼此不依赖的情况下并行执行它们。</description>
     </item>
     
     <item>
