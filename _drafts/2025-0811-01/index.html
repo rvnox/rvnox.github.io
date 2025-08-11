@@ -17,7 +17,7 @@
   <link rel="stylesheet" href="/custom.css" />
   
   <title>
-    kubernetes 介绍 | rvnox&#39;s Blog
+     | rvnox&#39;s Blog
   </title>
   
   <link rel="icon" type="image/x-icon" href="/images/github-mark.png" />
@@ -30,13 +30,13 @@
   content=""
 />
 <meta name="robots" content="noodp" />
-<link rel="canonical" href="https://rvnox.github.io/post/2025-0414-01/" />
+<link rel="canonical" href="https://rvnox.github.io/_drafts/2025-0811-01/" />
 
 
 <meta name="twitter:card" content="summary" />
 <meta
   name="twitter:title"
-  content="kubernetes 介绍 - rvnox&#39;s Blog"
+  content=" - rvnox&#39;s Blog"
 />
 <meta
   name="twitter:description"
@@ -56,22 +56,20 @@
 />
 <meta
   property="og:title"
-  content="kubernetes 介绍 - rvnox&#39;s Blog"
+  content=" - rvnox&#39;s Blog"
 />
 <meta
   property="og:description"
   content=""
 />
-<meta property="og:url" content="https://rvnox.github.io/post/2025-0414-01/" />
-<meta property="og:site_name" content="kubernetes 介绍" />
+<meta property="og:url" content="https://rvnox.github.io/_drafts/2025-0811-01/" />
+<meta property="og:site_name" content="" />
 <meta
   property="og:image"
   content="https://rvnox.github.io/"
 />
 <meta property="og:image:width" content="2048" />
 <meta property="og:image:height" content="1024" />
-
-<meta property="article:published_time" content="2025-04-14 19:22:54 &#43;0800 &#43;0800" />
 
 
 
@@ -291,18 +289,18 @@
                   <span class="author">
                     <a href="https://rvnox.github.io/">κόραξ</a></span><span
                     class="path-divider">/</span><strong class="css-truncate-target mr-1" style="max-width: 410px"><a
-                      href="https://rvnox.github.io/post/2025-0414-01/">kubernetes 介绍</a></strong>
+                      href="https://rvnox.github.io/_drafts/2025-0811-01/"></a></strong>
                 </h1>
                 <div class="note m-0">
-                  Created <relative-time datetime="Mon, 14 Apr 2025 19:22:54 &#43;0800"
+                  Created <relative-time datetime="Mon, 01 Jan 0001 00:00:00 &#43;0000"
                     class="no-wrap">
-                    Mon, 14 Apr 2025 19:22:54 &#43;0800</relative-time>
+                    Mon, 01 Jan 0001 00:00:00 &#43;0000</relative-time>
 
                   
                   <span class="file-info-divider"></span>
-                  Modified <relative-time datetime="Mon, 11 Aug 2025 03:41:39 &#43;0000"
+                  Modified <relative-time datetime="Mon, 11 Aug 2025 03:41:38 &#43;0000"
                     class="no-wrap">
-                    Mon, 11 Aug 2025 03:41:39 &#43;0000</relative-time>
+                    Mon, 11 Aug 2025 03:41:38 &#43;0000</relative-time>
                   
                 </div>
               </div>
@@ -332,28 +330,12 @@
                         </div>
                       </div>
                     </details-menu>
-                      1748 Words
+                      0 Words
                     <span class="file-info-divider"></span>
-                                        8 min
+                                        0 min
 
                   </div>
                   <div class="file-actions flex-order-2 pt-0">
-  
-    
-       
-       
-       
-       
-      
-        
-      
-      
-       
-      <a class="muted-link mr-3" href="/tags/k8s">
-        <span class="repo-language-color" style="background-color: #c66664"></span>
-        k8s
-      </a>
-    
   
 
                   </div>
@@ -362,186 +344,7 @@
 
 
               <div class="Box-body px-5 pb-5" style="z-index: 1">
-                <article class="markdown-body entry-content container-lg"><p><img 
-  src="./2025-0414-01/image-20250414202725149.png" 
-  alt="image-20250414202725149" 
-   
-  class="custom-image-class"
-  srcset="./2025-0414-01/image-20250414202725149.png 1.25x"
- />
-
-
-<script>
-function improveImage() {
-    
-
-    
-    const images = document.querySelectorAll('img');
-
-    images.forEach((item) => {
-        
-        let srcset = item.getAttribute('srcset');
-        if (srcset) {
-            let imageName = srcset.match(/image-(\d+\.(png|jpg|jpeg|gif))\s(\d+(\.\d+)?x)/i); 
-            if (imageName) {
-                item.setAttribute('srcset', imageName[0]);
-            }
-        }
-    });
-}
-
-
-document.addEventListener('DOMContentLoaded', () => {
-    improveImage();
-});
-</script></p>
-<blockquote>
-<p>基础设施变革笔记直接省略</p>
-</blockquote>
-<h1 id="k8s-组件">K8s 组件</h1>
-<h2 id="k8s-宏观架构">K8s 宏观架构</h2>
-<img src="./2025-0414-01/image-20250414202941190.png" alt="image-20250414202941190" style="zoom:67%;" />
-<p>在宏观架构里面 k8s 主要分为两个角色：Master 和 Node</p>
-<h3 id="master">Master</h3>
-<p>Kubernetes里的Master指的是集群控制节点，当然也被称为 Master Node或者Head Node，这里我们用 Master 来称呼。</p>
-<p>每一个Kubernetes集群里都必须要有一个Master节点来负责整个集群的管理和控制，基本上Kubernetes的所有控制命令都发给它，它来负责具体的执行过程，我们后面执行的所有命令基本都是在Master节点上运行的。</p>
-<h3 id="node">Node</h3>
-<p>除了Master，Kubernetes集群中的其他机器被称为Node节点，当然也被称为Worker Node、Worker、Minion，这里我们用 Node 来称呼。</p>
-<p>与Master一样，Node节点可以是一台物理主机或者是虚拟机。Node节点才是Kubernetes集群中的工作负载节点，每个Node都会被Master分配一些应用程序服务以及云工作流，在有些时候，Master节点上也会 &ldquo;安排&rdquo; 一些服务运行，或者说是一些Docker容器，当某个Node宕机时，其上的工作负载会被Master自动转移到其他节点上去。</p>
-<h2 id="k8s-微观架构">K8s 微观架构</h2>
-<p><img 
-  src="./2025-0414-01/image-20250414204336570.png" 
-  alt="image-20250414204336570" 
-   
-  class="custom-image-class"
-  srcset="./2025-0414-01/image-20250414204336570.png 1.25x"
- />
-
-
-<script>
-function improveImage() {
-    
-
-    
-    const images = document.querySelectorAll('img');
-
-    images.forEach((item) => {
-        
-        let srcset = item.getAttribute('srcset');
-        if (srcset) {
-            let imageName = srcset.match(/image-(\d+\.(png|jpg|jpeg|gif))\s(\d+(\.\d+)?x)/i); 
-            if (imageName) {
-                item.setAttribute('srcset', imageName[0]);
-            }
-        }
-    });
-}
-
-
-document.addEventListener('DOMContentLoaded', () => {
-    improveImage();
-});
-</script></p>
-<p><strong>我们先来看 Master ：</strong></p>
-<blockquote>
-<p><strong>APIServer</strong></p>
-</blockquote>
-<p>APIServer是整个集群的控制中枢，提供集群中各个模块之间的数据交换，并将集群状态和信息存储到分布式键-值(key-value)存储系统Etcd集群中。同时它也是集群管理、资源配额、提供完备的集群安全机制的入口，为集群各类资源对象提供增删改查以及watch的REST API接口。</p>
-<p>APIServer 是 k8s 的请求入口服务。APIServer 负责接收 k8s 的所有请求（来自 web UI 界面或者CLI（kubectl）命令行工具），然后 APIServer 根据用户的具体请求，去通知其它组件干活。</p>
-<blockquote>
-<p><strong>Etcd</strong></p>
-</blockquote>
-<p>Etcd由CoreOS开发，用于可靠地存储集群的配置数据，是一种持久性、轻量型、分布式的键-值（key-value）数据存储组件。</p>
-<p>Etcd作为Kubernetes集群的持久化存储系统，集群的灾难恢复、状态信息存储都与其密不可分，所以在Kubernetes高可用集群中，Etcd的高可用是至关重要的一部分，在生产环境中建议部署为大于3的奇数个数的Etcd，以保证数据的安全性和可恢复性。</p>
-<p>Etcd 存储了 k8s 的关键配置和用户配置，k8s 仅 APIServer 直接具备对 Etcd 的读写权限，其他组件必须通过 APIServer 提供的接口才能够读写 Etcd 中的数据。</p>
-<blockquote>
-<p><strong>Scheduler</strong></p>
-</blockquote>
-<p>Scheduler是集群Pod的调度中心，主要是通过调度算法将Pod分配到最佳的节点（Node）上，它通过APIServer监听所有Pod的状态，一旦发现新的未被调度到任何Node节点的Pod（PodSpec.NodeName为空），就会根据一系列策略选择最佳节点进行调度，对每一个Pod创建一个绑定（binding），然后被调度的节点上的Kubelet负责启动该Pod。</p>
-<blockquote>
-<p><strong>replication controller 或者说 controller manager</strong></p>
-</blockquote>
-<p>Controller Manager是集群状态管理器（它的英文直译名为控制器管理器），以保证Pod或其他资源达到期望值。当集群中某个Pod的副本数或其他资源因故障和错误导致无法正常运行，没有达到设定的值时，Controller Manager会尝试自动修复并使其达到期望状态。</p>
-<p>举个例子，比如用户要求A服务部署2个副本，那么当其中一个服务挂了的时候，Controller会马上调整，让Scheduler再选择一个Worker Node重新部署服务。</p>
-<p><strong>我们再来看 node：</strong></p>
-<p>Node节点主要负责部署容器（工作负载）的单机（或虚拟机），集群中的每个节点都必须具备容器的运行环境，比如Docker及其他组件等。</p>
-<blockquote>
-<p><strong>kubelet</strong></p>
-</blockquote>
-<p>Kubelet作为守护进程运行在Node节点上，负责监听该节点上所有的Pod，同时负责上报该节点上所有Pod的运行状态，确保节点上的所有容器都能正常运行。当Node节点宕机（NotReady状态）时，该节点上运行的Pod会被自动地转移到其他节点上。</p>
-<p>Kubelet是Node的监视器以及与Master的通讯器，Kubelet是Master安插在Node上的 “眼线”，它会定期向Master汇报自己Node上运行的服务的状态，并接受来自Master的命令，并执行。</p>
-<blockquote>
-<p><strong>Kube-Proxy</strong></p>
-</blockquote>
-<p>Kube-Proxy是K8S的网络代理。Kube-Proxy负责Node在K8S的网络通讯、以及对外部网络流量的负载均衡。</p>
-<h1 id="k8s-插件">K8s 插件</h1>
-<p><img 
-  src="./2025-0414-01/image-20250415212602836.png" 
-  alt="image-20250415212602836" 
-   
-  class="custom-image-class"
-  srcset="./2025-0414-01/image-20250415212602836.png 1.25x"
- />
-
-
-<script>
-function improveImage() {
-    
-
-    
-    const images = document.querySelectorAll('img');
-
-    images.forEach((item) => {
-        
-        let srcset = item.getAttribute('srcset');
-        if (srcset) {
-            let imageName = srcset.match(/image-(\d+\.(png|jpg|jpeg|gif))\s(\d+(\.\d+)?x)/i); 
-            if (imageName) {
-                item.setAttribute('srcset', imageName[0]);
-            }
-        }
-    });
-}
-
-
-document.addEventListener('DOMContentLoaded', () => {
-    improveImage();
-});
-</script></p>
-<h1 id="k8s-附件">K8s 附件</h1>
-<p><img 
-  src="./2025-0414-01/image-20250415212634030.png" 
-  alt="image-20250415212634030" 
-   
-  class="custom-image-class"
-  srcset="./2025-0414-01/image-20250415212634030.png 1.25x"
- />
-
-
-<script>
-function improveImage() {
-    
-
-    
-    const images = document.querySelectorAll('img');
-
-    images.forEach((item) => {
-        
-        let srcset = item.getAttribute('srcset');
-        if (srcset) {
-            let imageName = srcset.match(/image-(\d+\.(png|jpg|jpeg|gif))\s(\d+(\.\d+)?x)/i); 
-            if (imageName) {
-                item.setAttribute('srcset', imageName[0]);
-            }
-        }
-    });
-}
-
-
-document.addEventListener('DOMContentLoaded', () => {
-    improveImage();
-});
-</script></p></article>
+                <article class="markdown-body entry-content container-lg"></article>
               </div>
 
               
@@ -553,13 +356,11 @@ document.addEventListener('DOMContentLoaded', () => {
       <div class="pagination-nav">
         <div class="pagination-button next-post">
           
-          <div>«&nbsp;</div><a class="pagination-link link-reverse" href="https://rvnox.github.io/post/2025-0415-01/"> K8s安装前准备-Pod、网络</a>
+          <div>«&nbsp;</div><a class="pagination-link link-reverse" href="https://rvnox.github.io/post/2024-0728-01/"> 8086 汇编语言（一）</a>
           
         </div>
         
         <div class="pagination-button previous-post">
-          
-          <a class="pagination-link link-reverse" href="https://rvnox.github.io/post/2025-0331-01/">Golang 入门到入土（基础语法）&nbsp;</a><div> »</div>
           
         </div>
       </div>
