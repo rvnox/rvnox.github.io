@@ -17,7 +17,7 @@
   <link rel="stylesheet" href="/custom.css" />
   
   <title>
-    Grafana TransForm Data | rvnox&#39;s Blog
+    测试 存储 | rvnox&#39;s Blog
   </title>
   
   <link rel="icon" type="image/x-icon" href="/images/github-mark.png" />
@@ -27,20 +27,20 @@
   
   <meta
   name="description"
-  content=""
+  content="测试测试"
 />
 <meta name="robots" content="noodp" />
-<link rel="canonical" href="https://rvnox.github.io/post/2025-0428-01/" />
+<link rel="canonical" href="https://rvnox.github.io/post/2025-0815-01/" />
 
 
 <meta name="twitter:card" content="summary" />
 <meta
   name="twitter:title"
-  content="Grafana TransForm Data - rvnox&#39;s Blog"
+  content="测试 存储 - rvnox&#39;s Blog"
 />
 <meta
   name="twitter:description"
-  content=""
+  content="测试测试"
 />
 <meta name="twitter:site" content="https://rvnox.github.io/" />
 <meta name="twitter:creator" content="" />
@@ -56,14 +56,14 @@
 />
 <meta
   property="og:title"
-  content="Grafana TransForm Data - rvnox&#39;s Blog"
+  content="测试 存储 - rvnox&#39;s Blog"
 />
 <meta
   property="og:description"
-  content=""
+  content="测试测试"
 />
-<meta property="og:url" content="https://rvnox.github.io/post/2025-0428-01/" />
-<meta property="og:site_name" content="Grafana TransForm Data" />
+<meta property="og:url" content="https://rvnox.github.io/post/2025-0815-01/" />
+<meta property="og:site_name" content="测试 存储" />
 <meta
   property="og:image"
   content="https://rvnox.github.io/"
@@ -71,7 +71,7 @@
 <meta property="og:image:width" content="2048" />
 <meta property="og:image:height" content="1024" />
 
-<meta property="article:published_time" content="2025-04-28 20:14:16 &#43;0800 &#43;0800" />
+<meta property="article:published_time" content="2025-08-15 21:25:54 &#43;0800 &#43;0800" />
 
 
 
@@ -269,7 +269,36 @@
 </div>
 
   
-<script type="text/javascript" src="/js/initimage.js"></script>
+<script>
+    (function(){
+        var correctPassword = '11111111111111111';
+        var storedPassword = localStorage.getItem('pagePassword');
+
+        function verifyPassword(password) {
+            return password === correctPassword;
+        }
+
+        function promptPassword() {
+            var userPassword = prompt('请输入文章密码');
+            if (verifyPassword(userPassword)) {
+                localStorage.setItem('pagePassword', userPassword);
+            } else {
+                alert('密码错误！');
+                if (history.length === 1) {
+                    window.opener = null;
+                    window.open('', '_self');
+                    window.close();
+                } else {
+                    history.back();
+                }
+            }
+        }
+
+        if (!verifyPassword(storedPassword)) {
+            promptPassword();
+        }
+    })();
+</script><script type="text/javascript" src="/js/initimage.js"></script>
 
 
 
@@ -291,12 +320,12 @@
                   <span class="author">
                     <a href="https://rvnox.github.io/">κόραξ</a></span><span
                     class="path-divider">/</span><strong class="css-truncate-target mr-1" style="max-width: 410px"><a
-                      href="https://rvnox.github.io/post/2025-0428-01/">Grafana TransForm Data</a></strong>
+                      href="https://rvnox.github.io/post/2025-0815-01/">测试 存储</a></strong>
                 </h1>
                 <div class="note m-0">
-                  Created <relative-time datetime="Mon, 28 Apr 2025 20:14:16 &#43;0800"
+                  Created <relative-time datetime="Fri, 15 Aug 2025 21:25:54 &#43;0800"
                     class="no-wrap">
-                    Mon, 28 Apr 2025 20:14:16 &#43;0800</relative-time>
+                    Fri, 15 Aug 2025 21:25:54 &#43;0800</relative-time>
 
                   
                   <span class="file-info-divider"></span>
@@ -332,28 +361,12 @@
                         </div>
                       </div>
                     </details-menu>
-                      22 Words
+                      0 Words
                     <span class="file-info-divider"></span>
                                         0 min
 
                   </div>
                   <div class="file-actions flex-order-2 pt-0">
-  
-    
-       
-       
-       
-       
-      
-      
-        
-        
-       
-      <a class="muted-link mr-3" href="/tags/nil">
-        <span class="repo-language-color" style="background-color: #649895"></span>
-        
-      </a>
-    
   
 
                   </div>
@@ -362,7 +375,7 @@
 
 
               <div class="Box-body px-5 pb-5" style="z-index: 1">
-                <article class="markdown-body entry-content container-lg"><p>Grafana 中的 TransForm Data 有很多，以 Grafana v10.2.0 版本为例，具体如下：</p></article>
+                <article class="markdown-body entry-content container-lg"></article>
               </div>
 
               
@@ -374,13 +387,11 @@
       <div class="pagination-nav">
         <div class="pagination-button next-post">
           
-          <div>«&nbsp;</div><a class="pagination-link link-reverse" href="https://rvnox.github.io/post/2025-0604-01/"> Linux分区详情</a>
-          
         </div>
         
         <div class="pagination-button previous-post">
           
-          <a class="pagination-link link-reverse" href="https://rvnox.github.io/post/2025-0415-01/">K8s安装前准备-Pod、网络&nbsp;</a><div> »</div>
+          <a class="pagination-link link-reverse" href="https://rvnox.github.io/post/2025-0811-02/">测试&nbsp;</a><div> »</div>
           
         </div>
       </div>
