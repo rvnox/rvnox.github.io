@@ -17,7 +17,7 @@
   <link rel="stylesheet" href="/custom.css" />
   
   <title>
-    K8s安装前准备-Pod、网络 | rvnox&#39;s Blog
+     | rvnox&#39;s Blog
   </title>
   
   <link rel="icon" type="image/x-icon" href="/images/github-mark.png" />
@@ -30,13 +30,13 @@
   content=""
 />
 <meta name="robots" content="noodp" />
-<link rel="canonical" href="https://rvnox.github.io/post/2025-0415-01/" />
+<link rel="canonical" href="https://rvnox.github.io/_drafts/2025-0815-02/" />
 
 
 <meta name="twitter:card" content="summary" />
 <meta
   name="twitter:title"
-  content="K8s安装前准备-Pod、网络 - rvnox&#39;s Blog"
+  content=" - rvnox&#39;s Blog"
 />
 <meta
   name="twitter:description"
@@ -56,22 +56,20 @@
 />
 <meta
   property="og:title"
-  content="K8s安装前准备-Pod、网络 - rvnox&#39;s Blog"
+  content=" - rvnox&#39;s Blog"
 />
 <meta
   property="og:description"
   content=""
 />
-<meta property="og:url" content="https://rvnox.github.io/post/2025-0415-01/" />
-<meta property="og:site_name" content="K8s安装前准备-Pod、网络" />
+<meta property="og:url" content="https://rvnox.github.io/_drafts/2025-0815-02/" />
+<meta property="og:site_name" content="" />
 <meta
   property="og:image"
   content="https://rvnox.github.io/"
 />
 <meta property="og:image:width" content="2048" />
 <meta property="og:image:height" content="1024" />
-
-<meta property="article:published_time" content="2025-04-15 21:22:54 &#43;0800 &#43;0800" />
 
 
 
@@ -291,12 +289,12 @@
                   <span class="author">
                     <a href="https://rvnox.github.io/">κόραξ</a></span><span
                     class="path-divider">/</span><strong class="css-truncate-target mr-1" style="max-width: 410px"><a
-                      href="https://rvnox.github.io/post/2025-0415-01/">K8s安装前准备-Pod、网络</a></strong>
+                      href="https://rvnox.github.io/_drafts/2025-0815-02/"></a></strong>
                 </h1>
                 <div class="note m-0">
-                  Created <relative-time datetime="Tue, 15 Apr 2025 21:22:54 &#43;0800"
+                  Created <relative-time datetime="Mon, 01 Jan 0001 00:00:00 &#43;0000"
                     class="no-wrap">
-                    Tue, 15 Apr 2025 21:22:54 &#43;0800</relative-time>
+                    Mon, 01 Jan 0001 00:00:00 &#43;0000</relative-time>
 
                   
                   <span class="file-info-divider"></span>
@@ -332,28 +330,12 @@
                         </div>
                       </div>
                     </details-menu>
-                      174 Words
+                      0 Words
                     <span class="file-info-divider"></span>
-                                        1 min
+                                        0 min
 
                   </div>
                   <div class="file-actions flex-order-2 pt-0">
-  
-    
-       
-       
-       
-       
-      
-        
-      
-      
-       
-      <a class="muted-link mr-3" href="/tags/k8s">
-        <span class="repo-language-color" style="background-color: #c66664"></span>
-        k8s
-      </a>
-    
   
 
                   </div>
@@ -362,146 +344,7 @@
 
 
               <div class="Box-body px-5 pb-5" style="z-index: 1">
-                <article class="markdown-body entry-content container-lg"><p><img 
-  src="./2025-0415-01/image-20250415212305189.png" 
-  alt="image-20250415212305189" 
-   
-  class="custom-image-class"
-  srcset="./2025-0415-01/image-20250415212305189.png 1.25x"
- />
-
-
-<script>
-function improveImage() {
-    
-
-    
-    const images = document.querySelectorAll('img');
-
-    images.forEach((item) => {
-        
-        let srcset = item.getAttribute('srcset');
-        if (srcset) {
-            let imageName = srcset.match(/image-(\d+\.(png|jpg|jpeg|gif))\s(\d+(\.\d+)?x)/i); 
-            if (imageName) {
-                item.setAttribute('srcset', imageName[0]);
-            }
-        }
-    });
-}
-
-
-document.addEventListener('DOMContentLoaded', () => {
-    improveImage();
-});
-</script></p>
-<h1 id="pod-概念">Pod 概念</h1>
-<p>毛豆就是一种 Pod（容器组），毛豆内部的豆粒子就是容器，如下：</p>
-<p><img 
-  src="./2025-0415-01/image-20250415213655802.png" 
-  alt="image-20250415213655802" 
-   
-  class="custom-image-class"
-  srcset="./2025-0415-01/image-20250415213655802.png 1.25x"
- />
-
-
-<script>
-function improveImage() {
-    
-
-    
-    const images = document.querySelectorAll('img');
-
-    images.forEach((item) => {
-        
-        let srcset = item.getAttribute('srcset');
-        if (srcset) {
-            let imageName = srcset.match(/image-(\d+\.(png|jpg|jpeg|gif))\s(\d+(\.\d+)?x)/i); 
-            if (imageName) {
-                item.setAttribute('srcset', imageName[0]);
-            }
-        }
-    });
-}
-
-
-document.addEventListener('DOMContentLoaded', () => {
-    improveImage();
-});
-</script></p>
-<p>我们来看一个实际例子：</p>
-<p><img 
-  src="./2025-0415-01/image-20250415214026780.png" 
-  alt="image-20250415214026780" 
-   
-  class="custom-image-class"
-  srcset="./2025-0415-01/image-20250415214026780.png 1.25x"
- />
-
-
-<script>
-function improveImage() {
-    
-
-    
-    const images = document.querySelectorAll('img');
-
-    images.forEach((item) => {
-        
-        let srcset = item.getAttribute('srcset');
-        if (srcset) {
-            let imageName = srcset.match(/image-(\d+\.(png|jpg|jpeg|gif))\s(\d+(\.\d+)?x)/i); 
-            if (imageName) {
-                item.setAttribute('srcset', imageName[0]);
-            }
-        }
-    });
-}
-
-
-document.addEventListener('DOMContentLoaded', () => {
-    improveImage();
-});
-</script></p>
-<p>我们知道 Nginx、redis、php-fpm 都是应用容器，但 Pause 容器是啥 ？</p>
-<h2 id="pause-特性">Pause 特性</h2>
-<p>Pause 是 Pod 内部第一个启动的容器。为啥第一个启动呢 ？</p>
-<p>因为 Pause 需要先启动来初始化网络栈，并且需要挂载可能需要的存储卷，当然 Pause 还会回收僵尸进程。</p>
-<p>那么什么是僵尸进程呢 ？直接附上网上的一些解释：</p>
-<p><img 
-  src="./2025-0415-01/image-20250415215945113.png" 
-  alt="image-20250415215945113" 
-   
-  class="custom-image-class"
-  srcset="./2025-0415-01/image-20250415215945113.png 1.25x"
- />
-
-
-<script>
-function improveImage() {
-    
-
-    
-    const images = document.querySelectorAll('img');
-
-    images.forEach((item) => {
-        
-        let srcset = item.getAttribute('srcset');
-        if (srcset) {
-            let imageName = srcset.match(/image-(\d+\.(png|jpg|jpeg|gif))\s(\d+(\.\d+)?x)/i); 
-            if (imageName) {
-                item.setAttribute('srcset', imageName[0]);
-            }
-        }
-    });
-}
-
-
-document.addEventListener('DOMContentLoaded', () => {
-    improveImage();
-});
-</script></p></article>
+                <article class="markdown-body entry-content container-lg"></article>
               </div>
 
               
@@ -513,13 +356,13 @@ document.addEventListener('DOMContentLoaded', () => {
       <div class="pagination-nav">
         <div class="pagination-button next-post">
           
-          <div>«&nbsp;</div><a class="pagination-link link-reverse" href="https://rvnox.github.io/post/2025-0428-01/"> Grafana TransForm Data</a>
+          <div>«&nbsp;</div><a class="pagination-link link-reverse" href="https://rvnox.github.io/post/2024-0728-01/"> 8086 汇编语言（一）</a>
           
         </div>
         
         <div class="pagination-button previous-post">
           
-          <a class="pagination-link link-reverse" href="https://rvnox.github.io/post/2025-0414-01/">kubernetes 介绍&nbsp;</a><div> »</div>
+          <a class="pagination-link link-reverse" href="https://rvnox.github.io/post/2025-0815-01/">123456&nbsp;</a><div> »</div>
           
         </div>
       </div>
