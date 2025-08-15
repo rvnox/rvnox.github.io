@@ -17,7 +17,7 @@
   <link rel="stylesheet" href="/custom.css" />
   
   <title>
-    山石 SG-6000 防火墙日志与可视化 | rvnox&#39;s Blog
+     | rvnox&#39;s Blog
   </title>
   
   <link rel="icon" type="image/x-icon" href="/images/github-mark.png" />
@@ -27,20 +27,20 @@
   
   <meta
   name="description"
-  content="本文为山石防火墙 SG-6000 中日志的的可视化教程，以 VPN 用户的登陆情况为例 &amp;hellip;"
+  content=""
 />
 <meta name="robots" content="noodp" />
-<link rel="canonical" href="https://rvnox.github.io/post/2025-0224-01/" />
+<link rel="canonical" href="https://rvnox.github.io/_drafts/2025-0815-01/" />
 
 
 <meta name="twitter:card" content="summary" />
 <meta
   name="twitter:title"
-  content="山石 SG-6000 防火墙日志与可视化 - rvnox&#39;s Blog"
+  content=" - rvnox&#39;s Blog"
 />
 <meta
   name="twitter:description"
-  content="本文为山石防火墙 SG-6000 中日志的的可视化教程，以 VPN 用户的登陆情况为例 &amp;hellip;"
+  content=""
 />
 <meta name="twitter:site" content="https://rvnox.github.io/" />
 <meta name="twitter:creator" content="" />
@@ -56,22 +56,20 @@
 />
 <meta
   property="og:title"
-  content="山石 SG-6000 防火墙日志与可视化 - rvnox&#39;s Blog"
+  content=" - rvnox&#39;s Blog"
 />
 <meta
   property="og:description"
-  content="本文为山石防火墙 SG-6000 中日志的的可视化教程，以 VPN 用户的登陆情况为例 &amp;hellip;"
+  content=""
 />
-<meta property="og:url" content="https://rvnox.github.io/post/2025-0224-01/" />
-<meta property="og:site_name" content="山石 SG-6000 防火墙日志与可视化" />
+<meta property="og:url" content="https://rvnox.github.io/_drafts/2025-0815-01/" />
+<meta property="og:site_name" content="" />
 <meta
   property="og:image"
   content="https://rvnox.github.io/"
 />
 <meta property="og:image:width" content="2048" />
 <meta property="og:image:height" content="1024" />
-
-<meta property="article:published_time" content="2025-02-24 19:07:02 &#43;0800 &#43;0800" />
 
 
 
@@ -291,12 +289,12 @@
                   <span class="author">
                     <a href="https://rvnox.github.io/">κόραξ</a></span><span
                     class="path-divider">/</span><strong class="css-truncate-target mr-1" style="max-width: 410px"><a
-                      href="https://rvnox.github.io/post/2025-0224-01/">山石 SG-6000 防火墙日志与可视化</a></strong>
+                      href="https://rvnox.github.io/_drafts/2025-0815-01/"></a></strong>
                 </h1>
                 <div class="note m-0">
-                  Created <relative-time datetime="Mon, 24 Feb 2025 19:07:02 &#43;0800"
+                  Created <relative-time datetime="Mon, 01 Jan 0001 00:00:00 &#43;0000"
                     class="no-wrap">
-                    Mon, 24 Feb 2025 19:07:02 &#43;0800</relative-time>
+                    Mon, 01 Jan 0001 00:00:00 &#43;0000</relative-time>
 
                   
                   <span class="file-info-divider"></span>
@@ -332,28 +330,12 @@
                         </div>
                       </div>
                     </details-menu>
-                      1803 Words
+                      0 Words
                     <span class="file-info-divider"></span>
-                                        8 min
+                                        0 min
 
                   </div>
                   <div class="file-actions flex-order-2 pt-0">
-  
-    
-       
-       
-       
-       
-      
-        
-        
-        
-       
-      <a class="muted-link mr-3" href="/tags/graylog">
-        <span class="repo-language-color" style="background-color: #979994"></span>
-        GrayLog
-      </a>
-    
   
 
                   </div>
@@ -362,211 +344,7 @@
 
 
               <div class="Box-body px-5 pb-5" style="z-index: 1">
-                <article class="markdown-body entry-content container-lg"><p><img 
-  src="./2025-0224-01/image-20250803114925580.png" 
-  alt="image-20250803114925580" 
-   
-  class="custom-image-class"
-  srcset="./2025-0224-01/image-20250803114925580.png 1.25x"
- />
-
-
-<script>
-function improveImage() {
-    
-
-    
-    const images = document.querySelectorAll('img');
-
-    images.forEach((item) => {
-        
-        let srcset = item.getAttribute('srcset');
-        if (srcset) {
-            let imageName = srcset.match(/image-(\d+\.(png|jpg|jpeg|gif))\s(\d+(\.\d+)?x)/i); 
-            if (imageName) {
-                item.setAttribute('srcset', imageName[0]);
-            }
-        }
-    });
-}
-
-
-document.addEventListener('DOMContentLoaded', () => {
-    improveImage();
-});
-</script></p>
-<h1 id="graylog-和-elk">GrayLog 和 Elk</h1>
-<p>ELK的问题：</p>
-<ul>
-<li>多行日志处理不足： ELK无法很好地处理多行日志，例如Mysql慢查询或Tomcat/Jetty应用的Java异常打印。</li>
-<li>原始日志保存不足： ELK无法保留原始日志，只能将其分字段保存，导致搜索结果呈现为一堆Json格式文本，难以阅读。</li>
-<li>不匹配正则表达式的日志行丢失： ELK对于不符合正则表达式匹配的日志行，会被全部丢弃。</li>
-</ul>
-<p>GrayLog的优势：</p>
-<ul>
-<li>一体化方案： GrayLog是一体化方案，安装方便，无需解决ELK中3个独立系统间的集成问题。</li>
-<li>采集原始日志： GrayLog能够采集原始日志，并可以事后再添加字段，例如http_status_code、response_time等。</li>
-<li>自定义日志采集脚本： GrayLog允许开发者自行开发日志采集脚本，并使用curl/nc将其发送到Graylog Server。这些脚本可以使用自定义的GELF（Graylog Extended Log Format），而Fluentd和Logstash也提供了相应的输出GELF消息的插件。实际上，只需使用inotifywait监控日志的modify事件，并使用curl/netcat将新增行发送到Graylog Server即可。</li>
-<li>搜索结果高亮显示： GrayLog的搜索结果能够高亮显示，类似于Google搜索。</li>
-<li>简单搜索语法： GrayLog的搜索语法简单易懂，例如：source:mongo AND response_time_ms:&gt;5000，避免直接输入Elasticsearch搜索JSON语法。</li>
-<li>导出搜索条件为Elasticsearch JSON文本： GrayLog允许用户将搜索条件导出为Elasticsearch的搜索JSON文本，方便直接开发调用Elasticsearch REST API的搜索脚本。</li>
-</ul>
-<h2 id="graylog-简介">GrayLog 简介</h2>
-<p>GrayLog是一个轻量型的分布式日志管理平台，一个开源的日志聚合、分析、审计、展示和预警工具。在功能上来说，和 ELK类似，但又比 ELK要简单轻量许多。依靠着更加简洁，高效，部署使用简单的优势很快受到许多公司的青睐。</p>
-<p><img 
-  src="./2025-0224-01/image-20250803115925927.png" 
-  alt="image-20250803115925927" 
-   
-  class="custom-image-class"
-  srcset="./2025-0224-01/image-20250803115925927.png 1.25x"
- />
-
-
-<script>
-function improveImage() {
-    
-
-    
-    const images = document.querySelectorAll('img');
-
-    images.forEach((item) => {
-        
-        let srcset = item.getAttribute('srcset');
-        if (srcset) {
-            let imageName = srcset.match(/image-(\d+\.(png|jpg|jpeg|gif))\s(\d+(\.\d+)?x)/i); 
-            if (imageName) {
-                item.setAttribute('srcset', imageName[0]);
-            }
-        }
-    });
-}
-
-
-document.addEventListener('DOMContentLoaded', () => {
-    improveImage();
-});
-</script></p>
-<p>流程如下：</p>
-<ul>
-<li>微服务中的GrayLog客户端发送日志到GrayLog服务端</li>
-<li>GrayLog把日志信息格式化，存储到Elasticsearch</li>
-<li>客户端通过浏览器访问GrayLog，GrayLog访问Elasticsearch</li>
-</ul>
-<p><strong>MongoDB是用来存储GrayLog的配置信息的，这样搭建集群时，GrayLog的各节点可以共享配置</strong></p>
-<h2 id="graylog-分布式平台部署">GrayLog 分布式平台部署</h2>
-<p>GrayLog 使用 docker 安装，需要安装的包括：</p>
-<ul>
-<li>MongoDB：用来存储GrayLog的配置信息</li>
-<li>Elasticsearch：用来存储日志信息</li>
-<li>GrayLog：GrayLog服务端</li>
-</ul>
-<p>下面是通过 docker 的方式部署：</p>
-<h3 id="文件准备和elasticsearch安装">文件准备和Elasticsearch安装</h3>
-<p>配置文件夹用于存储数据</p>
-<pre tabindex="0"><code>mkdir -p /mydata/es-data  /mydata/es-plugins /mydata/mongodb
-</code></pre><p>注意要给chmod 777 /mydata/es-data设置权限</p>
-<pre tabindex="0"><code>chmod 777 /mydata/es-data
-</code></pre><p>安装部署 Elasticsearch</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">#部署Elasticsearch</span>
-</span></span><span class="line"><span class="cl">docker run -d <span class="se">\
-</span></span></span><span class="line"><span class="cl"><span class="se"></span>    --name elasticsearch <span class="se">\
-</span></span></span><span class="line"><span class="cl"><span class="se"></span>    -e <span class="s2">&#34;ES_JAVA_OPTS=-Xms512m -Xmx512m&#34;</span> <span class="se">\
-</span></span></span><span class="line"><span class="cl"><span class="se"></span>    -e <span class="s2">&#34;discovery.type=single-node&#34;</span> <span class="se">\
-</span></span></span><span class="line"><span class="cl"><span class="se"></span>    -v /mydata/es-data:/usr/share/elasticsearch/data <span class="se">\
-</span></span></span><span class="line"><span class="cl"><span class="se"></span>    -v /mydata/es-plugins:/usr/share/elasticsearch/plugins <span class="se">\
-</span></span></span><span class="line"><span class="cl"><span class="se"></span>    -p 9200:9200 <span class="se">\
-</span></span></span><span class="line"><span class="cl"><span class="se"></span>    -p 9300:9300 <span class="se">\
-</span></span></span><span class="line"><span class="cl"><span class="se"></span>elasticsearch:7.17.5
-</span></span></code></pre></div><h3 id="部署mongodb">部署MongoDB</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">docker run -d <span class="se">\
-</span></span></span><span class="line"><span class="cl"><span class="se"></span>--name mongodb <span class="se">\
-</span></span></span><span class="line"><span class="cl"><span class="se"></span>-p 27017:27017 <span class="se">\
-</span></span></span><span class="line"><span class="cl"><span class="se"></span>--restart<span class="o">=</span>always <span class="se">\
-</span></span></span><span class="line"><span class="cl"><span class="se"></span>-v /mydata/mongodb:/data/db <span class="se">\
-</span></span></span><span class="line"><span class="cl"><span class="se"></span>-e <span class="nv">MONGO_INITDB_ROOT_USERNAME</span><span class="o">=</span>zbbmeta <span class="se">\
-</span></span></span><span class="line"><span class="cl"><span class="se"></span>-e <span class="nv">MONGO_INITDB_ROOT_PASSWORD</span><span class="o">=</span><span class="m">123321</span> <span class="se">\
-</span></span></span><span class="line"><span class="cl"><span class="se"></span>mongo:5.0  
-</span></span></code></pre></div><h3 id="部署graylog">部署graylog</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">docker run <span class="se">\
-</span></span></span><span class="line"><span class="cl"><span class="se"></span>--name graylog <span class="se">\
-</span></span></span><span class="line"><span class="cl"><span class="se"></span>-p 9000:9000 <span class="se">\
-</span></span></span><span class="line"><span class="cl"><span class="se"></span>-p 12201:12201/udp <span class="se">\
-</span></span></span><span class="line"><span class="cl"><span class="se"></span>-e <span class="nv">GRAYLOG_HTTP_EXTERNAL_URI</span><span class="o">=</span>http://192.168.150.102:9000/ <span class="se">\
-</span></span></span><span class="line"><span class="cl"><span class="se"></span>-e <span class="nv">GRAYLOG_ELASTICSEARCH_HOSTS</span><span class="o">=</span>http://192.168.150.102:9200/ <span class="se">\
-</span></span></span><span class="line"><span class="cl"><span class="se"></span>-e <span class="nv">GRAYLOG_ROOT_TIMEZONE</span><span class="o">=</span><span class="s2">&#34;Asia/Shanghai&#34;</span>  <span class="se">\
-</span></span></span><span class="line"><span class="cl"><span class="se"></span>-e <span class="nv">GRAYLOG_WEB_ENDPOINT_URI</span><span class="o">=</span><span class="s2">&#34;http://192.168.150.102:9000/:9000/api&#34;</span> <span class="se">\
-</span></span></span><span class="line"><span class="cl"><span class="se"></span>-e <span class="nv">GRAYLOG_PASSWORD_SECRET</span><span class="o">=</span><span class="s2">&#34;somepasswordpepper&#34;</span> <span class="se">\
-</span></span></span><span class="line"><span class="cl"><span class="se"></span>-e <span class="nv">GRAYLOG_ROOT_PASSWORD_SHA2</span><span class="o">=</span>8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918 <span class="se">\
-</span></span></span><span class="line"><span class="cl"><span class="se"></span>-e <span class="nv">GRAYLOG_MONGODB_URI</span><span class="o">=</span>mongodb://zbbmeta:123321@192.168.150.102:27017/admin <span class="se">\
-</span></span></span><span class="line"><span class="cl"><span class="se"></span>-d <span class="se">\
-</span></span></span><span class="line"><span class="cl"><span class="se"></span>graylog/graylog:6.0 
-</span></span></code></pre></div><p>命令解读：</p>
-<ul>
-<li>
-<p>端口信息：</p>
-<ul>
-<li>
-<p>-p 9000:9000：GrayLog的http服务端口，9000</p>
-</li>
-<li>
-<p>-p 12201:12201/udp：GrayLog的GELF UDP协议端口，用于接收从微服务发来的日志信息</p>
-</li>
-</ul>
-</li>
-<li>
-<p>环境变量</p>
-<ul>
-<li>-e GRAYLOG_HTTP_EXTERNAL_URI：对外开放的ip和端口信息，这里用9000端口</li>
-<li>-e GRAYLOG_ELASTICSEARCH_HOSTS：GrayLog依赖于ES，这里指定ES的地址</li>
-<li>-e GRAYLOG_WEB_ENDPOINT_URI：对外开放的API地址</li>
-<li>-e GRAYLOG_ROOT_PASSWORD_SHA2：密码加密后的密文。明文是admin，账户也是admin</li>
-<li>-e GRAYLOG_ROOT_TIMEZONE=&ldquo;Asia/Shanghai&rdquo;：GrayLog容器内时区</li>
-<li>-e GRAYLOG_MONGODB_URI：指定MongoDB的链接信息</li>
-</ul>
-</li>
-</ul>
-<p><strong>GRAYLOG_ROOT_PASSWORD_SHA2可以使用以下命令进行生成</strong></p>
-<pre tabindex="0"><code>echo -n &#34;Enter Password: &#34; &amp;&amp; head -1 &lt; /dev/stdin | tr -d &#39;\n&#39; | sha256sum | cut -d &#34; &#34; -f1
-</code></pre><p>访问地址 http://192.168.150.102:9000/ ， 如果可以看到如下界面说明启动成功。</p>
-<p><img 
-  src="./2025-0224-01/image-20250803200843206.png" 
-  alt="image-20250803200843206" 
-   
-  class="custom-image-class"
-  srcset="./2025-0224-01/image-20250803200843206.png 1.25x"
- />
-
-
-<script>
-function improveImage() {
-    
-
-    
-    const images = document.querySelectorAll('img');
-
-    images.forEach((item) => {
-        
-        let srcset = item.getAttribute('srcset');
-        if (srcset) {
-            let imageName = srcset.match(/image-(\d+\.(png|jpg|jpeg|gif))\s(\d+(\.\d+)?x)/i); 
-            if (imageName) {
-                item.setAttribute('srcset', imageName[0]);
-            }
-        }
-    });
-}
-
-
-document.addEventListener('DOMContentLoaded', () => {
-    improveImage();
-});
-</script></p>
-<p>通过 admin/admin登录，即可看到欢迎页面。</p>
-<h1 id="日志收集和-grok-字段切割">日志收集和 Grok 字段切割</h1>
-<p>测试</p>
-<h1 id="集成-geo_ip-库">集成 Geo_IP 库</h1>
-<h1 id="grafanfa-可视化">Grafanfa 可视化</h1>
-</article>
+                <article class="markdown-body entry-content container-lg"></article>
               </div>
 
               
@@ -578,13 +356,11 @@ document.addEventListener('DOMContentLoaded', () => {
       <div class="pagination-nav">
         <div class="pagination-button next-post">
           
-          <div>«&nbsp;</div><a class="pagination-link link-reverse" href="https://rvnox.github.io/post/2025-0309-01/"> Grafana 变量</a>
+          <div>«&nbsp;</div><a class="pagination-link link-reverse" href="https://rvnox.github.io/post/2024-0728-01/"> 8086 汇编语言（一）</a>
           
         </div>
         
         <div class="pagination-button previous-post">
-          
-          <a class="pagination-link link-reverse" href="https://rvnox.github.io/post/2024-1225-01/">Go modules 剖析&nbsp;</a><div> »</div>
           
         </div>
       </div>
