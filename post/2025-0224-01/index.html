@@ -300,9 +300,9 @@
 
                   
                   <span class="file-info-divider"></span>
-                  Modified <relative-time datetime="Fri, 15 Aug 2025 14:15:29 &#43;0000"
+                  Modified <relative-time datetime="Sat, 16 Aug 2025 06:50:18 &#43;0000"
                     class="no-wrap">
-                    Fri, 15 Aug 2025 14:15:29 &#43;0000</relative-time>
+                    Sat, 16 Aug 2025 06:50:18 &#43;0000</relative-time>
                   
                 </div>
               </div>
@@ -332,7 +332,7 @@
                         </div>
                       </div>
                     </details-menu>
-                      1803 Words
+                      1822 Words
                     <span class="file-info-divider"></span>
                                         8 min
 
@@ -505,12 +505,8 @@ document.addEventListener('DOMContentLoaded', () => {
 <li>
 <p>端口信息：</p>
 <ul>
-<li>
-<p>-p 9000:9000：GrayLog的http服务端口，9000</p>
-</li>
-<li>
-<p>-p 12201:12201/udp：GrayLog的GELF UDP协议端口，用于接收从微服务发来的日志信息</p>
-</li>
+<li>-p 9000:9000：GrayLog的http服务端口，9000</li>
+<li>-p 12201:12201/udp：GrayLog的GELF UDP协议端口，用于接收从微服务发来的日志信息</li>
 </ul>
 </li>
 <li>
@@ -563,8 +559,42 @@ document.addEventListener('DOMContentLoaded', () => {
 </script></p>
 <p>通过 admin/admin登录，即可看到欢迎页面。</p>
 <h1 id="日志收集和-grok-字段切割">日志收集和 Grok 字段切割</h1>
-<p>测试</p>
-<h1 id="集成-geo_ip-库">集成 Geo_IP 库</h1>
+<p>首先，我们登录已搭建好的 GrayLog 平台，如下：</p>
+<p><img 
+  src="https://blogpic-ayu.oss-cn-beijing.aliyuncs.com/25/8/659f2ee731941b5532c2e364fdd0f6dc.png" 
+  alt="" 
+   
+  class="custom-image-class"
+  srcset="https://blogpic-ayu.oss-cn-beijing.aliyuncs.com/25/8/659f2ee731941b5532c2e364fdd0f6dc.png 1.25x"
+ />
+
+
+<script>
+function improveImage() {
+    
+
+    
+    const images = document.querySelectorAll('img');
+
+    images.forEach((item) => {
+        
+        let srcset = item.getAttribute('srcset');
+        if (srcset) {
+            let imageName = srcset.match(/image-(\d+\.(png|jpg|jpeg|gif))\s(\d+(\.\d+)?x)/i); 
+            if (imageName) {
+                item.setAttribute('srcset', imageName[0]);
+            }
+        }
+    });
+}
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    improveImage();
+});
+</script></p>
+<p>然后</p>
+<p>集成 Geo_IP 库</p>
 <h1 id="grafanfa-可视化">Grafanfa 可视化</h1>
 </article>
               </div>
